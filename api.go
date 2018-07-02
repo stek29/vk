@@ -38,21 +38,17 @@ func (e *ApiError) Error() string {
 }
 
 //easyjson:json
-type VKApiResponce struct {
+type VKApiResponse struct {
 	Error    *ApiError
 	Response easyjson.RawMessage
 }
 
-func (vk *VKApi) Request(method string, params map[string]string) (easyjson.RawMessage, error) {
+func (vk *VKApi) Request(method string, query url.Values) (easyjson.RawMessage, error) {
 	u, err := url.Parse(apiBaseUrl + method)
 	if err != nil {
 		return nil, err
 	}
 
-	query := url.Values{}
-	for k, v := range params {
-		query.Set(k, v)
-	}
 	query.Set("access_token", vk.AccessToken)
 	query.Set("v", vk.Version)
 	u.RawQuery = query.Encode()
@@ -63,7 +59,7 @@ func (vk *VKApi) Request(method string, params map[string]string) (easyjson.RawM
 	}
 	defer r.Body.Close()
 
-	resp := VKApiResponce{}
+	resp := VKApiResponse{}
 	easyjson.UnmarshalFromReader(r.Body, &resp)
 
 	if resp.Error != nil {
