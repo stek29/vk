@@ -4,6 +4,8 @@ import (
 	"github.com/mailru/easyjson/jlexer"
 )
 
+// TODO: Stories
+
 type Attachment struct {
 	Val interface{}
 }
@@ -13,8 +15,6 @@ func (v *Attachment) UnmarshalJSON(data []byte) error {
 	v.UnmarshalEasyJSON(&r)
 	return r.Error()
 }
-
-// TODO: AccessKey
 
 func (v *Attachment) UnmarshalEasyJSON(in *jlexer.Lexer) {
 	in.Delim('{')
@@ -133,41 +133,62 @@ type Comment struct {
 }
 
 //easyjson:json
+type VideoFiles struct {
+	MP240    string `json:"mp4_240"`
+	MP360    string `json:"mp4_360"`
+	MP480    string `json:"mp4_480"`
+	MP720    string `json:"mp4_720"`
+	MP1080   string `json:"mp4_1080"`
+	External string
+}
+
+//easyjson:json
 type Video struct {
 	Id          int
 	OwnerId     int
+	AccessKey   string
 	Title       string
 	Description string
 	Duration    int
-	Photo130    string
-	Photo320    string
-	Photo640    string
-	Photo800    string
-	Date        int
-	AddingDate  int
-	Views       int
-	Comments    int
-	Player      string
-	Platfrom    string
-	CanEdit     int
-	CanAdd      int
-	IsPrivate   int
-	AccessKey   string
-	Processing  int
-	Live        int
-	Upcoming    int
+
+	Photo130 string
+	Photo320 string
+	Photo640 string
+	Photo800 string
+
+	FirstFrame130 string
+	FirstFrame160 string
+	FirstFrame320 string
+	FirstFrame800 string
+
+	Files VideoFiles
+
+	Date       int
+	AddingDate int
+	Views      int
+	Comments   int
+	Player     string
+	Platfrom   string
+	CanEdit    int
+	CanAdd     int
+	IsPrivate  int
+	Processing int
+	Live       int
+	Upcoming   int
+	Repeat     int
 }
 
 //easyjson:json
 type Audio struct {
-	Id       int
-	OwnerId  int
-	Artist   string
-	Title    string
-	Duration int
-	Url      string
-	LyricsId int
-	AlbumId  int
+	Id        int
+	OwnerId   int
+	AccessKey string
+	Artist    string
+	Title     string
+	Duration  int
+	Url       string
+	LyricsId  int
+	AlbumId   int
 	// TODO: Genre list
 	GenreId  int
 	Date     int
@@ -185,26 +206,28 @@ type PhotoSize struct {
 
 //easyjson:json
 type Photo struct {
-	Id      int
-	AlbumId int
-	OwnerId int
-	UserId  int
-	Text    string
-	Date    int
-	Sizes   []PhotoSize
-	Width   int
-	Height  int
+	Id        int
+	AlbumId   int
+	OwnerId   int
+	UserId    int
+	AccessKey string
+	Text      string
+	Date      int
+	Sizes     []PhotoSize
+	Width     int
+	Height    int
 }
 
 //easyjson:json
 type Document struct {
-	Id      int
-	OwnerId int
-	Title   string
-	Size    int
-	Ext     string
-	Url     string
-	Date    int
+	Id        int
+	OwnerId   int
+	AccessKey string
+	Title     string
+	Size      int
+	Ext       string
+	Url       string
+	Date      int
 	// TODO: as enum
 	Type int
 	// TODO: Preview
@@ -372,6 +395,7 @@ type Post struct {
 	Id           int
 	OwnerId      int
 	FromId       int
+	AccessKey    string
 	CreatedBy    int
 	Date         int
 	Text         string
