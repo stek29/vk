@@ -151,15 +151,15 @@ type Video struct {
 	Description string
 	Duration    int
 
-	Photo130 string
-	Photo320 string
-	Photo640 string
-	Photo800 string
+	Photo130 string `json:"photo_130"`
+	Photo320 string `json:"photo_320"`
+	Photo640 string `json:"photo_640"`
+	Photo800 string `json:"photo_800"`
 
-	FirstFrame130 string
-	FirstFrame160 string
-	FirstFrame320 string
-	FirstFrame800 string
+	FirstFrame130 string `json:"first_frame_130"`
+	FirstFrame160 string `json:"first_frame_160"`
+	FirstFrame320 string `json:"first_frame_320"`
+	FirstFrame800 string `json:"first_frame_800"`
 
 	Files VideoFiles
 
