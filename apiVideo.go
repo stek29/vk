@@ -33,8 +33,8 @@ func (vk *VKApi) VideoGet(params VideoGetParams) (*VideoGetResponse, error) {
 		query.Set("owner_id", strconv.Itoa(*v))
 	}
 
-	if v := params.Videos; v != nil {
-		videos := strings.Join(*v, ",")
+	if v := params.Videos; len(v) != 0 {
+		videos := strings.Join(v, ",")
 		query.Set("videos", videos)
 	}
 
