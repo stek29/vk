@@ -5,7 +5,7 @@ import (
 )
 
 type CallbackEvent struct {
-	GroupId int
+	GroupID int
 	Secret  string
 	Event   interface{}
 }
@@ -26,7 +26,7 @@ func (v *CallbackEvent) UnmarshalEasyJSON(in *jlexer.Lexer) {
 
 		switch key {
 		case "group_id":
-			v.GroupId = in.Int()
+			v.GroupID = in.Int()
 		case "secret":
 			v.Secret = in.String()
 		case "type":
@@ -261,13 +261,13 @@ type MessageEdit struct {
 
 //easyjson:json
 type MessageAllow struct {
-	UserId int
+	UserID int
 	Key    string
 }
 
 //easyjson:json
 type MessageDeny struct {
-	UserId int
+	UserID int
 }
 
 //easyjson:json
@@ -279,33 +279,33 @@ type PhotoNew struct {
 type PhotoCommentNew struct {
 	Comment
 
-	PhotoId      int
-	PhotoOwnerId int
+	PhotoID      int
+	PhotoOwnerID int
 }
 
 //easyjson:json
 type PhotoCommentEdit struct {
 	Comment
 
-	PhotoId      int
-	PhotoOwnerId int
+	PhotoID      int
+	PhotoOwnerID int
 }
 
 //easyjson:json
 type PhotoCommentRestore struct {
 	Comment
 
-	PhotoId      int
-	PhotoOwnerId int
+	PhotoID      int
+	PhotoOwnerID int
 }
 
 //easyjson:json
 type PhotoCommentDelete struct {
-	OwnerId   int
-	Id        int
-	UserId    int
-	DeleterId int
-	PhotoId   int
+	OwnerID   int
+	ID        int
+	UserID    int
+	DeleterID int
+	PhotoID   int
 }
 
 //easyjson:json
@@ -322,163 +322,163 @@ type VideoNew struct {
 type VideoCommentNew struct {
 	Comment
 
-	VideoId      int
-	VideoOwnerId int
+	VideoID      int
+	VideoOwnerID int
 }
 
 //easyjson:json
 type VideoCommentEdit struct {
 	Comment
 
-	VideoId      int
-	VideoOwnerId int
+	VideoID      int
+	VideoOwnerID int
 }
 
 //easyjson:json
 type VideoCommentRestore struct {
 	Comment
 
-	VideoId      int
-	VideoOwnerId int
+	VideoID      int
+	VideoOwnerID int
 }
 
 //easyjson:json
 type VideoCommentDelete struct {
-	OwnerId   int
-	Id        int
-	UserId    int
-	DeleterId int
-	VideoId   int
+	OwnerID   int
+	ID        int
+	UserID    int
+	DeleterID int
+	VideoID   int
 }
 
 //easyjson:json
 type WallPostNew struct {
 	Post
 
-	PostponedId int
+	PostponedID int
 }
 
 //easyjson:json
 type WallRepost struct {
 	Post
 
-	PostponedId int
+	PostponedID int
 }
 
 //easyjson:json
 type WallReplyNew struct {
 	Comment
 
-	PostId      int
-	PostOwnerId int
+	PostID      int
+	PostOwnerID int
 }
 
 //easyjson:json
 type WallReplyEdit struct {
 	Comment
 
-	PostId      int
-	PostOwnerId int
+	PostID      int
+	PostOwnerID int
 }
 
 //easyjson:json
 type WallReplyRestore struct {
 	Comment
 
-	PostId      int
-	PostOwnerId int
+	PostID      int
+	PostOwnerID int
 }
 
 //easyjson:json
 type WallReplyDelete struct {
-	OwnerId   int
-	Id        int
-	DeleterId int
-	PostId    int
+	OwnerID   int
+	ID        int
+	DeleterID int
+	PostID    int
 }
 
 //easyjson:json
 type BoardPostNew struct {
 	CommentBoard
 
-	TopicId      int
-	TopicOwnerId int
+	TopicID      int
+	TopicOwnerID int
 }
 
 //easyjson:json
 type BoardPostEdit struct {
 	CommentBoard
 
-	TopicId      int
-	TopicOwnerId int
+	TopicID      int
+	TopicOwnerID int
 }
 
 //easyjson:json
 type BoardPostRestore struct {
 	CommentBoard
 
-	TopicId      int
-	TopicOwnerId int
+	TopicID      int
+	TopicOwnerID int
 }
 
 //easyjson:json
 type BoardPostDelete struct {
-	TopicOwnerId int
-	TopicId      int
-	Id           int
+	TopicOwnerID int
+	TopicID      int
+	ID           int
 }
 
 //easyjson:json
 type MarketCommentNew struct {
 	Comment
 
-	MarketOwnerId int
-	ItemId        int
+	MarketOwnerID int
+	ItemID        int
 }
 
 //easyjson:json
 type MarketCommentEdit struct {
 	Comment
 
-	MarketOwnerId int
-	ItemId        int
+	MarketOwnerID int
+	ItemID        int
 }
 
 //easyjson:json
 type MarketCommentRestore struct {
 	Comment
 
-	MarketOwnerId int
-	ItemId        int
+	MarketOwnerID int
+	ItemID        int
 }
 
 //easyjson:json
 type MarketCommentDelete struct {
-	OwnerId   int
-	Id        int
-	UserId    int
-	DeleterId int
-	ItemId    int
+	OwnerID   int
+	ID        int
+	UserID    int
+	DeleterID int
+	ItemID    int
 }
 
 //easyjson:json
 type GroupLeave struct {
-	UserId int
+	UserID int
 	Self   int
 }
 
 // TODO: JoinType as enum/type
 //easyjson:json
 type GroupJoin struct {
-	UserId   int
+	UserID   int
 	JoinType string
 }
 
 // TODO: Reason as enum/type
 //easyjson:json
 type UserBlock struct {
-	AdminId     int
-	UserId      int
+	AdminID     int
+	UserID      int
 	UnblockDate int
 	Reason      int
 	Comment     string
@@ -486,36 +486,36 @@ type UserBlock struct {
 
 //easyjson:json
 type UserUnblock struct {
-	AdminId   int
-	UserId    int
+	AdminID   int
+	UserID    int
 	ByEndDate int
 }
 
 //easyjson:json
 type PollVoteNew struct {
-	OwnerId  int
-	PollId   int
-	OptionId int
-	UserId   int
+	OwnerID  int
+	PollID   int
+	OptionID int
+	UserID   int
 }
 
 // TODO: Levels as enum/type
 //easyjson:json
 type GroupOfficersEdit struct {
-	AdminId  int
-	UserId   int
+	AdminID  int
+	UserID   int
 	LevelOld int
 	LevelNew int
 }
 
 //easyjson:json
 type GroupChangeSettings struct {
-	UserId int
+	UserID int
 	// TODO: Changes
 }
 
 //easyjson:json
 type GroupChangePhoto struct {
-	UserId int
+	UserID int
 	Photo  Photo
 }

@@ -11,9 +11,9 @@ import (
 // TODO: Generate Params/Response structs and Methods for all API calls
 
 type VideoGetParams struct {
-	OwnerId  *int
+	OwnerID  *int
 	Videos   []string
-	AlbumId  *int
+	AlbumID  *int
 	Count    *int
 	Offset   *int
 	Extended bool
@@ -29,7 +29,7 @@ func (vk *VKApi) VideoGet(params VideoGetParams) (*VideoGetResponse, error) {
 	method := "video.get"
 	query := url.Values{}
 
-	if v := params.OwnerId; v != nil {
+	if v := params.OwnerID; v != nil {
 		query.Set("owner_id", strconv.Itoa(*v))
 	}
 
@@ -38,7 +38,7 @@ func (vk *VKApi) VideoGet(params VideoGetParams) (*VideoGetResponse, error) {
 		query.Set("videos", videos)
 	}
 
-	if v := params.AlbumId; v != nil {
+	if v := params.AlbumID; v != nil {
 		query.Set("album_id", strconv.Itoa(*v))
 	}
 

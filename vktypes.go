@@ -95,12 +95,12 @@ func (v *Attachment) UnmarshalEasyJSON(in *jlexer.Lexer) {
 
 //easyjson:json
 type Message struct {
-	Id          int
+	ID          int
 	Date        int
-	PeerId      int
-	FromId      int
+	PeerID      int
+	FromID      int
 	Text        string
-	RandomId    int
+	RandomID    int
 	Attachments []Attachment
 	Important   bool
 	// TODO: Geo
@@ -110,7 +110,7 @@ type Message struct {
 	// TODO: Action types
 	Action struct {
 		Type     string
-		MemberId int
+		MemberID int
 		Text     string
 		Email    string
 		Photo    struct {
@@ -123,8 +123,8 @@ type Message struct {
 
 //easyjson:json
 type Comment struct {
-	Id             int
-	FromId         int
+	ID             int
+	FromID         int
 	Date           int
 	Text           string
 	ReplyToUser    int
@@ -144,8 +144,8 @@ type VideoFiles struct {
 
 //easyjson:json
 type Video struct {
-	Id          int
-	OwnerId     int
+	ID          int
+	OwnerID     int
 	AccessKey   string
 	Title       string
 	Description string
@@ -180,17 +180,17 @@ type Video struct {
 
 //easyjson:json
 type Audio struct {
-	Id        int
-	OwnerId   int
+	ID        int
+	OwnerID   int
 	AccessKey string
 	Artist    string
 	Title     string
 	Duration  int
 	Url       string
-	LyricsId  int
-	AlbumId   int
+	LyricsID  int
+	AlbumID   int
 	// TODO: Genre list
-	GenreId  int
+	GenreID  int
 	Date     int
 	NoSearch int
 	IsHq     int
@@ -206,10 +206,10 @@ type PhotoSize struct {
 
 //easyjson:json
 type Photo struct {
-	Id        int
-	AlbumId   int
-	OwnerId   int
-	UserId    int
+	ID        int
+	AlbumID   int
+	OwnerID   int
+	UserID    int
 	AccessKey string
 	Text      string
 	Date      int
@@ -220,8 +220,8 @@ type Photo struct {
 
 //easyjson:json
 type Document struct {
-	Id        int
-	OwnerId   int
+	ID        int
+	OwnerID   int
 	AccessKey string
 	Title     string
 	Size      int
@@ -248,8 +248,8 @@ type Link struct {
 
 //easyjson:json
 type Note struct {
-	Id           int
-	OwnerId      int
+	ID           int
+	OwnerID      int
 	Title        string
 	Text         string
 	Date         int
@@ -260,14 +260,14 @@ type Note struct {
 
 //easyjson:json
 type Poll struct {
-	Id       int
-	OWnerId  int
+	ID       int
+	OWnerID  int
 	Created  int
 	Question string
 	Votest   int
-	AnswerId int
+	AnswerID int
 	Asnwers  []struct {
-		Id    int
+		ID    int
 		Text  string
 		Votes int
 		Rate  float32
@@ -277,9 +277,9 @@ type Poll struct {
 
 //easyjson:json
 type Page struct {
-	Id                       int
-	GroupId                  int
-	CreatorId                int
+	ID                       int
+	GroupID                  int
+	CreatorID                int
 	Title                    string
 	CurrentUserCanEdit       int
 	CurrentUserCanEditAccess int
@@ -288,7 +288,7 @@ type Page struct {
 	WhoCanEdit int
 	Edited     int
 	Created    int
-	EditorId   int
+	EditorID   int
 	Views      int
 	Parent     string
 	Parent2    string
@@ -299,9 +299,9 @@ type Page struct {
 
 //easyjson:json
 type Album struct {
-	Id          int
+	ID          int
 	Thumb       Photo
-	OwnerId     int
+	OwnerID     int
 	Title       string
 	Description string
 	Created     int
@@ -313,23 +313,23 @@ type Album struct {
 
 //easyjson:json
 type Market struct {
-	Id          int
-	OwnerId     int
+	ID          int
+	OwnerID     int
 	Title       string
 	Description string
 	Price       struct {
 		Amount   int
 		Currency struct {
-			Id   int
+			ID   int
 			Name string
 		}
 		Text string
 	}
 	Category struct {
-		Id      int
+		ID      int
 		Name    string
 		Section struct {
-			Id   int
+			ID   int
 			Name string
 		}
 	}
@@ -349,8 +349,8 @@ type Market struct {
 
 //easyjson:json
 type MarketAlbum struct {
-	Id          int
-	OwnerId     int
+	ID          int
+	OwnerID     int
 	Title       string
 	Photo       Photo
 	Count       int
@@ -359,8 +359,8 @@ type MarketAlbum struct {
 
 //easyjson:json
 type Sticker struct {
-	ProductId int
-	StickerId int
+	ProductID int
+	StickerID int
 	Images    []struct {
 		Url    string
 		Width  int
@@ -378,13 +378,13 @@ type Sticker struct {
 //easyjson:json
 type WallReply struct {
 	Comment
-	PostId  int
-	OwnerId int
+	PostID  int
+	OwnerID int
 }
 
 //easyjson:json
 type Gift struct {
-	Id       int
+	ID       int
 	Thumb256 string
 	Thumb96  string
 	Thumb48  string
@@ -392,15 +392,15 @@ type Gift struct {
 
 //easyjson:json
 type Post struct {
-	Id           int
-	OwnerId      int
-	FromId       int
+	ID           int
+	OwnerID      int
+	FromID       int
 	AccessKey    string
 	CreatedBy    int
 	Date         int
 	Text         string
-	ReplyOwnerId int
-	ReplyPostId  int
+	ReplyOwnerID int
+	ReplyPostID  int
 	FriendsOnly  int
 	Comments     struct {
 		Count         int
@@ -425,7 +425,7 @@ type Post struct {
 	// TODO: PostSource
 	Attachments []Attachment
 	// TODO: Geo
-	SignerId    int
+	SignerID    int
 	CopyHistory []Post
 	CanPin      int
 	CanDelete   int
@@ -437,13 +437,13 @@ type Post struct {
 //easyjson:json
 type Wall struct {
 	Post
-	ToId int
+	ToID int
 }
 
 //easyjson:json
 type CommentBoard struct {
-	Id          int
-	FromId      int
+	ID          int
+	FromID      int
 	Date        int
 	Text        string
 	Attachments []Attachment
