@@ -420,7 +420,6 @@ type Post struct {
 	Views struct {
 		Count int
 	}
-	// TODO: PostType as enum/type
 	PostType string
 	// TODO: PostSource
 	Attachments []Attachment
@@ -433,6 +432,14 @@ type Post struct {
 	IsPinned    int
 	MarkedAsAds int
 }
+
+const (
+	PostTypePost string = "post"
+	PostTypeCopy = "copy"
+	PostTypeReply = "reply"
+	PostTypePostpone = "postpone"
+	PostTypeSuggest = "suggest"
+)
 
 //easyjson:json
 type Wall struct {
