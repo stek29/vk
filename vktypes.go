@@ -434,11 +434,11 @@ type Post struct {
 }
 
 const (
-	PostTypePost string = "post"
-	PostTypeCopy = "copy"
-	PostTypeReply = "reply"
-	PostTypePostpone = "postpone"
-	PostTypeSuggest = "suggest"
+	PostTypePost     string = "post"
+	PostTypeCopy            = "copy"
+	PostTypeReply           = "reply"
+	PostTypePostpone        = "postpone"
+	PostTypeSuggest         = "suggest"
 )
 
 //easyjson:json
