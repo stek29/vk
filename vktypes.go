@@ -228,10 +228,20 @@ type Document struct {
 	Ext       string
 	Url       string
 	Date      int
-	// TODO: as enum
-	Type int
+	Type      int
 	// TODO: Preview
 }
+
+const (
+	DocumentTypeText    int = 1
+	DocumentTypeArchive     = 2
+	DocumentTypeGIF         = 3
+	DocumentTypeImage       = 4
+	DocumentTypeAudio       = 5
+	DocumentTypeVideo       = 6
+	DocumentTypeEBook       = 7
+	DocumentTypeUnknown     = 8
+)
 
 //easyjson:json
 type Link struct {
