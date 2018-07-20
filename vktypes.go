@@ -186,7 +186,7 @@ type Audio struct {
 	Artist    string
 	Title     string
 	Duration  int
-	Url       string
+	URL       string
 	LyricsID  int
 	AlbumID   int
 	// TODO: Genre list
@@ -199,7 +199,7 @@ type Audio struct {
 //easyjson:json
 type PhotoSize struct {
 	Type   string
-	Url    string
+	URL    string
 	Width  int
 	Height int
 }
@@ -226,7 +226,7 @@ type Document struct {
 	Title     string
 	Size      int
 	Ext       string
-	Url       string
+	URL       string
 	Date      int
 	Type      int
 	// TODO: Preview
@@ -245,7 +245,7 @@ const (
 
 //easyjson:json
 type Link struct {
-	Url         string
+	URL         string
 	Title       string
 	Caption     string
 	Description string
@@ -253,7 +253,7 @@ type Link struct {
 	// TODO: Product
 	// TODO: Button
 	PreviewPage string
-	PreviewUrl  string
+	PreviewURL  string
 }
 
 //easyjson:json
@@ -265,7 +265,7 @@ type Note struct {
 	Date         int
 	Comments     int
 	ReadComments int
-	ViewUrl      string
+	ViewURL      string
 }
 
 //easyjson:json
@@ -303,8 +303,8 @@ type Page struct {
 	Parent     string
 	Parent2    string
 	Source     string
-	Html       string
-	ViewUrl    string
+	HTML       string
+	ViewURL    string
 }
 
 //easyjson:json
@@ -372,12 +372,12 @@ type Sticker struct {
 	ProductID int
 	StickerID int
 	Images    []struct {
-		Url    string
+		URL    string
 		Width  int
 		Height int
 	}
 	ImagesWithBackground []struct {
-		Url    string
+		URL    string
 		Width  int
 		Height int
 	}
