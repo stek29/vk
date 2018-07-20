@@ -229,7 +229,23 @@ type Document struct {
 	URL       string
 	Date      int
 	Type      int
-	// TODO: Preview
+	Preview   DocumentPreview
+}
+
+type DocumentPreview struct {
+	Photo *DocumentPreviewPhoto
+	Video *DocumentPreviewVideo
+}
+
+type DocumentPreviewPhoto struct {
+	Sizes []PhotoSize
+}
+
+type DocumentPreviewVideo struct {
+	Src      string
+	Width    int
+	Height   int
+	Filesize int
 }
 
 const (
