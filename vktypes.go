@@ -108,7 +108,7 @@ type Message struct {
 	FwdMessages []Message
 
 	// TODO: Action types
-	Action struct {
+	Action *struct {
 		Type     string
 		MemberID int
 		Text     string
@@ -161,7 +161,7 @@ type Video struct {
 	FirstFrame320 string `json:"first_frame_320"`
 	FirstFrame800 string `json:"first_frame_800"`
 
-	Files VideoFiles
+	Files *VideoFiles
 
 	Date       int
 	AddingDate int
@@ -428,22 +428,22 @@ type Post struct {
 	ReplyOwnerID int
 	ReplyPostID  int
 	FriendsOnly  int
-	Comments     struct {
+	Comments     *struct {
 		Count         int
 		CanPost       int
 		GroupsCanPost int
 	}
-	Likes struct {
+	Likes *struct {
 		Count      int
 		UserLikes  int
 		CanLike    int
 		CanPublish int
 	}
-	Reposts struct {
+	Reposts *struct {
 		Count        int
 		UserReposted int
 	}
-	Views struct {
+	Views *struct {
 		Count int
 	}
 	PostType string
