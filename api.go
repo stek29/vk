@@ -2,9 +2,10 @@ package vkCallbackApi
 
 import (
 	"fmt"
-	"github.com/mailru/easyjson"
 	"net/http"
 	"net/url"
+
+	"github.com/mailru/easyjson"
 )
 
 // Inspired by https://github.com/Vorkytaka/easyvk-go
