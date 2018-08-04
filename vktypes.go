@@ -94,6 +94,138 @@ func (v *Attachment) UnmarshalEasyJSON(in *jlexer.Lexer) {
 }
 
 //easyjson:json
+type User struct {
+	ID          int
+	FirstName   string
+	LastName    string
+	Deactivated string
+
+	Sex        int
+	Domain     string
+	MaidenName string
+	Nickname   string
+	ScreenName string
+	Status     string
+	BirthDate  string `json:"bdate"`
+	About      string
+	Books      string
+	Activites  string
+	Interests  string
+	Games      string
+	HomeTown   string
+	Movies     string
+	Music      string
+	Quotes     string
+	TV         string
+	Site       string
+	Verified   int
+
+	LastSeen struct {
+		Time     int
+		Platform int
+	}
+
+	Online       *int
+	OnlineMobile int
+	OnlineApp    int
+
+	PhotoID      string
+	PhotoMax     string
+	PhotoMaxOrig string
+
+	Career []struct {
+		GroupID   int
+		Company   string
+		CountryID int
+		CityID    int
+		CityName  string
+		From      int
+		Until     int
+		Position  string
+	}
+	City *struct {
+		ID    int
+		Title string
+	}
+	Country *struct {
+		ID    int
+		Title string
+	}
+	Contacts *struct {
+		MobilePhone string
+		HomePhone   string
+	}
+
+	CropPhoto *struct {
+		Photo Photo
+		Crop  struct {
+			X  int
+			Y  int
+			X2 int
+			Y2 int
+		}
+		Rect struct {
+			X  int
+			Y  int
+			X2 int
+			Y2 int
+		}
+	}
+
+	Counters *struct {
+		Albums        int
+		Videos        int
+		Audios        int
+		Photos        int
+		Notes         int
+		Friends       int
+		Groups        int
+		OnlineFriends int
+		MutualFriends int
+		UserVideos    int
+		Followers     int
+		Pages         int
+	}
+
+	CommonCount    int
+	FollowersCount int
+	FriendStatus   int
+
+	// TODO: education, exports, first_name_{case}, last_name_{case}, military, occupation, personal, relatives, relation, schools, universities, wall_default
+	// TODO: Connections
+	// XXX: Can easyjson handle map[string]string?
+
+	CanPost                int
+	CanSeeAllPosts         int
+	CanSeeAudio            int
+	CanSendFriendRequest   int
+	CanWritePrivateMessage int
+
+	HasMobile int
+	HasPhoto  int
+
+	IsFavorite       int
+	IsFriend         int
+	IsHiddenFromFeed int
+
+	Blacklisted     int
+	BlacklistedByMe int
+}
+
+const (
+	UserFriendStatusNone            int = 0
+	UserFriendStatusRequestSent         = 1
+	UserFriendStatusIncomingRequest     = 2
+	UserFriendStatusFriends             = 3
+)
+
+const (
+	UserSexUnknown int = 0
+	UserSexFemale      = 1
+	UserSexMale        = 2
+)
+
+//easyjson:json
 type Message struct {
 	ID          int
 	Date        int
