@@ -325,7 +325,7 @@ type Audio struct {
 	GenreID  int
 	Date     int
 	NoSearch int
-	IsHq     int
+	IsHQ     bool
 }
 
 //easyjson:json
