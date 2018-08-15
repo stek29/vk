@@ -6,7 +6,7 @@ import (
 
 // APIVideo implements VK API namespace `video`
 type APIVideo struct {
-	api *APIBase
+	API *API
 }
 
 // VideoGetParams are params for Video.Get
@@ -28,7 +28,7 @@ type VideoGetResponse struct {
 
 // Get is video.get
 func (v APIVideo) Get(params VideoGetParams) (*VideoGetResponse, error) {
-	r, err := v.api.Request("video.get", params)
+	r, err := v.API.Request("video.get", params)
 	if err != nil {
 		return nil, err
 	}

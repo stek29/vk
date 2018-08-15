@@ -6,7 +6,7 @@ import (
 
 // APIUsers implements VK API namespace `users`
 type APIUsers struct {
-	api *APIBase
+	API *API
 }
 
 // UsersGetParams are params for Users.Get
@@ -22,7 +22,7 @@ type UsersGetResponse []User
 
 // Get is users.get
 func (v APIUsers) Get(params UsersGetParams) (UsersGetResponse, error) {
-	r, err := v.api.Request("users.get", params)
+	r, err := v.API.Request("users.get", params)
 	if err != nil {
 		return nil, err
 	}

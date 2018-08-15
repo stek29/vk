@@ -16,35 +16,19 @@ const (
 
 // TODO: Add Lang
 
-// APIBase is minimal struct holding parameters required for requests
-type APIBase struct {
+// API is a helper type used for making requests
+type API struct {
 	BaseURL     string `url:"-"`
 	AccessToken string `url:"access_token,omitempty"`
 	Version     string `url:"v,omitempty"`
 }
 
-// API is a helper type used for making requests
-type API struct {
-	APIBase *APIBase
-
-	Video APIVideo
-	Wall  APIWall
-	Users APIUsers
-}
-
 // APIWithAccessToken creates and initializes a new API instance
 func APIWithAccessToken(token string) *API {
-	base := APIBase{
+	return &API{
 		AccessToken: token,
 		Version:     APIVersion,
 		BaseURL:     apiBaseURL,
-	}
-
-	return &API{
-		APIBase: &base,
-		Video:   APIVideo{&base},
-		Wall:    APIWall{&base},
-		Users:   APIUsers{&base},
 	}
 }
 
@@ -75,7 +59,7 @@ type APIResponse struct {
 // method is method name
 // params should be a url.Values or url tagged
 // struct (https://godoc.org/github.com/google/go-querystring/query)
-func (vk *APIBase) Request(method string, params interface{}) (easyjson.RawMessage, error) {
+func (vk *API) Request(method string, params interface{}) (easyjson.RawMessage, error) {
 	u, err := url.Parse(vk.BaseURL + method)
 	if err != nil {
 		return nil, err
