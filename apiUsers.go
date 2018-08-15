@@ -11,7 +11,9 @@ type APIUsers struct {
 
 // UsersGetParams are params for Users.Get
 type UsersGetParams struct {
-	UserIDs  CSVStringSlice `url:"user_ids,omitempty"`
+	// User IDs or screen names. Current user ID if empty.
+	UserIDs CSVStringSlice `url:"user_ids,omitempty"`
+	// Additional user fields to return. See User type.
 	Fields   CSVStringSlice `url:"fields,omitempty"`
 	NameCase string         `url:"name_case,omitempty"`
 }
@@ -21,6 +23,7 @@ type UsersGetParams struct {
 type UsersGetResponse []User
 
 // Get is users.get
+// Returns detailed information on users.
 func (v APIUsers) Get(params UsersGetParams) (UsersGetResponse, error) {
 	r, err := v.API.Request("users.get", params)
 	if err != nil {
