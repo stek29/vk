@@ -8,7 +8,7 @@ type APIWall struct {
 // WallDeleteCommentParams are params for Wall.DeleteComment
 type WallDeleteCommentParams struct {
 	OwnerID   int `url:"owner_id"`
-	CommentID int `url:"commend_id"`
+	CommentID int `url:"comment_id"`
 }
 
 // DeleteComment is wall.deleteComment
