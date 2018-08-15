@@ -94,6 +94,23 @@ func (v *Attachment) UnmarshalEasyJSON(in *jlexer.Lexer) {
 }
 
 //easyjson:json
+type CropPhoto struct {
+	Photo Photo
+	Crop  struct {
+		X  int
+		Y  int
+		X2 int
+		Y2 int
+	}
+	Rect struct {
+		X  int
+		Y  int
+		X2 int
+		Y2 int
+	}
+}
+
+//easyjson:json
 type User struct {
 	ID          int
 	FirstName   string
@@ -156,21 +173,7 @@ type User struct {
 		HomePhone   string
 	}
 
-	CropPhoto *struct {
-		Photo Photo
-		Crop  struct {
-			X  int
-			Y  int
-			X2 int
-			Y2 int
-		}
-		Rect struct {
-			X  int
-			Y  int
-			X2 int
-			Y2 int
-		}
-	}
+	CropPhoto *CropPhoto
 
 	Counters *struct {
 		Albums        int
@@ -226,6 +229,124 @@ const (
 )
 
 //easyjson:json
+type Group struct {
+	ID          int
+	Name        string
+	ScreenName  string
+	IsClosed    int
+	Deactivated string
+	InvitedBy   int
+	Type        string
+	Description string
+	FixedPost   int
+
+	MainAlbumID int
+	MainSection int
+	Market      *struct {
+		Enabled     int
+		PriceMin    int
+		PriceMax    int
+		MainAlbumID int
+		ContactID   int
+		Currency    struct {
+			ID   int
+			Name string
+		}
+		CurrencyText string
+	}
+
+	Photo50  string
+	Photo100 string
+	Photo200 string
+
+	Activity  string
+	AgeLimits int
+
+	AdminLevel        int
+	IsAdmin           int
+	IsMember          int
+	IsFavorite        int
+	IsHiddenFromFeed  int
+	IsMessagesBlocked int
+	CanCreateTopic    int
+	CanMessage        int
+	CanPost           int
+	CanSeeAllPosts    int
+	CanUploadDoc      int
+	CanUploadVideo    int
+	HasPhoto          int
+
+	BanInfo *struct {
+		EndDate int
+		Comment string
+	}
+
+	City *struct {
+		ID    int
+		Title string
+	}
+	Country *struct {
+		ID    int
+		Title string
+	}
+
+	CropPhoto *CropPhoto
+
+	Contacts []struct {
+		UserID      int
+		Description string `json:"desc"`
+		Phone       string
+		Email       string
+	}
+
+	Links []struct {
+		ID          int
+		URL         string
+		Name        string
+		Description string `json:"desc"`
+		Photo50     string
+		Photo100    string
+	}
+
+	Counters *struct {
+		Albums int
+		Videos int
+		Audios int
+		Photos int
+		Topics int
+		Docs   int
+		Market int
+	}
+}
+
+const (
+	GroupIsOpen    int = 0
+	GroupIsClosed      = 1
+	GroupIsPrivate     = 2
+
+	GroupAdminLevelNotAdmin      int = 0
+	GroupAdminLevelModerator         = 1
+	GroupAdminLevelEditor            = 1
+	GroupAdminLevelAdministrator     = 1
+
+	GroupTypeGroup string = "group"
+	GroupTypePage         = "page"
+	GroupTypeEvent        = "event"
+
+	GroupAgeLimitUnknown int = 0
+	GroupAgeLimitNone        = 1
+	GroupAgeLimit16          = 2
+	GroupAgeLimit18          = 3
+
+	GroupMainSectionAbsent int = 0
+	GroupMainSectionPhotos     = 1
+	GroupMainSectionTopics     = 2
+	GroupMainSectionAudio      = 3
+	GroupMainSectionVideo      = 4
+	GroupMainSectionMarket     = 5
+)
+
+//easyjson:json
 type Message struct {
 	ID          int
 	Date        int
@@ -236,8 +357,8 @@ type Message struct {
 	Attachments []Attachment
 	Important   bool
 	// TODO: Geo
-	Payload     string
-	FwdMessages []Message
+	Payload           string
+	ForwardedMessages []Message `json:"fwd_messages"`
 
 	// TODO: Action types
 	Action *struct {
@@ -251,6 +372,102 @@ type Message struct {
 			Photo200 string
 		}
 	}
+}
+
+const (
+	MessageActionTypeChatPhotoUpdate      string = "chat_photo_update"
+	MessageActionTypeChatPhotoRemove             = "chat_photo_remove"
+	MessageActionTypeChatCreate                  = "chat_create"
+	MessageActionTypeChatTitleUpdate             = "chat_title_update"
+	MessageActionTypeChatInviteUser              = "chat_invite_user"
+	MessageActionTypeChatKickUser                = "chat_kick_user"
+	MessageActionTypeChatPinMessage              = "chat_pin_message"
+	MessageActionTypeChatUnpinMessage            = "chat_unpin_message"
+	MessageActionTypeChatInviteUserByLink        = "chat_invite_user_by_link"
+)
+
+//easyjson:json
+type Conversation struct {
+	Peer struct {
+		ID      int
+		Type    string
+		LocalID int
+	}
+
+	InRead      int
+	OutRead     int
+	UnreadCount int
+
+	Important    bool
+	Unanswered   bool
+	PushSettings *struct {
+		DisabledUntil   int
+		DisabledForever bool
+		NoSound         bool
+	}
+
+	CanWrite *struct {
+		Allowed bool
+		Reason  int
+	}
+
+	ChatSettings *struct {
+		MembersCount  int
+		Title         string
+		PinnedMessage *Message
+		State         string
+
+		Photo struct {
+			Photo50  string
+			Photo100 string
+			Photo200 string
+		}
+
+		ActiveIDs []int
+	}
+}
+
+const (
+	PeerTypeUser  string = "user"
+	PeerTypeChat         = "chat"
+	PeerTypeGroup        = "group"
+	PeerTypeEmail        = "email"
+
+	CantWriteReasonBlockedOrDeleted      int = 18
+	CantWriteReasonIsBlacklisted             = 900
+	CantWriteReasonPeerBlockedGroup          = 901
+	CantWriteReasonPrivacySettings           = 902
+	CantWriteReasonGroupMessagesDisabled     = 915
+	CantWriteReasonGroupMessagesBlocked      = 916
+	CantWriteReasonChatNotAccessible         = 917
+	CantWriteReasonEmailNotAccessible        = 918
+	CantWriteReasonGroupNotAccessible        = 203
+
+	ChatStateIn     string = "in"
+	ChatStateKicked        = "kicked"
+	ChatStateLeft          = "left"
+)
+
+//easyjson:json
+type Chat struct {
+	ID           int
+	Type         string
+	Title        string
+	AdminID      int
+	Users        []int
+	MembersCount int
+
+	PushSettings struct {
+		Sound         int
+		DisabledUntil int
+	}
+
+	Photo50  string
+	Photo100 string
+	Photo200 string
+
+	Left   int
+	Kicked int
 }
 
 //easyjson:json
