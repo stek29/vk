@@ -2,57 +2,104 @@ package vkCallbackApi
 
 import (
 	"fmt"
-	"net/http"
 	"net/url"
 
+	"net/http"
+
+	"github.com/google/go-querystring/query"
 	"github.com/mailru/easyjson"
 )
 
-// Inspired by https://github.com/Vorkytaka/easyvk-go
-
 const (
-	apiBaseUrl = "https://api.vk.com/method/"
+	apiBaseURL = "https://api.vk.com/method/"
 )
 
-type VKApi struct {
-	AccessToken string
-	Version     string
+// TODO: Add Lang
+
+// APIBase is minimal struct holding parameters required for requests
+type APIBase struct {
+	BaseURL     string `url:"-"`
+	AccessToken string `url:"access_token,omitempty"`
+	Version     string `url:"v,omitempty"`
 }
 
-func ApiWithAccessToken(token string) (vk VKApi) {
-	vk.AccessToken = token
-	vk.Version = ApiVersion
-	return
+// API is a helper type used for making requests
+type API struct {
+	APIBase *APIBase
+
+	Video APIVideo
+	Wall  APIWall
+	Users APIUsers
 }
 
-type ApiError struct {
-	Code          int `json:"error_code"`
-	Message       int `json:"error_msg"`
+// APIWithAccessToken creates and initializes a new API instance
+func APIWithAccessToken(token string) *API {
+	base := APIBase{
+		AccessToken: token,
+		Version:     APIVersion,
+		BaseURL:     apiBaseURL,
+	}
+
+	return &API{
+		APIBase: &base,
+		Video:   APIVideo{&base},
+		Wall:    APIWall{&base},
+		Users:   APIUsers{&base},
+	}
+}
+
+// APIError is a type representing errors returned by VK API
+//easyjson:json
+type APIError struct {
+	Code          int    `json:"error_code"`
+	Message       string `json:"error_msg"`
 	RequestParams []struct {
 		Key   string
 		Value string
 	}
 }
 
-func (e *ApiError) Error() string {
-	return fmt.Sprintf("ApiError %d: %s", e.Code, e.Message)
+// Error implements error interface
+func (e *APIError) Error() string {
+	return fmt.Sprintf("vk.APIError %d: %s", e.Code, e.Message)
 }
 
+// APIResponse is a type representing general response returned by VK API
 //easyjson:json
-type VKApiResponse struct {
-	Error    *ApiError
+type APIResponse struct {
+	Error    *APIError
 	Response easyjson.RawMessage
 }
 
-func (vk *VKApi) Request(method string, query url.Values) (easyjson.RawMessage, error) {
-	u, err := url.Parse(apiBaseUrl + method)
+// Request performs an API request
+// method is method name
+// params should be a url.Values or url tagged
+// struct (https://godoc.org/github.com/google/go-querystring/query)
+func (vk *APIBase) Request(method string, params interface{}) (easyjson.RawMessage, error) {
+	u, err := url.Parse(vk.BaseURL + method)
 	if err != nil {
 		return nil, err
 	}
 
-	query.Set("access_token", vk.AccessToken)
-	query.Set("v", vk.Version)
-	u.RawQuery = query.Encode()
+	var q url.Values
+
+	switch v := params.(type) {
+	case url.Values:
+		q = v
+	default:
+		q, err = query.Values(params)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if baseParams, err := query.Values(vk); err == nil {
+		urlValuesMerge(q, baseParams)
+	} else {
+		return nil, err
+	}
+
+	u.RawQuery = q.Encode()
 
 	r, err := http.Get(u.String())
 	if err != nil {
@@ -60,7 +107,7 @@ func (vk *VKApi) Request(method string, query url.Values) (easyjson.RawMessage, 
 	}
 	defer r.Body.Close()
 
-	resp := VKApiResponse{}
+	resp := APIResponse{}
 	easyjson.UnmarshalFromReader(r.Body, &resp)
 
 	if resp.Error != nil {

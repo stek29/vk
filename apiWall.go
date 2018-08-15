@@ -1,32 +1,22 @@
 package vkCallbackApi
 
-import (
-	"net/url"
-	"strconv"
-)
-
-type WallDeleteCommentParams struct {
-	OwnerID   int
-	CommentID int
+// APIWall implements VK API namespace `wall`
+type APIWall struct {
+	api *APIBase
 }
 
-func (vk *VKApi) WallDeleteComment(params WallDeleteCommentParams) (bool, error) {
-	method := "wall.deleteComment"
-	query := url.Values{}
+// WallDeleteCommentParams are params for Wall.DeleteComment
+type WallDeleteCommentParams struct {
+	OwnerID   int `url:"owner_id"`
+	CommentID int `url:"commend_id"`
+}
 
-	query.Set("owner_id", strconv.Itoa(params.OwnerID))
-	query.Set("comment_id", strconv.Itoa(params.CommentID))
-
-	r, err := vk.Request(method, query)
+// DeleteComment is wall.deleteComment
+func (v APIWall) DeleteComment(params WallDeleteCommentParams) (bool, error) {
+	r, err := v.api.Request("wall.deleteComment", params)
 	if err != nil {
 		return false, err
 	}
 
-	var resp int
-
-	if resp, err = strconv.Atoi(string(r)); err != nil {
-		return false, err
-	}
-
-	return resp == 1, nil
+	return decodeBoolIntResponse(r)
 }
