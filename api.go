@@ -57,7 +57,7 @@ type APIResponse struct {
 
 // Request performs an API request
 // method is method name
-// params should be a url.Values or url tagged
+// params should be nil, url.Values or an url tagged
 // struct (https://godoc.org/github.com/google/go-querystring/query)
 func (vk *API) Request(method string, params interface{}) (easyjson.RawMessage, error) {
 	u, err := url.Parse(vk.BaseURL + method)
@@ -68,6 +68,8 @@ func (vk *API) Request(method string, params interface{}) (easyjson.RawMessage, 
 	var q url.Values
 
 	switch v := params.(type) {
+	case nil:
+		q = make(url.Values)
 	case url.Values:
 		q = v
 	default:
