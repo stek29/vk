@@ -63,12 +63,14 @@ func urlValuesMerge(base, with url.Values) {
 // ArrayOnMeth is array which is represented as object by VK (see messages.delete)
 type ArrayOnMeth []int
 
+// UnmarshalJSON implements json.Unmarshaler interface
 func (v *ArrayOnMeth) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
 	v.UnmarshalEasyJSON(&r)
 	return r.Error()
 }
 
+// UnmarshalEasyJSON implements easyjson.Unmarshaler interface
 func (v *ArrayOnMeth) UnmarshalEasyJSON(in *jlexer.Lexer) {
 	in.Delim('{')
 	for !in.IsDelim('}') {
@@ -84,11 +86,17 @@ func (v *ArrayOnMeth) UnmarshalEasyJSON(in *jlexer.Lexer) {
 }
 
 // genTODOType is placeholder type for unimplemented types in codegen
-type genTODOType struct{
-	fill bool // easyjson panics with zero division error otherwise
+type genTODOType struct {
+	fill bool // easyjson panics with zero division error on empty structs
 }
 
-func (_ genTODOType) UnmarshalEasyJSON(in *jlexer.Lexer) {
+// UnmarshalJSON implements json.Unmarshaler interface
+func (genTODOType) UnmarshalJSON(data []byte) error {
+	panic(errors.New("Trying to unmarshal genTODOType"))
+}
+
+// UnmarshalEasyJSON implements easyjson.Unmarshaler interface
+func (genTODOType) UnmarshalEasyJSON(in *jlexer.Lexer) {
 	panic(errors.New("Trying to unmarshal genTODOType"))
 }
 
@@ -96,12 +104,14 @@ func (_ genTODOType) UnmarshalEasyJSON(in *jlexer.Lexer) {
 // and unmarshals from VK's favorite 1/0 int bools
 type BoolInt bool
 
-func (v *BoolInt) UnmarshalEasyJSON(in *jlexer.Lexer) {
-	*v = in.Int() != 0
-}
-
+// UnmarshalJSON implements json.Unmarshaler interface
 func (v *BoolInt) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
 	v.UnmarshalEasyJSON(&r)
 	return r.Error()
+}
+
+// UnmarshalEasyJSON implements easyjson.Unmarshaler interface
+func (v *BoolInt) UnmarshalEasyJSON(in *jlexer.Lexer) {
+	*v = in.Int() != 0
 }

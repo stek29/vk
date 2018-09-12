@@ -10,12 +10,14 @@ type CallbackEvent struct {
 	Event   interface{}
 }
 
+// UnmarshalJSON implements json.Unmarshaler interface
 func (v *CallbackEvent) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
 	v.UnmarshalEasyJSON(&r)
 	return r.Error()
 }
 
+// UnmarshalEasyJSON implements easyjson.Unmarshaler interface
 func (v *CallbackEvent) UnmarshalEasyJSON(in *jlexer.Lexer) {
 	in.Delim('{')
 	var vType string

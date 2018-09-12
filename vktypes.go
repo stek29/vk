@@ -8,12 +8,14 @@ type Attachment struct {
 	Val interface{}
 }
 
+// UnmarshalJSON implements json.Unmarshaler interface
 func (v *Attachment) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
 	v.UnmarshalEasyJSON(&r)
 	return r.Error()
 }
 
+// UnmarshalEasyJSON implements easyjson.Unmarshaler interface
 func (v *Attachment) UnmarshalEasyJSON(in *jlexer.Lexer) {
 	in.Delim('{')
 
@@ -574,15 +576,18 @@ type Document struct {
 	Preview   DocumentPreview
 }
 
+//easyjson:json
 type DocumentPreview struct {
 	Photo *DocumentPreviewPhoto
 	Video *DocumentPreviewVideo
 }
 
+//easyjson:json
 type DocumentPreviewPhoto struct {
 	Sizes []PhotoSize
 }
 
+//easyjson:json
 type DocumentPreviewVideo struct {
 	Src      string
 	Width    int
@@ -984,7 +989,7 @@ type Story struct {
 		// Link text
 		Text string
 		// Link URL
-		Url string
+		URL string
 	}
 	// Replies to current story.
 	Replies []struct {
