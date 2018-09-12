@@ -1,4 +1,4 @@
-package vkCallbackApi
+package vk
 
 import (
 	"encoding/json"

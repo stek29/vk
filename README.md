@@ -13,16 +13,16 @@ Uses [easyjson](https://github.com/mailru/easyjson)
 `go generate` is required after installation
 
 ```
-go get -v -u github.com/stek29/vkCallbackApi # would throw errors
-go generate github.com/stek29/vkCallbackApi
-go get github.com/stek29/vkCallbackApi
+go get -v -u github.com/stek29/vk # would throw errors
+go generate github.com/stek29/vk
+go get github.com/stek29/vk
 ```
 
 # Usage
 
 For making API calls:
 ```go
-// import vkcb "github.com/stek29/vkCallbackApi"
+// import vkcb "github.com/stek29/vk"
 
 vk := vkcb.APIWithAccessToken("vk-access-token")
 users, _ := vkcb.APIUsers{vk}.Get(vkcb.UsersGetParams{

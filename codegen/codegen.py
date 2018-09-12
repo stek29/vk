@@ -476,7 +476,7 @@ for namespace, ns_methods in methods.items():
 			f.write(str(s))
 		f.write('\n')
 
-	writeln('package vkCallbackApi\n')
+	writeln('package vk\n')
 
 	writeln('import (')
 	writeln('\t"strconv"')
