@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APINewsfeed implements VK API namespace `newsfeed`
@@ -49,7 +48,7 @@ func (v APINewsfeed) Get(params NewsfeedGetParams) (*NewsfeedGetResponse, error)
 	}
 
 	var resp NewsfeedGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +91,7 @@ func (v APINewsfeed) GetRecommended(params NewsfeedGetRecommendedParams) (*Newsf
 	}
 
 	var resp NewsfeedGetRecommendedResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +134,7 @@ func (v APINewsfeed) GetComments(params NewsfeedGetCommentsParams) (*NewsfeedGet
 	}
 
 	var resp NewsfeedGetCommentsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -172,7 +171,7 @@ func (v APINewsfeed) GetMentions(params NewsfeedGetMentionsParams) (*NewsfeedGet
 	}
 
 	var resp NewsfeedGetMentionsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -225,11 +224,11 @@ func (v APINewsfeed) GetBanned(params NewsfeedGetBannedParams) (NewsfeedGetBanne
 	var resp NewsfeedGetBannedResponse
 	if params.Extended {
 		var tmp NewsfeedGetBannedResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp NewsfeedGetBannedResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -366,11 +365,11 @@ func (v APINewsfeed) Search(params NewsfeedSearchParams) (NewsfeedSearchResponse
 	var resp NewsfeedSearchResponse
 	if params.Extended {
 		var tmp NewsfeedSearchResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp NewsfeedSearchResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -423,11 +422,11 @@ func (v APINewsfeed) GetLists(params NewsfeedGetListsParams) (NewsfeedGetListsRe
 	var resp NewsfeedGetListsResponse
 	if params.Extended {
 		var tmp NewsfeedGetListsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp NewsfeedGetListsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -534,7 +533,7 @@ func (v APINewsfeed) GetSuggestedSources(params NewsfeedGetSuggestedSourcesParam
 	}
 
 	var resp NewsfeedGetSuggestedSourcesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

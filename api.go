@@ -1,20 +1,18 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/url"
 
 	"net/http"
 
 	"github.com/google/go-querystring/query"
-	"github.com/mailru/easyjson"
 )
 
 const (
 	apiBaseURL = "https://api.vk.com/method/"
 )
-
-// TODO: Add Lang
 
 // API is a helper type used for making requests
 type API struct {
@@ -53,14 +51,14 @@ func (e *APIError) Error() string {
 //easyjson:json
 type APIResponse struct {
 	Error    *APIError
-	Response easyjson.RawMessage
+	Response json.RawMessage
 }
 
 // Request performs an API request
 // method is method name
 // params should be nil, url.Values or an url tagged
 // struct (https://godoc.org/github.com/google/go-querystring/query)
-func (vk *API) Request(method string, params interface{}) (easyjson.RawMessage, error) {
+func (vk *API) Request(method string, params interface{}) (json.RawMessage, error) {
 	u, err := url.Parse(vk.BaseURL + method)
 	if err != nil {
 		return nil, err
@@ -95,7 +93,11 @@ func (vk *API) Request(method string, params interface{}) (easyjson.RawMessage, 
 	defer r.Body.Close()
 
 	resp := APIResponse{}
-	easyjson.UnmarshalFromReader(r.Body, &resp)
+
+	dec := json.NewDecoder(r.Body)
+	if err := dec.Decode(&resp); err != nil {
+		return nil, err
+	}
 
 	if resp.Error != nil {
 		return nil, resp.Error

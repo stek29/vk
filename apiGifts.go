@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIGifts implements VK API namespace `gifts`
@@ -35,7 +35,7 @@ func (v APIGifts) Get(params GiftsGetParams) (*GiftsGetResponse, error) {
 	}
 
 	var resp GiftsGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

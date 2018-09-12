@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APISearch implements VK API namespace `search`
@@ -49,7 +49,7 @@ func (v APISearch) GetHints(params SearchGetHintsParams) (*SearchGetHintsRespons
 	}
 
 	var resp SearchGetHintsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

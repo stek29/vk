@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mailru/easyjson"
 	"github.com/mailru/easyjson/jlexer"
 )
 
@@ -19,6 +18,7 @@ type CSVStringSlice []string
 
 // EncodeValues conforms to query.Encoder inteface
 func (csv CSVStringSlice) EncodeValues(key string, v *url.Values) error {
+	// Doesnt handle strings with , in them, but there's no use for that
 	if val := []string(csv); len(val) != 0 {
 		encoded := strings.Join(val, ",")
 		v.Set(key, encoded)
@@ -45,9 +45,9 @@ func (csv CSVIntSlice) EncodeValues(key string, v *url.Values) error {
 	return strCSV.EncodeValues(key, v)
 }
 
-func decodeBoolIntResponse(r easyjson.RawMessage) (bool, error) {
+func decodeBoolIntResponse(r []byte) (bool, error) {
 	resp, err := strconv.Atoi(string(r))
-	return resp == 1, err
+	return resp != 0, err
 }
 
 func urlValuesMerge(base, with url.Values) {

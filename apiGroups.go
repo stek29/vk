@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIGroups implements VK API namespace `groups`
@@ -58,7 +57,7 @@ func (v APIGroups) IsMember(params GroupsIsMemberParams) (GroupsIsMemberResponse
 	var resp GroupsIsMemberResponse
 	if params.Extended {
 		var tmp GroupsIsMemberResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp GroupsIsMemberResponseNormal
@@ -97,7 +96,7 @@ func (v APIGroups) GetByID(params GroupsGetByIDParams) (GroupsGetByIDResponse, e
 	}
 
 	var resp GroupsGetByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -157,11 +156,11 @@ func (v APIGroups) Get(params GroupsGetParams) (GroupsGetResponse, error) {
 	var resp GroupsGetResponse
 	if params.Extended {
 		var tmp GroupsGetResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp GroupsGetResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -203,7 +202,7 @@ func (v APIGroups) GetMembers(params GroupsGetMembersParams) (*GroupsGetMembersR
 	}
 
 	var resp GroupsGetMembersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -282,7 +281,7 @@ func (v APIGroups) Search(params GroupsSearchParams) (*GroupsSearchResponse, err
 	}
 
 	var resp GroupsSearchResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +312,7 @@ func (v APIGroups) GetCatalog(params GroupsGetCatalogParams) (*GroupsGetCatalogR
 	}
 
 	var resp GroupsGetCatalogResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -370,11 +369,11 @@ func (v APIGroups) GetCatalogInfo(params GroupsGetCatalogInfoParams) (GroupsGetC
 	var resp GroupsGetCatalogInfoResponse
 	if params.Extended {
 		var tmp GroupsGetCatalogInfoResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp GroupsGetCatalogInfoResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -430,11 +429,11 @@ func (v APIGroups) GetInvites(params GroupsGetInvitesParams) (GroupsGetInvitesRe
 	var resp GroupsGetInvitesResponse
 	if params.Extended {
 		var tmp GroupsGetInvitesResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp GroupsGetInvitesResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -473,7 +472,7 @@ func (v APIGroups) GetInvitedUsers(params GroupsGetInvitedUsersParams) (*GroupsG
 	}
 
 	var resp GroupsGetInvitedUsersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -571,7 +570,7 @@ func (v APIGroups) GetBanned(params GroupsGetBannedParams) (*GroupsGetBannedResp
 	}
 
 	var resp GroupsGetBannedResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -604,7 +603,7 @@ func (v APIGroups) Create(params GroupsCreateParams) (*GroupsCreateResponse, err
 	}
 
 	var resp GroupsCreateResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -737,7 +736,7 @@ func (v APIGroups) EditPlace(params GroupsEditPlaceParams) (*GroupsEditPlaceResp
 	}
 
 	var resp GroupsEditPlaceResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -804,7 +803,7 @@ func (v APIGroups) GetSettings(params GroupsGetSettingsParams) (*GroupsGetSettin
 	}
 
 	var resp GroupsGetSettingsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -840,7 +839,7 @@ func (v APIGroups) GetRequests(params GroupsGetRequestsParams) (*GroupsGetReques
 	}
 
 	var resp GroupsGetRequestsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1028,7 +1027,7 @@ func (v APIGroups) GetCallbackConfirmationCode(params GroupsGetCallbackConfirmat
 	}
 
 	var resp GroupsGetCallbackConfirmationCodeResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1100,7 +1099,7 @@ func (v APIGroups) GetCallbackSettings(params GroupsGetCallbackSettingsParams) (
 	}
 
 	var resp GroupsGetCallbackSettingsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1220,7 +1219,7 @@ func (v APIGroups) GetLongPollServer(params GroupsGetLongPollServerParams) (*Gro
 	}
 
 	var resp GroupsGetLongPollServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1292,7 +1291,7 @@ func (v APIGroups) GetLongPollSettings(params GroupsGetLongPollSettingsParams) (
 	}
 
 	var resp GroupsGetLongPollSettingsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

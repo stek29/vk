@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIUsers implements VK API namespace `users`
@@ -31,7 +31,7 @@ func (v APIUsers) Get(params UsersGetParams) (UsersGetResponse, error) {
 	}
 
 	var resp UsersGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func (v APIUsers) Search(params UsersSearchParams) (*UsersSearchResponse, error)
 	}
 
 	var resp UsersSearchResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -202,11 +202,11 @@ func (v APIUsers) GetSubscriptions(params UsersGetSubscriptionsParams) (UsersGet
 	var resp UsersGetSubscriptionsResponse
 	if params.Extended {
 		var tmp UsersGetSubscriptionsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp UsersGetSubscriptionsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -246,7 +246,7 @@ func (v APIUsers) GetFollowers(params UsersGetFollowersParams) (*UsersGetFollowe
 	}
 
 	var resp UsersGetFollowersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -307,7 +307,7 @@ func (v APIUsers) GetNearby(params UsersGetNearbyParams) (*UsersGetNearbyRespons
 	}
 
 	var resp UsersGetNearbyResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

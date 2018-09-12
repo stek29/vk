@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIPhotos implements VK API namespace `photos`
@@ -36,7 +35,7 @@ func (v APIPhotos) CreateAlbum(params PhotosCreateAlbumParams) (*PhotosCreateAlb
 	}
 
 	var resp PhotosCreateAlbumResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +102,7 @@ func (v APIPhotos) GetAlbums(params PhotosGetAlbumsParams) (*PhotosGetAlbumsResp
 	}
 
 	var resp PhotosGetAlbumsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -168,11 +167,11 @@ func (v APIPhotos) Get(params PhotosGetParams) (PhotosGetResponse, error) {
 	var resp PhotosGetResponse
 	if params.Extended {
 		var tmp PhotosGetResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp PhotosGetResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -250,11 +249,11 @@ func (v APIPhotos) GetByID(params PhotosGetByIDParams) (PhotosGetByIDResponse, e
 	var resp PhotosGetByIDResponse
 	if params.Extended {
 		var tmp PhotosGetByIDResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp PhotosGetByIDResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -290,7 +289,7 @@ func (v APIPhotos) GetUploadServer(params PhotosGetUploadServerParams) (*PhotosG
 	}
 
 	var resp PhotosGetUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -326,7 +325,7 @@ func (v APIPhotos) GetOwnerCoverPhotoUploadServer(params PhotosGetOwnerCoverPhot
 	}
 
 	var resp PhotosGetOwnerCoverPhotoUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -354,7 +353,7 @@ func (v APIPhotos) GetOwnerPhotoUploadServer(params PhotosGetOwnerPhotoUploadSer
 	}
 
 	var resp PhotosGetOwnerPhotoUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -388,7 +387,7 @@ func (v APIPhotos) GetChatUploadServer(params PhotosGetChatUploadServerParams) (
 	}
 
 	var resp PhotosGetChatUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -424,7 +423,7 @@ func (v APIPhotos) GetMarketUploadServer(params PhotosGetMarketUploadServerParam
 	}
 
 	var resp PhotosGetMarketUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -452,7 +451,7 @@ func (v APIPhotos) GetMarketAlbumUploadServer(params PhotosGetMarketAlbumUploadS
 	}
 
 	var resp PhotosGetMarketAlbumUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -487,7 +486,7 @@ func (v APIPhotos) SaveMarketPhoto(params PhotosSaveMarketPhotoParams) (PhotosSa
 	}
 
 	var resp PhotosSaveMarketPhotoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -514,7 +513,7 @@ func (v APIPhotos) SaveOwnerCoverPhoto(params PhotosSaveOwnerCoverPhotoParams) (
 	}
 
 	var resp PhotosSaveOwnerCoverPhotoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -545,7 +544,7 @@ func (v APIPhotos) SaveMarketAlbumPhoto(params PhotosSaveMarketAlbumPhotoParams)
 	}
 
 	var resp PhotosSaveMarketAlbumPhotoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -579,7 +578,7 @@ func (v APIPhotos) SaveOwnerPhoto(params PhotosSaveOwnerPhotoParams) (*PhotosSav
 	}
 
 	var resp PhotosSaveOwnerPhotoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -616,7 +615,7 @@ func (v APIPhotos) SaveWallPhoto(params PhotosSaveWallPhotoParams) (PhotosSaveWa
 	}
 
 	var resp PhotosSaveWallPhotoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -648,7 +647,7 @@ func (v APIPhotos) GetWallUploadServer(params PhotosGetWallUploadServerParams) (
 	}
 
 	var resp PhotosGetWallUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -680,7 +679,7 @@ func (v APIPhotos) GetMessagesUploadServer(params PhotosGetMessagesUploadServerP
 	}
 
 	var resp PhotosGetMessagesUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -707,7 +706,7 @@ func (v APIPhotos) SaveMessagesPhoto(params PhotosSaveMessagesPhotoParams) (Phot
 	}
 
 	var resp PhotosSaveMessagesPhotoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -792,7 +791,7 @@ func (v APIPhotos) Search(params PhotosSearchParams) (*PhotosSearchResponse, err
 	}
 
 	var resp PhotosSearchResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -831,7 +830,7 @@ func (v APIPhotos) Save(params PhotosSaveParams) (PhotosSaveResponse, error) {
 	}
 
 	var resp PhotosSaveResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1040,11 +1039,11 @@ func (v APIPhotos) GetAll(params PhotosGetAllParams) (PhotosGetAllResponse, erro
 	var resp PhotosGetAllResponse
 	if params.Extended {
 		var tmp PhotosGetAllResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp PhotosGetAllResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -1083,7 +1082,7 @@ func (v APIPhotos) GetUserPhotos(params PhotosGetUserPhotosParams) (*PhotosGetUs
 	}
 
 	var resp PhotosGetUserPhotosResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1226,11 +1225,11 @@ func (v APIPhotos) GetComments(params PhotosGetCommentsParams) (PhotosGetComment
 	var resp PhotosGetCommentsResponse
 	if params.Extended {
 		var tmp PhotosGetCommentsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp PhotosGetCommentsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -1269,7 +1268,7 @@ func (v APIPhotos) GetAllComments(params PhotosGetAllCommentsParams) (*PhotosGet
 	}
 
 	var resp PhotosGetAllCommentsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1396,7 +1395,7 @@ func (v APIPhotos) GetTags(params PhotosGetTagsParams) (PhotosGetTagsResponse, e
 	}
 
 	var resp PhotosGetTagsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1488,7 +1487,7 @@ func (v APIPhotos) GetNewTags(params PhotosGetNewTagsParams) (*PhotosGetNewTagsR
 	}
 
 	var resp PhotosGetNewTagsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

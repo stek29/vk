@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIStorage implements VK API namespace `storage`
@@ -75,7 +75,7 @@ func (v APIStorage) GetKeys(params StorageGetKeysParams) (StorageGetKeysResponse
 	}
 
 	var resp StorageGetKeysResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

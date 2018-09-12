@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIMarket implements VK API namespace `market`
@@ -59,11 +58,11 @@ func (v APIMarket) Get(params MarketGetParams) (MarketGetResponse, error) {
 	var resp MarketGetResponse
 	if params.Extended {
 		var tmp MarketGetResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp MarketGetResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -116,11 +115,11 @@ func (v APIMarket) GetByID(params MarketGetByIDParams) (MarketGetByIDResponse, e
 	var resp MarketGetByIDResponse
 	if params.Extended {
 		var tmp MarketGetByIDResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp MarketGetByIDResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -187,11 +186,11 @@ func (v APIMarket) Search(params MarketSearchParams) (MarketSearchResponse, erro
 	var resp MarketSearchResponse
 	if params.Extended {
 		var tmp MarketSearchResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp MarketSearchResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -226,7 +225,7 @@ func (v APIMarket) GetAlbums(params MarketGetAlbumsParams) (*MarketGetAlbumsResp
 	}
 
 	var resp MarketGetAlbumsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +256,7 @@ func (v APIMarket) GetAlbumByID(params MarketGetAlbumByIDParams) (*MarketGetAlbu
 	}
 
 	var resp MarketGetAlbumByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -343,7 +342,7 @@ func (v APIMarket) GetComments(params MarketGetCommentsParams) (*MarketGetCommen
 	}
 
 	var resp MarketGetCommentsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -452,7 +451,7 @@ func (v APIMarket) GetCategories(params MarketGetCategoriesParams) (*MarketGetCa
 	}
 
 	var resp MarketGetCategoriesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -514,7 +513,7 @@ func (v APIMarket) Add(params MarketAddParams) (*MarketAddResponse, error) {
 	}
 
 	var resp MarketAddResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -662,7 +661,7 @@ func (v APIMarket) AddAlbum(params MarketAddAlbumParams) (*MarketAddAlbumRespons
 	}
 
 	var resp MarketAddAlbumResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

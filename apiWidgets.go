@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIWidgets implements VK API namespace `widgets`
@@ -35,7 +35,7 @@ func (v APIWidgets) GetComments(params WidgetsGetCommentsParams) (*WidgetsGetCom
 	}
 
 	var resp WidgetsGetCommentsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (v APIWidgets) GetPages(params WidgetsGetPagesParams) (*WidgetsGetPagesResp
 	}
 
 	var resp WidgetsGetPagesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIWall implements VK API namespace `wall`
@@ -64,11 +64,11 @@ func (v APIWall) Get(params WallGetParams) (WallGetResponse, error) {
 	var resp WallGetResponse
 	if params.Extended {
 		var tmp WallGetResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp WallGetResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -134,11 +134,11 @@ func (v APIWall) Search(params WallSearchParams) (WallSearchResponse, error) {
 	var resp WallSearchResponse
 	if params.Extended {
 		var tmp WallSearchResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp WallSearchResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -190,11 +190,11 @@ func (v APIWall) GetByID(params WallGetByIDParams) (WallGetByIDResponse, error) 
 	var resp WallGetByIDResponse
 	if params.Extended {
 		var tmp WallGetByIDResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp WallGetByIDResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -248,7 +248,7 @@ func (v APIWall) Post(params WallPostParams) (*WallPostResponse, error) {
 	}
 
 	var resp WallPostResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -334,7 +334,7 @@ func (v APIWall) PostAdsStealth(params WallPostAdsStealthParams) (*WallPostAdsSt
 	}
 
 	var resp WallPostAdsStealthResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -372,7 +372,7 @@ func (v APIWall) Repost(params WallRepostParams) (*WallRepostResponse, error) {
 	}
 
 	var resp WallRepostResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +407,7 @@ func (v APIWall) GetReposts(params WallGetRepostsParams) (*WallGetRepostsRespons
 	}
 
 	var resp WallGetRepostsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -617,11 +617,11 @@ func (v APIWall) GetComments(params WallGetCommentsParams) (WallGetCommentsRespo
 	var resp WallGetCommentsResponse
 	if params.Extended {
 		var tmp WallGetCommentsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp WallGetCommentsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -665,7 +665,7 @@ func (v APIWall) CreateComment(params WallCreateCommentParams) (*WallCreateComme
 	}
 
 	var resp WallCreateCommentResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

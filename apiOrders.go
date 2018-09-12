@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIOrders implements VK API namespace `orders`
@@ -50,7 +50,7 @@ func (v APIOrders) Get(params OrdersGetParams) (OrdersGetResponse, error) {
 	}
 
 	var resp OrdersGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func (v APIOrders) GetByID(params OrdersGetByIDParams) (OrdersGetByIDResponse, e
 	}
 
 	var resp OrdersGetByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +169,7 @@ func (v APIOrders) GetAmount(params OrdersGetAmountParams) (*OrdersGetAmountResp
 	}
 
 	var resp OrdersGetAmountResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

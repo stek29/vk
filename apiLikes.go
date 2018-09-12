@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APILikes implements VK API namespace `likes`
@@ -69,11 +69,11 @@ func (v APILikes) GetList(params LikesGetListParams) (LikesGetListResponse, erro
 	var resp LikesGetListResponse
 	if params.Extended {
 		var tmp LikesGetListResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp LikesGetListResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -109,7 +109,7 @@ func (v APILikes) Add(params LikesAddParams) (*LikesAddResponse, error) {
 	}
 
 	var resp LikesAddResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +141,7 @@ func (v APILikes) Delete(params LikesDeleteParams) (*LikesDeleteResponse, error)
 	}
 
 	var resp LikesDeleteResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +177,7 @@ func (v APILikes) IsLiked(params LikesIsLikedParams) (*LikesIsLikedResponse, err
 	}
 
 	var resp LikesIsLikedResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

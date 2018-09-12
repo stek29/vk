@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIPages implements VK API namespace `pages`
@@ -40,7 +39,7 @@ func (v APIPages) Get(params PagesGetParams) (*PagesGetResponse, error) {
 	}
 
 	var resp PagesGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -154,7 +153,7 @@ func (v APIPages) GetHistory(params PagesGetHistoryParams) (PagesGetHistoryRespo
 	}
 
 	var resp PagesGetHistoryResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +178,7 @@ func (v APIPages) GetTitles(params PagesGetTitlesParams) (PagesGetTitlesResponse
 	}
 
 	var resp PagesGetTitlesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -210,7 +209,7 @@ func (v APIPages) GetVersion(params PagesGetVersionParams) (*PagesGetVersionResp
 	}
 
 	var resp PagesGetVersionResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

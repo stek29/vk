@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIFriends implements VK API namespace `friends`
@@ -46,7 +45,7 @@ func (v APIFriends) Get(params FriendsGetParams) (*FriendsGetResponse, error) {
 	}
 
 	var resp FriendsGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +81,7 @@ func (v APIFriends) GetOnline(params FriendsGetOnlineParams) (FriendsGetOnlineRe
 	}
 
 	var resp FriendsGetOnlineResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +117,7 @@ func (v APIFriends) GetMutual(params FriendsGetMutualParams) (FriendsGetMutualRe
 	}
 
 	var resp FriendsGetMutualResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +143,7 @@ func (v APIFriends) GetRecent(params FriendsGetRecentParams) (FriendsGetRecentRe
 	}
 
 	var resp FriendsGetRecentResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -208,11 +207,11 @@ func (v APIFriends) GetRequests(params FriendsGetRequestsParams) (FriendsGetRequ
 	var resp FriendsGetRequestsResponse
 	if params.Extended {
 		var tmp FriendsGetRequestsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp FriendsGetRequestsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -300,7 +299,7 @@ func (v APIFriends) Delete(params FriendsDeleteParams) (*FriendsDeleteResponse, 
 	}
 
 	var resp FriendsDeleteResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -336,7 +335,7 @@ func (v APIFriends) GetLists(params FriendsGetListsParams) (*FriendsGetListsResp
 	}
 
 	var resp FriendsGetListsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -366,7 +365,7 @@ func (v APIFriends) AddList(params FriendsAddListParams) (*FriendsAddListRespons
 	}
 
 	var resp FriendsAddListResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -426,7 +425,7 @@ func (v APIFriends) GetAppUsers() (FriendsGetAppUsersResponse, error) {
 	}
 
 	var resp FriendsGetAppUsersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -453,7 +452,7 @@ func (v APIFriends) GetByPhones(params FriendsGetByPhonesParams) (FriendsGetByPh
 	}
 
 	var resp FriendsGetByPhonesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -500,7 +499,7 @@ func (v APIFriends) GetSuggestions(params FriendsGetSuggestionsParams) (*Friends
 	}
 
 	var resp FriendsGetSuggestionsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -538,7 +537,7 @@ func (v APIFriends) AreFriends(params FriendsAreFriendsParams) (FriendsAreFriend
 	}
 
 	var resp FriendsAreFriendsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -570,7 +569,7 @@ func (v APIFriends) GetAvailableForCall(params FriendsGetAvailableForCallParams)
 	}
 
 	var resp FriendsGetAvailableForCallResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -609,7 +608,7 @@ func (v APIFriends) Search(params FriendsSearchParams) (*FriendsSearchResponse, 
 	}
 
 	var resp FriendsSearchResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

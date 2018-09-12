@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APILeads implements VK API namespace `leads`
@@ -41,7 +41,7 @@ func (v APILeads) Complete(params LeadsCompleteParams) (*LeadsCompleteResponse, 
 	}
 
 	var resp LeadsCompleteResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +73,7 @@ func (v APILeads) Start(params LeadsStartParams) (*LeadsStartResponse, error) {
 	}
 
 	var resp LeadsStartResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func (v APILeads) GetStats(params LeadsGetStatsParams) (*LeadsGetStatsResponse, 
 	}
 
 	var resp LeadsGetStatsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +179,7 @@ func (v APILeads) GetUsers(params LeadsGetUsersParams) (LeadsGetUsersResponse, e
 	}
 
 	var resp LeadsGetUsersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -219,7 +219,7 @@ func (v APILeads) CheckUser(params LeadsCheckUserParams) (*LeadsCheckUserRespons
 	}
 
 	var resp LeadsCheckUserResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ func (v APILeads) MetricHit(params LeadsMetricHitParams) (*LeadsMetricHitRespons
 	}
 
 	var resp LeadsMetricHitResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

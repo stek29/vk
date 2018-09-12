@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIBoard implements VK API namespace `board`
@@ -76,11 +75,11 @@ func (v APIBoard) GetTopics(params BoardGetTopicsParams) (BoardGetTopicsResponse
 	var resp BoardGetTopicsResponse
 	if params.Extended {
 		var tmp BoardGetTopicsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp BoardGetTopicsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -148,11 +147,11 @@ func (v APIBoard) GetComments(params BoardGetCommentsParams) (BoardGetCommentsRe
 	var resp BoardGetCommentsResponse
 	if params.Extended {
 		var tmp BoardGetCommentsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp BoardGetCommentsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {

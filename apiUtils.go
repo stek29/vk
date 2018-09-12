@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIUtils implements VK API namespace `utils`
@@ -34,7 +33,7 @@ func (v APIUtils) CheckLink(params UtilsCheckLinkParams) (*UtilsCheckLinkRespons
 	}
 
 	var resp UtilsCheckLinkResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +93,7 @@ func (v APIUtils) GetLastShortenedLinks(params UtilsGetLastShortenedLinksParams)
 	}
 
 	var resp UtilsGetLastShortenedLinksResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -181,11 +180,11 @@ func (v APIUtils) GetLinkStats(params UtilsGetLinkStatsParams) (UtilsGetLinkStat
 	var resp UtilsGetLinkStatsResponse
 	if params.Extended {
 		var tmp UtilsGetLinkStatsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp UtilsGetLinkStatsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -223,7 +222,7 @@ func (v APIUtils) GetShortLink(params UtilsGetShortLinkParams) (*UtilsGetShortLi
 	}
 
 	var resp UtilsGetShortLinkResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -253,7 +252,7 @@ func (v APIUtils) ResolveScreenName(params UtilsResolveScreenNameParams) (*Utils
 	}
 
 	var resp UtilsResolveScreenNameResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

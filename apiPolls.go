@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIPolls implements VK API namespace `polls`
@@ -31,7 +31,7 @@ func (v APIPolls) GetByID(params PollsGetByIDParams) (*PollsGetByIDResponse, err
 	}
 
 	var resp PollsGetByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func (v APIPolls) GetVoters(params PollsGetVotersParams) (PollsGetVotersResponse
 	}
 
 	var resp PollsGetVotersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +153,7 @@ func (v APIPolls) Create(params PollsCreateParams) (*PollsCreateResponse, error)
 	}
 
 	var resp PollsCreateResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

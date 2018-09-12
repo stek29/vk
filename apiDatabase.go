@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIDatabase implements VK API namespace `database`
@@ -37,7 +37,7 @@ func (v APIDatabase) GetCountries(params DatabaseGetCountriesParams) (*DatabaseG
 	}
 
 	var resp DatabaseGetCountriesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (v APIDatabase) GetRegions(params DatabaseGetRegionsParams) (*DatabaseGetRe
 	}
 
 	var resp DatabaseGetRegionsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func (v APIDatabase) GetStreetsByID(params DatabaseGetStreetsByIDParams) (Databa
 	}
 
 	var resp DatabaseGetStreetsByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +122,7 @@ func (v APIDatabase) GetCountriesByID(params DatabaseGetCountriesByIDParams) (Da
 	}
 
 	var resp DatabaseGetCountriesByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (v APIDatabase) GetCities(params DatabaseGetCitiesParams) (*DatabaseGetCiti
 	}
 
 	var resp DatabaseGetCitiesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +191,7 @@ func (v APIDatabase) GetCitiesByID(params DatabaseGetCitiesByIDParams) (Database
 	}
 
 	var resp DatabaseGetCitiesByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -228,7 +228,7 @@ func (v APIDatabase) GetUniversities(params DatabaseGetUniversitiesParams) (*Dat
 	}
 
 	var resp DatabaseGetUniversitiesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -263,7 +263,7 @@ func (v APIDatabase) GetSchools(params DatabaseGetSchoolsParams) (*DatabaseGetSc
 	}
 
 	var resp DatabaseGetSchoolsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -289,7 +289,7 @@ func (v APIDatabase) GetSchoolClasses(params DatabaseGetSchoolClassesParams) (Da
 	}
 
 	var resp DatabaseGetSchoolClassesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -322,7 +322,7 @@ func (v APIDatabase) GetFaculties(params DatabaseGetFacultiesParams) (*DatabaseG
 	}
 
 	var resp DatabaseGetFacultiesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -355,7 +355,7 @@ func (v APIDatabase) GetChairs(params DatabaseGetChairsParams) (*DatabaseGetChai
 	}
 
 	var resp DatabaseGetChairsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

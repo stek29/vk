@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIAccount implements VK API namespace `account`
@@ -50,7 +49,7 @@ func (v APIAccount) GetCounters(params AccountGetCountersParams) (*AccountGetCou
 	}
 
 	var resp AccountGetCountersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +140,7 @@ func (v APIAccount) LookupContacts(params AccountLookupContactsParams) (*Account
 	}
 
 	var resp AccountLookupContactsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -289,7 +288,7 @@ func (v APIAccount) GetPushSettings(params AccountGetPushSettingsParams) (*Accou
 	}
 
 	var resp AccountGetPushSettingsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -388,7 +387,7 @@ func (v APIAccount) GetActiveOffers(params AccountGetActiveOffersParams) (*Accou
 	}
 
 	var resp AccountGetActiveOffersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -451,7 +450,7 @@ func (v APIAccount) GetBanned(params AccountGetBannedParams) (*AccountGetBannedR
 	}
 
 	var resp AccountGetBannedResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -491,7 +490,7 @@ func (v APIAccount) GetInfo(params AccountGetInfoParams) (*AccountGetInfoRespons
 	}
 
 	var resp AccountGetInfoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -545,7 +544,7 @@ func (v APIAccount) ChangePassword(params AccountChangePasswordParams) (*Account
 	}
 
 	var resp AccountChangePasswordResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -603,7 +602,7 @@ func (v APIAccount) GetProfileInfo() (*AccountGetProfileInfoResponse, error) {
 	}
 
 	var resp AccountGetProfileInfoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -667,7 +666,7 @@ func (v APIAccount) SaveProfileInfo(params AccountSaveProfileInfoParams) (*Accou
 	}
 
 	var resp AccountSaveProfileInfoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

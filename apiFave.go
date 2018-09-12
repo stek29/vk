@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIFave implements VK API namespace `fave`
@@ -33,7 +33,7 @@ func (v APIFave) GetUsers(params FaveGetUsersParams) (*FaveGetUsersResponse, err
 	}
 
 	var resp FaveGetUsersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (v APIFave) GetPhotos(params FaveGetPhotosParams) (*FaveGetPhotosResponse, 
 	}
 
 	var resp FaveGetPhotosResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func (v APIFave) GetPosts(params FaveGetPostsParams) (*FaveGetPostsResponse, err
 	}
 
 	var resp FaveGetPostsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +132,7 @@ func (v APIFave) GetVideos(params FaveGetVideosParams) (*FaveGetVideosResponse, 
 	}
 
 	var resp FaveGetVideosResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +163,7 @@ func (v APIFave) GetLinks(params FaveGetLinksParams) (*FaveGetLinksResponse, err
 	}
 
 	var resp FaveGetLinksResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -194,7 +194,7 @@ func (v APIFave) GetMarketItems(params FaveGetMarketItemsParams) (*FaveGetMarket
 	}
 
 	var resp FaveGetMarketItemsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

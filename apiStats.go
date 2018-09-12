@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIStats implements VK API namespace `stats`
@@ -32,7 +32,7 @@ func (v APIStats) Get(params StatsGetParams) (StatsGetResponse, error) {
 	}
 
 	var resp StatsGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (v APIStats) GetPostReach(params StatsGetPostReachParams) (StatsGetPostReac
 	}
 
 	var resp StatsGetPostReachResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

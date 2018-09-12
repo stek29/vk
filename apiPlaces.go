@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIPlaces implements VK API namespace `places`
@@ -42,7 +42,7 @@ func (v APIPlaces) Add(params PlacesAddParams) (*PlacesAddResponse, error) {
 	}
 
 	var resp PlacesAddResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (v APIPlaces) GetByID(params PlacesGetByIDParams) (PlacesGetByIDResponse, e
 	}
 
 	var resp PlacesGetByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +108,7 @@ func (v APIPlaces) Search(params PlacesSearchParams) (*PlacesSearchResponse, err
 	}
 
 	var resp PlacesSearchResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -146,7 +146,7 @@ func (v APIPlaces) Checkin(params PlacesCheckinParams) (*PlacesCheckinResponse, 
 	}
 
 	var resp PlacesCheckinResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -217,7 +217,7 @@ func (v APIPlaces) GetCheckins(params PlacesGetCheckinsParams) (*PlacesGetChecki
 	}
 
 	var resp PlacesGetCheckinsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func (v APIPlaces) GetTypes() (PlacesGetTypesResponse, error) {
 	}
 
 	var resp PlacesGetTypesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APISecure implements VK API namespace `secure`
@@ -57,7 +56,7 @@ func (v APISecure) GetTransactionsHistory() (SecureGetTransactionsHistoryRespons
 	}
 
 	var resp SecureGetTransactionsHistoryResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +97,7 @@ func (v APISecure) GetSMSHistory(params SecureGetSMSHistoryParams) (SecureGetSMS
 	}
 
 	var resp SecureGetSMSHistoryResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -144,7 +143,7 @@ func (v APISecure) SendNotification(params SecureSendNotificationParams) (Secure
 	}
 
 	var resp SecureSendNotificationResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -209,7 +208,7 @@ func (v APISecure) GetUserLevel(params SecureGetUserLevelParams) (SecureGetUserL
 	}
 
 	var resp SecureGetUserLevelResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -265,7 +264,7 @@ func (v APISecure) CheckToken(params SecureCheckTokenParams) (*SecureCheckTokenR
 	}
 
 	var resp SecureCheckTokenResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

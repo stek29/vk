@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APINotifications implements VK API namespace `notifications`
@@ -42,7 +42,7 @@ func (v APINotifications) Get(params NotificationsGetParams) (*NotificationsGetR
 	}
 
 	var resp NotificationsGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

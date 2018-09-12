@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIStories implements VK API namespace `stories`
@@ -89,11 +89,11 @@ func (v APIStories) Get(params StoriesGetParams) (StoriesGetResponse, error) {
 	var resp StoriesGetResponse
 	if params.Extended {
 		var tmp StoriesGetResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp StoriesGetResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -150,11 +150,11 @@ func (v APIStories) GetBanned(params StoriesGetBannedParams) (StoriesGetBannedRe
 	var resp StoriesGetBannedResponse
 	if params.Extended {
 		var tmp StoriesGetBannedResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp StoriesGetBannedResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -211,11 +211,11 @@ func (v APIStories) GetByID(params StoriesGetByIDParams) (StoriesGetByIDResponse
 	var resp StoriesGetByIDResponse
 	if params.Extended {
 		var tmp StoriesGetByIDResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp StoriesGetByIDResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -257,7 +257,7 @@ func (v APIStories) GetPhotoUploadServer(params StoriesGetPhotoUploadServerParam
 	}
 
 	var resp StoriesGetPhotoUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -316,11 +316,11 @@ func (v APIStories) GetReplies(params StoriesGetRepliesParams) (StoriesGetReplie
 	var resp StoriesGetRepliesResponse
 	if params.Extended {
 		var tmp StoriesGetRepliesResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp StoriesGetRepliesResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -392,7 +392,7 @@ func (v APIStories) GetStats(params StoriesGetStatsParams) (*StoriesGetStatsResp
 	}
 
 	var resp StoriesGetStatsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -432,7 +432,7 @@ func (v APIStories) GetVideoUploadServer(params StoriesGetVideoUploadServerParam
 	}
 
 	var resp StoriesGetVideoUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -489,11 +489,11 @@ func (v APIStories) GetViewers(params StoriesGetViewersParams) (StoriesGetViewer
 	var resp StoriesGetViewersResponse
 	if params.Extended {
 		var tmp StoriesGetViewersResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp StoriesGetViewersResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {

@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIVideo implements VK API namespace `video`
@@ -65,11 +64,11 @@ func (v APIVideo) Get(params VideoGetParams) (VideoGetResponse, error) {
 	var resp VideoGetResponse
 	if params.Extended {
 		var tmp VideoGetResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp VideoGetResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -174,7 +173,7 @@ func (v APIVideo) Save(params VideoSaveParams) (*VideoSaveResponse, error) {
 	}
 
 	var resp VideoSaveResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -280,11 +279,11 @@ func (v APIVideo) Search(params VideoSearchParams) (VideoSearchResponse, error) 
 	var resp VideoSearchResponse
 	if params.Extended {
 		var tmp VideoSearchResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp VideoSearchResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -343,11 +342,11 @@ func (v APIVideo) GetUserVideos(params VideoGetUserVideosParams) (VideoGetUserVi
 	var resp VideoGetUserVideosResponse
 	if params.Extended {
 		var tmp VideoGetUserVideosResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp VideoGetUserVideosResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -404,11 +403,11 @@ func (v APIVideo) GetAlbums(params VideoGetAlbumsParams) (VideoGetAlbumsResponse
 	var resp VideoGetAlbumsResponse
 	if params.Extended {
 		var tmp VideoGetAlbumsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp VideoGetAlbumsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -436,7 +435,7 @@ func (v APIVideo) GetAlbumByID(params VideoGetAlbumByIDParams) (*VideoGetAlbumBy
 	}
 
 	var resp VideoGetAlbumByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -468,7 +467,7 @@ func (v APIVideo) AddAlbum(params VideoAddAlbumParams) (*VideoAddAlbumResponse, 
 	}
 
 	var resp VideoAddAlbumResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -647,11 +646,11 @@ func (v APIVideo) GetAlbumsByVideo(params VideoGetAlbumsByVideoParams) (VideoGet
 	var resp VideoGetAlbumsByVideoResponse
 	if params.Extended {
 		var tmp VideoGetAlbumsByVideoResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp VideoGetAlbumsByVideoResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -716,11 +715,11 @@ func (v APIVideo) GetComments(params VideoGetCommentsParams) (VideoGetCommentsRe
 	var resp VideoGetCommentsResponse
 	if params.Extended {
 		var tmp VideoGetCommentsResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp VideoGetCommentsResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -847,7 +846,7 @@ func (v APIVideo) GetTags(params VideoGetTagsParams) (VideoGetTagsResponse, erro
 	}
 
 	var resp VideoGetTagsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -933,7 +932,7 @@ func (v APIVideo) GetNewTags(params VideoGetNewTagsParams) (*VideoGetNewTagsResp
 	}
 
 	var resp VideoGetNewTagsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -1036,11 +1035,11 @@ func (v APIVideo) GetCatalog(params VideoGetCatalogParams) (VideoGetCatalogRespo
 	var resp VideoGetCatalogResponse
 	if params.Extended {
 		var tmp VideoGetCatalogResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp VideoGetCatalogResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -1099,11 +1098,11 @@ func (v APIVideo) GetCatalogSection(params VideoGetCatalogSectionParams) (VideoG
 	var resp VideoGetCatalogSectionResponse
 	if params.Extended {
 		var tmp VideoGetCatalogSectionResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp VideoGetCatalogSectionResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {

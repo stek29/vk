@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIDocs implements VK API namespace `docs`
@@ -35,7 +35,7 @@ func (v APIDocs) Get(params DocsGetParams) (*DocsGetResponse, error) {
 	}
 
 	var resp DocsGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (v APIDocs) GetByID(params DocsGetByIDParams) (DocsGetByIDResponse, error) 
 	}
 
 	var resp DocsGetByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +88,7 @@ func (v APIDocs) GetUploadServer(params DocsGetUploadServerParams) (*DocsGetUplo
 	}
 
 	var resp DocsGetUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,7 @@ func (v APIDocs) GetWallUploadServer(params DocsGetWallUploadServerParams) (*Doc
 	}
 
 	var resp DocsGetWallUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -146,7 +146,7 @@ func (v APIDocs) GetMessagesUploadServer(params DocsGetMessagesUploadServerParam
 	}
 
 	var resp DocsGetMessagesUploadServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +175,7 @@ func (v APIDocs) Save(params DocsSaveParams) (DocsSaveResponse, error) {
 	}
 
 	var resp DocsSaveResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -225,7 +225,7 @@ func (v APIDocs) Add(params DocsAddParams) (*DocsAddResponse, error) {
 	}
 
 	var resp DocsAddResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -261,7 +261,7 @@ func (v APIDocs) GetTypes(params DocsGetTypesParams) (*DocsGetTypesResponse, err
 	}
 
 	var resp DocsGetTypesResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -295,7 +295,7 @@ func (v APIDocs) Search(params DocsSearchParams) (*DocsSearchResponse, error) {
 	}
 
 	var resp DocsSearchResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

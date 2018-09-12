@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIMessages implements VK API namespace `messages`
@@ -54,7 +53,7 @@ func (v APIMessages) GetConversations(params MessagesGetConversationsParams) (*M
 	}
 
 	var resp MessagesGetConversationsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +88,7 @@ func (v APIMessages) GetConversationsByID(params MessagesGetConversationsByIDPar
 	}
 
 	var resp MessagesGetConversationsByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +125,7 @@ func (v APIMessages) GetByID(params MessagesGetByIDParams) (*MessagesGetByIDResp
 	}
 
 	var resp MessagesGetByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +162,7 @@ func (v APIMessages) GetByConversationMessageID(params MessagesGetByConversation
 	}
 
 	var resp MessagesGetByConversationMessageIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -204,7 +203,7 @@ func (v APIMessages) Search(params MessagesSearchParams) (*MessagesSearchRespons
 	}
 
 	var resp MessagesSearchResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -250,7 +249,7 @@ func (v APIMessages) GetHistory(params MessagesGetHistoryParams) (*MessagesGetHi
 	}
 
 	var resp MessagesGetHistoryResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -295,7 +294,7 @@ func (v APIMessages) GetHistoryAttachments(params MessagesGetHistoryAttachmentsP
 	}
 
 	var resp MessagesGetHistoryAttachmentsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -411,7 +410,7 @@ func (v APIMessages) Delete(params MessagesDeleteParams) (*MessagesDeleteRespons
 	}
 
 	var resp MessagesDeleteResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -503,7 +502,7 @@ func (v APIMessages) MarkAsImportant(params MessagesMarkAsImportantParams) (Mess
 	}
 
 	var resp MessagesMarkAsImportantResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -581,7 +580,7 @@ func (v APIMessages) GetLongPollServer(params MessagesGetLongPollServerParams) (
 	}
 
 	var resp MessagesGetLongPollServerResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -637,7 +636,7 @@ func (v APIMessages) GetLongPollHistory(params MessagesGetLongPollHistoryParams)
 	}
 
 	var resp MessagesGetLongPollHistoryResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -735,7 +734,7 @@ func (v APIMessages) GetConversationMembers(params MessagesGetConversationMember
 	}
 
 	var resp MessagesGetConversationMembersResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -794,7 +793,7 @@ func (v APIMessages) SearchConversations(params MessagesSearchConversationsParam
 	}
 
 	var resp MessagesSearchConversationsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -860,7 +859,7 @@ func (v APIMessages) GetLastActivity(params MessagesGetLastActivityParams) (*Mes
 	}
 
 	var resp MessagesGetLastActivityResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -889,7 +888,7 @@ func (v APIMessages) SetChatPhoto(params MessagesSetChatPhotoParams) (*MessagesS
 	}
 
 	var resp MessagesSetChatPhotoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -918,7 +917,7 @@ func (v APIMessages) DeleteChatPhoto(params MessagesDeleteChatPhotoParams) (*Mes
 	}
 
 	var resp MessagesDeleteChatPhotoResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -979,7 +978,7 @@ func (v APIMessages) IsMessagesFromGroupAllowed(params MessagesIsMessagesFromGro
 	}
 
 	var resp MessagesIsMessagesFromGroupAllowedResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

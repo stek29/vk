@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APIApps implements VK API namespace `apps`
@@ -48,7 +47,7 @@ func (v APIApps) GetCatalog(params AppsGetCatalogParams) (*AppsGetCatalogRespons
 	}
 
 	var resp AppsGetCatalogResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +84,7 @@ func (v APIApps) Get(params AppsGetParams) (*AppsGetResponse, error) {
 	}
 
 	var resp AppsGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +164,7 @@ func (v APIApps) GetFriendsList(params AppsGetFriendsListParams) (*AppsGetFriend
 	}
 
 	var resp AppsGetFriendsListResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -237,11 +236,11 @@ func (v APIApps) GetLeaderboard(params AppsGetLeaderboardParams) (AppsGetLeaderb
 	var resp AppsGetLeaderboardResponse
 	if params.Extended {
 		var tmp AppsGetLeaderboardResponseExtended
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	} else {
 		var tmp AppsGetLeaderboardResponseNormal
-		err = easyjson.Unmarshal(r, &tmp)
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {

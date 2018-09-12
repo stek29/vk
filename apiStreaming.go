@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIStreaming implements VK API namespace `streaming`
@@ -26,7 +26,7 @@ func (v APIStreaming) GetServerURL() (*StreamingGetServerURLResponse, error) {
 	}
 
 	var resp StreamingGetServerURLResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

@@ -1,9 +1,8 @@
 package vkCallbackApi
 
 import (
+	"encoding/json"
 	"strconv"
-
-	"github.com/mailru/easyjson"
 )
 
 // APINotes implements VK API namespace `notes`
@@ -37,7 +36,7 @@ func (v APINotes) Get(params NotesGetParams) (*NotesGetResponse, error) {
 	}
 
 	var resp NotesGetResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +63,7 @@ func (v APINotes) GetByID(params NotesGetByIDParams) (*NotesGetByIDResponse, err
 	}
 
 	var resp NotesGetByIDResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +167,7 @@ func (v APINotes) GetComments(params NotesGetCommentsParams) (*NotesGetCommentsR
 	}
 
 	var resp NotesGetCommentsResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}

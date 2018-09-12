@@ -448,19 +448,19 @@ def parse_type(name, decl, varname):
 		zero_val = 'nil'
 		return_val = varname
 		interface_val = '&' + varname
-		parser_statement = 'err = easyjson.Unmarshal(r, {})'.format(interface_val)
+		parser_statement = 'err = json.Unmarshal(r, {})'.format(interface_val)
 	elif decl.startswith('interface'):
 		return_type = name
 		zero_val = 'nil'
 		return_val = varname
 		interface_val = varname
-		parser_statement = 'err = easyjson.Unmarshal(r, {})'.format(interface_val)
+		parser_statement = 'err = json.Unmarshal(r, {})'.format(interface_val)
 	else:
 		return_type = '*' + name
 		zero_val = 'nil'
 		return_val = '&' + varname
 		interface_val = '&' + varname
-		parser_statement = 'err = easyjson.Unmarshal(r, {})'.format(interface_val)
+		parser_statement = 'err = json.Unmarshal(r, {})'.format(interface_val)
 
 	return return_type, zero_val, return_val, interface_val, parser_statement
 
@@ -480,7 +480,7 @@ for namespace, ns_methods in methods.items():
 
 	writeln('import (')
 	writeln('\t"strconv"')
-	writeln('\t"github.com/mailru/easyjson"')
+	writeln('\t"encoding/json"')
 	writeln(')\n')
 
 	writeln('// API{} implements VK API namespace `{}`'.format(go_ns, namespace))

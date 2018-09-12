@@ -1,7 +1,7 @@
 package vkCallbackApi
 
 import (
-	"github.com/mailru/easyjson"
+	"encoding/json"
 )
 
 // APIAuth implements VK API namespace `auth`
@@ -69,7 +69,7 @@ func (v APIAuth) Signup(params AuthSignupParams) (*AuthSignupResponse, error) {
 	}
 
 	var resp AuthSignupResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func (v APIAuth) Confirm(params AuthConfirmParams) (*AuthConfirmResponse, error)
 	}
 
 	var resp AuthConfirmResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func (v APIAuth) Restore(params AuthRestoreParams) (*AuthRestoreResponse, error)
 	}
 
 	var resp AuthRestoreResponse
-	err = easyjson.Unmarshal(r, &resp)
+	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
 	}
