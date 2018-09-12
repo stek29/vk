@@ -1,0 +1,3 @@
+[submodule "codegen/vk-api-schema"]
+	path = codegen/vk-api-schema
+	url = https://github.com/stek29/vk-api-schema
