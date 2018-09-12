@@ -21,6 +21,7 @@ type API struct {
 	BaseURL     string `url:"-"`
 	AccessToken string `url:"access_token,omitempty"`
 	Version     string `url:"v,omitempty"`
+	Language    string `url:"lang,omitempty"`
 }
 
 // APIWithAccessToken creates and initializes a new API instance
