@@ -13,24 +13,33 @@ Uses [easyjson](https://github.com/mailru/easyjson)
 `go generate` is required after installation
 
 ```
-go get -v -u github.com/stek29/vk # would throw errors
-go generate github.com/stek29/vk
-go get github.com/stek29/vk
+go get -v -u github.com/stek29/vk/... # would throw errors
+go generate github.com/stek29/vk/...
+go get github.com/stek29/vk/...
 ```
 
-# Usage
+# Getting started
 
-For making API calls:
+Minimal example -- making API calls:
 ```go
-// import vkcb "github.com/stek29/vk"
+package main
 
-vk := vkcb.APIWithAccessToken("vk-access-token")
-users, _ := vkcb.APIUsers{vk}.Get(vkcb.UsersGetParams{
-  UserIDs: []string{"1"},
-  Fields: []string{"followers_count"},
-})
-durov := users[0]
-fmt.Printf("Pavel Durov has %v followers\n", durov.FollowersCount)
+import (
+	"fmt"
+	"os"
+	"github.com/stek29/vk"
+	"github.com/stek29/vk/vkapi"
+)
+
+func main() {
+	client := vk.BaseAPIWithAccessToken(os.Getenv("VK_TOKEN"))
+	users, _ := vkapi.Users{client}.Get(vkapi.UsersGetParams{
+		UserIDs: []string{"1"},
+		Fields:  []string{"followers_count"},
+	})
+	durov := users[0]
+	fmt.Printf("Pavel Durov has %v followers\n", durov.FollowersCount)
+}
 ```
 
 For callback API server: See [this

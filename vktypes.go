@@ -117,6 +117,14 @@ type BaseObject struct {
 }
 
 //easyjson:json
+type DatabaseCity struct {
+	BaseObject
+	Area      string
+	Region    string
+	Important int
+}
+
+//easyjson:json
 type User struct {
 	ID          int
 	FirstName   string

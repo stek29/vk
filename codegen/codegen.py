@@ -1,8 +1,7 @@
 import json
 import os
 
-
-#TODO: Hanlde type aliases for types with custom marshallers
+#TODO: Hanlde type aliases for types with custom marshallers (boolint)
 
 methods = {}
 
@@ -121,7 +120,7 @@ KNOWN_TYPE_REFS = {
 	'database_school': 'BaseObject',
 	'database_street': 'BaseObject',
 	'database_university': 'BaseObject',
-	'database_city': 'struct {\nBaseObject\nArea string\nRegion string\nImportant int\n}',
+	'database_city': 'DatabaseCity',
 
 	'video_video': 'Video',
 	'video_video_full': 'Video',
@@ -347,7 +346,7 @@ def goify_ref(r):
 	last_part = path.split('/')[-1]
 
 	if last_part in KNOWN_TYPE_REFS:
-		return KNOWN_TYPE_REFS[last_part], None
+		return 'vk.' + KNOWN_TYPE_REFS[last_part], None
 
 	resolved = resolve_ref(r)
 	if resolved is not None:
@@ -476,16 +475,17 @@ for namespace, ns_methods in methods.items():
 			f.write(str(s))
 		f.write('\n')
 
-	writeln('package vk\n')
+	writeln('package vkapi\n')
 
 	writeln('import (')
 	writeln('\t"strconv"')
 	writeln('\t"encoding/json"')
+	writeln('\t"github.com/stek29/vk"')
 	writeln(')\n')
 
-	writeln('// API{} implements VK API namespace `{}`'.format(go_ns, namespace))
-	writeln('type API{} struct {{'.format(go_ns))
-	writeln('\tAPI *API')
+	writeln('// {} implements VK API namespace `{}`'.format(go_ns, namespace))
+	writeln('type {} struct {{'.format(go_ns))
+	writeln('\tAPI vk.API')
 	writeln('}\n')
 
 	for mtd in ns_methods:
@@ -498,7 +498,7 @@ for namespace, ns_methods in methods.items():
 		has_params = len(mtd.get('parameters', [])) != 0
 
 		if has_params:
-			writeln('// {}{}Params are params for API{}.{}'.format(
+			writeln('// {}{}Params are params for {}.{}'.format(
 				go_ns,
 				go_mtd_name,
 				go_ns,
@@ -563,7 +563,7 @@ for namespace, ns_methods in methods.items():
 				'return {}, nil'.format(return_val),
 			])
 
-			writeln('// {}{}Response is response for API{}.{}'.format(
+			writeln('// {}{}Response is response for {}.{}'.format(
 				go_ns,
 				go_mtd_name,
 				go_ns,
@@ -621,7 +621,7 @@ for namespace, ns_methods in methods.items():
 			mtd_desc = 'does {}'.format(mtd['name'])
 
 		writeln('// {} {}'.format(go_mtd_name, mtd_desc))
-		writeln('func (v API{}) {} ({}) ({}, error) {{'.format(
+		writeln('func (v {}) {} ({}) ({}, error) {{'.format(
 			go_ns,
 			go_mtd_name,
 			'params {}Params'.format(go_ns + go_mtd_name) if has_params else '',

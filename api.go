@@ -14,17 +14,21 @@ const (
 	apiBaseURL = "https://api.vk.com/method/"
 )
 
-// API is a helper type used for making requests
-type API struct {
+type API interface {
+	Request(method string, params interface{}) (json.RawMessage, error)
+}
+
+// BaseAPI is a helper type used for making requests
+type BaseAPI struct {
 	BaseURL     string `url:"-"`
 	AccessToken string `url:"access_token,omitempty"`
 	Version     string `url:"v,omitempty"`
 	Language    string `url:"lang,omitempty"`
 }
 
-// APIWithAccessToken creates and initializes a new API instance
-func APIWithAccessToken(token string) *API {
-	return &API{
+// BaseAPIWithAccessToken creates and initializes a new API instance
+func BaseAPIWithAccessToken(token string) API {
+	return &BaseAPI{
 		AccessToken: token,
 		Version:     APIVersion,
 		BaseURL:     apiBaseURL,
@@ -58,7 +62,7 @@ type APIResponse struct {
 // method is method name
 // params should be nil, url.Values or an url tagged
 // struct (https://godoc.org/github.com/google/go-querystring/query)
-func (vk *API) Request(method string, params interface{}) (json.RawMessage, error) {
+func (vk *BaseAPI) Request(method string, params interface{}) (json.RawMessage, error) {
 	u, err := url.Parse(vk.BaseURL + method)
 	if err != nil {
 		return nil, err
