@@ -4,8 +4,6 @@ import (
 	"github.com/mailru/easyjson/jlexer"
 )
 
-// TODO: Stories
-
 type Attachment struct {
 	Val interface{}
 }
@@ -61,7 +59,7 @@ func (v *Attachment) UnmarshalEasyJSON(in *jlexer.Lexer) {
 			tmp.UnmarshalEasyJSON(in)
 			v.Val = tmp
 		case "market":
-			tmp := Market{}
+			tmp := MarketItem{}
 			tmp.UnmarshalEasyJSON(in)
 			v.Val = tmp
 		case "market_album":
@@ -111,6 +109,12 @@ type CropPhoto struct {
 }
 
 //easyjson:json
+type BaseObject struct {
+	ID    int
+	Title string
+}
+
+//easyjson:json
 type User struct {
 	ID          int
 	FirstName   string
@@ -143,7 +147,7 @@ type User struct {
 	}
 
 	Online       *int
-	OnlineMobile int
+	OnlineMobile BoolInt
 	OnlineApp    int
 
 	PhotoID      string
@@ -160,18 +164,10 @@ type User struct {
 		Until     int
 		Position  string
 	}
-	City *struct {
-		ID    int
-		Title string
-	}
-	Country *struct {
-		ID    int
-		Title string
-	}
-	Contacts *struct {
-		MobilePhone string
-		HomePhone   string
-	}
+	City        *BaseObject
+	Country     *BaseObject
+	MobilePhone string
+	HomePhone   string
 
 	CropPhoto *CropPhoto
 
@@ -198,21 +194,21 @@ type User struct {
 	// TODO: Connections
 	// XXX: Can easyjson handle map[string]string?
 
-	CanPost                int
-	CanSeeAllPosts         int
-	CanSeeAudio            int
-	CanSendFriendRequest   int
-	CanWritePrivateMessage int
+	CanPost                BoolInt
+	CanSeeAllPosts         BoolInt
+	CanSeeAudio            BoolInt
+	CanSendFriendRequest   BoolInt
+	CanWritePrivateMessage BoolInt
 
-	HasMobile int
-	HasPhoto  int
+	HasMobile BoolInt
+	HasPhoto  BoolInt
 
-	IsFavorite       int
-	IsFriend         int
-	IsHiddenFromFeed int
+	IsFavorite       BoolInt
+	IsFriend         BoolInt
+	IsHiddenFromFeed BoolInt
 
-	Blacklisted     int
-	BlacklistedByMe int
+	Blacklisted     BoolInt
+	BlacklistedByMe BoolInt
 }
 
 const (
@@ -229,11 +225,18 @@ const (
 )
 
 //easyjson:json
+type BaseImage struct {
+	URL    string
+	Width  int
+	Height int
+}
+
+//easyjson:json
 type Group struct {
 	ID          int
 	Name        string
 	ScreenName  string
-	IsClosed    int
+	IsClosed    BoolInt
 	Deactivated string
 	InvitedBy   int
 	Type        string
@@ -263,31 +266,30 @@ type Group struct {
 	AgeLimits int
 
 	AdminLevel        int
-	IsAdmin           int
-	IsMember          int
-	IsFavorite        int
-	IsHiddenFromFeed  int
-	IsMessagesBlocked int
-	CanCreateTopic    int
-	CanMessage        int
-	CanPost           int
-	CanSeeAllPosts    int
-	CanUploadDoc      int
-	CanUploadVideo    int
-	HasPhoto          int
+	IsAdmin           BoolInt
+	IsMember          BoolInt
+	IsFavorite        BoolInt
+	IsHiddenFromFeed  BoolInt
+	IsMessagesBlocked BoolInt
+	CanCreateTopic    BoolInt
+	CanMessage        BoolInt
+	CanPost           BoolInt
+	CanSeeAllPosts    BoolInt
+	CanUploadDoc      BoolInt
+	CanUploadVideo    BoolInt
+	HasPhoto          BoolInt
 
 	BanInfo *struct {
 		EndDate int
 		Comment string
 	}
 
-	City *struct {
-		ID    int
-		Title string
-	}
-	Country *struct {
-		ID    int
-		Title string
+	City    *BaseObject
+	Country *BaseObject
+
+	Cover *struct {
+		Enabled int
+		Images  []BaseImage
 	}
 
 	CropPhoto *CropPhoto
@@ -299,14 +301,7 @@ type Group struct {
 		Email       string
 	}
 
-	Links []struct {
-		ID          int
-		URL         string
-		Name        string
-		Description string `json:"desc"`
-		Photo50     string
-		Photo100    string
-	}
+	Links []MiniLink
 
 	Counters *struct {
 		Albums int
@@ -458,7 +453,7 @@ type Chat struct {
 	MembersCount int
 
 	PushSettings struct {
-		Sound         int
+		Sound         BoolInt
 		DisabledUntil int
 	}
 
@@ -466,8 +461,8 @@ type Chat struct {
 	Photo100 string
 	Photo200 string
 
-	Left   int
-	Kicked int
+	Left   BoolInt
+	Kicked BoolInt
 }
 
 //easyjson:json
@@ -518,13 +513,13 @@ type Video struct {
 	Comments   int
 	Player     string
 	Platfrom   string
-	CanEdit    int
-	CanAdd     int
-	IsPrivate  int
-	Processing int
-	Live       int
-	Upcoming   int
-	Repeat     int
+	CanEdit    BoolInt
+	CanAdd     BoolInt
+	IsPrivate  BoolInt
+	Processing BoolInt
+	Live       BoolInt
+	Upcoming   BoolInt
+	Repeat     BoolInt
 }
 
 //easyjson:json
@@ -541,16 +536,14 @@ type Audio struct {
 	// TODO: Genre list
 	GenreID  int
 	Date     int
-	NoSearch int
+	NoSearch BoolInt
 	IsHQ     bool
 }
 
 //easyjson:json
 type PhotoSize struct {
-	Type   string
-	URL    string
-	Width  int
-	Height int
+	BaseImage
+	Type string
 }
 
 //easyjson:json
@@ -622,6 +615,17 @@ type Link struct {
 }
 
 //easyjson:json
+type MiniLink struct {
+	ID          int
+	URL         string
+	Name        string
+	Description string `json:"desc"`
+	Photo50     string
+	Photo100    string
+	Photo200    string
+}
+
+//easyjson:json
 type Note struct {
 	ID           int
 	OwnerID      int
@@ -634,20 +638,34 @@ type Note struct {
 }
 
 //easyjson:json
+type PollAnswer struct {
+	ID    int
+	Text  string
+	Votes int
+	Rate  float32
+}
+
+//easyjson:json
 type Poll struct {
-	ID       int
-	OWnerID  int
+	ID        int
+	OwnerID   int
+	Created   int
+	Question  string
+	Votes     int
+	AnswerID  int
+	Asnwers   []PollAnswer
+	Anonymous BoolInt
+}
+
+//easyjson:json
+type BoardTopicPoll struct {
+	PollID   int
+	OwnerID  int
 	Created  int
 	Question string
-	Votest   int
+	Votes    int
 	AnswerID int
-	Asnwers  []struct {
-		ID    int
-		Text  string
-		Votes int
-		Rate  float32
-	}
-	Anonymous int
+	Asnwers  []PollAnswer
 }
 
 //easyjson:json
@@ -656,8 +674,8 @@ type Page struct {
 	GroupID                  int
 	CreatorID                int
 	Title                    string
-	CurrentUserCanEdit       int
-	CurrentUserCanEditAccess int
+	CurrentUserCanEdit       BoolInt
+	CurrentUserCanEditAccess BoolInt
 	// TODO: enums
 	WhoCanView int
 	WhoCanEdit int
@@ -687,7 +705,13 @@ type Album struct {
 // TODO: PhotosList
 
 //easyjson:json
-type Market struct {
+type MarketCategory struct {
+	BaseObjectWithName
+	Section BaseObjectWithName
+}
+
+//easyjson:json
+type MarketItem struct {
 	ID          int
 	OwnerID     int
 	Title       string
@@ -700,22 +724,15 @@ type Market struct {
 		}
 		Text string
 	}
-	Category struct {
-		ID      int
-		Name    string
-		Section struct {
-			ID   int
-			Name string
-		}
-	}
+	Category   MarketCategory
 	ThumbPhoto string
 	Date       int
 	// TODO: Availability enum/type
 	Availability int
 
 	Photos     []Photo
-	CanComment int
-	CanRepost  int
+	CanComment BoolInt
+	CanRepost  BoolInt
 	Likes      struct {
 		UserLikes int
 		Count     int
@@ -776,21 +793,21 @@ type Post struct {
 	Text         string
 	ReplyOwnerID int
 	ReplyPostID  int
-	FriendsOnly  int
+	FriendsOnly  BoolInt
 	Comments     *struct {
 		Count         int
-		CanPost       int
-		GroupsCanPost int
+		CanPost       BoolInt
+		GroupsCanPost BoolInt
 	}
 	Likes *struct {
 		Count      int
-		UserLikes  int
-		CanLike    int
-		CanPublish int
+		UserLikes  BoolInt
+		CanLike    BoolInt
+		CanPublish BoolInt
 	}
 	Reposts *struct {
 		Count        int
-		UserReposted int
+		UserReposted BoolInt
 	}
 	Views *struct {
 		Count int
@@ -801,11 +818,11 @@ type Post struct {
 	// TODO: Geo
 	SignerID    int
 	CopyHistory []Post
-	CanPin      int
-	CanDelete   int
-	CanEdit     int
-	IsPinned    int
-	MarkedAsAds int
+	CanPin      BoolInt
+	CanDelete   BoolInt
+	CanEdit     BoolInt
+	IsPinned    BoolInt
+	MarkedAsAds BoolInt
 }
 
 const (
@@ -833,5 +850,147 @@ type CommentBoard struct {
 		Count     int
 		UserLikes int
 		CanLike   int
+	}
+	// XXX: Is RealOffset real?
+}
+
+// TODO: VideoCatElement
+
+//easyjson:json
+type BoardTopic struct {
+	ID        int
+	Title     string
+	Created   int
+	CreatedBy int
+	Updated   int
+	UpdatedBy int
+	IsClosed  BoolInt
+	IsFixed   BoolInt
+	Comments  int
+}
+
+//easyjson:json
+type Place struct {
+	// Place ID
+	ID int
+	// Place title
+	Title string
+	// Place latitude
+	Latitude float32
+	// Place longitude
+	Longitude float32
+	// Date of the place creation in Unixtime
+	Created int
+	// URL of the place's icon
+	Icon string
+	// Checkins number
+	Checkins int
+	// Place type
+	Type string
+	// Country ID
+	Country int
+	// City ID
+	City int
+	// Place address
+	Place string
+	// Distance to the place
+	Distance int
+	// Community ID
+	GroupID int
+	// URL of the community's photo
+	GroupPhoto string
+}
+
+//easyjson:json
+type BaseObjectWithName struct {
+	ID   int
+	Name string
+}
+
+//easyjson:json
+type Category struct {
+	BaseObjectWithName
+	Subcategories []BaseObjectWithName
+}
+
+//easyjson:json
+type WallpostStats struct {
+	// Subscribers reach
+	ReachSubscribers int
+	// Total reach
+	ReachTotal int
+	// Link clickthrough
+	Links int
+	// Clickthrough to community
+	ToGroup int
+	// People have joined the group
+	JoinGroup int
+	// Reports number
+	Report int
+	// Hidings number
+	Hide int
+	// Unsubscribed members
+	Unsubscribe int
+}
+
+const (
+	StoryTypePhoto string = "photo"
+	StoryTypeVideo        = "video"
+)
+
+//easyjson:json
+type StoryVideo struct {
+	Video
+	IsPrivate BoolInt
+}
+
+//easyjson:json
+type Story struct {
+	// Story ID.
+	ID int
+	// Story owner's ID.
+	OwnerID int
+	// Date when story has been added in Unixtime.
+	Date int
+	// Information whether current user has seen the story or not (0 - no, 1 - yes).
+	Seen  BoolInt
+	Type  string
+	Photo *Photo
+	Video *StoryVideo
+	// Views number.
+	Views int
+	// Information whether current user can see the story (0 - no, 1 - yes).
+	CanSee BoolInt
+	// Information whether current user can reply to the story (0 - no, 1 - yes).
+	CanReply BoolInt
+	// Information whether current user can share the story (0 - no, 1 - yes).
+	CanShare BoolInt
+	// Information whether current user can comment the story (0 - no, 1 - yes).
+	CanComment BoolInt
+	// Information whether the story is deleted (false - no, true - yes).
+	IsDeleted bool
+	// Information whether the story is expired (false - no, true - yes).
+	IsExpired bool
+	// Access key for private object.
+	AccessKey string
+	// Parent story owner's ID.
+	ParentStoryOwnerID int
+	// Parent story ID.
+	ParentStoryID int
+	// Access key for private object.
+	ParentStoryAccessKey string
+	ParentStory          *Story
+	Link                 struct {
+		// Link text
+		Text string
+		// Link URL
+		Url string
+	}
+	// Replies to current story.
+	Replies []struct {
+		// Replies number.
+		Count int
+		// New replies number.
+		New int
 	}
 }

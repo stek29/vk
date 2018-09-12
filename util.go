@@ -1,11 +1,13 @@
 package vkCallbackApi
 
 import (
+	"errors"
 	"net/url"
 	"strconv"
 	"strings"
 
 	"github.com/mailru/easyjson"
+	"github.com/mailru/easyjson/jlexer"
 )
 
 // CSVStringSlice is a string slice which gets encoded
@@ -25,6 +27,24 @@ func (csv CSVStringSlice) EncodeValues(key string, v *url.Values) error {
 	return nil
 }
 
+// CSVIntSlice is an int slice which gets encoded
+// as comma-separated string
+// API methods sometimes accept arrays of ints, which
+// should be encoded as one comma-separated parameter
+// This is helper type which implements query.Encoder
+type CSVIntSlice []int
+
+// EncodeValues conforms to query.Encoder inteface
+func (csv CSVIntSlice) EncodeValues(key string, v *url.Values) error {
+	strCSV := make(CSVStringSlice, len(csv))
+
+	for i, v := range csv {
+		strCSV[i] = strconv.Itoa(v)
+	}
+
+	return strCSV.EncodeValues(key, v)
+}
+
 func decodeBoolIntResponse(r easyjson.RawMessage) (bool, error) {
 	resp, err := strconv.Atoi(string(r))
 	return resp == 1, err
@@ -38,4 +58,50 @@ func urlValuesMerge(base, with url.Values) {
 			base[k] = v
 		}
 	}
+}
+
+// ArrayOnMeth is array which is represented as object by VK (see messages.delete)
+type ArrayOnMeth []int
+
+func (v *ArrayOnMeth) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	v.UnmarshalEasyJSON(&r)
+	return r.Error()
+}
+
+func (v *ArrayOnMeth) UnmarshalEasyJSON(in *jlexer.Lexer) {
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeString()
+		if id, err := strconv.Atoi(key); err == nil {
+			*v = append(*v, id)
+		}
+		in.WantColon()
+		in.SkipRecursive()
+		in.WantComma()
+	}
+	in.Delim('}')
+}
+
+// genTODOType is placeholder type for unimplemented types in codegen
+type genTODOType struct{
+	fill bool // easyjson panics with zero division error otherwise
+}
+
+func (_ genTODOType) UnmarshalEasyJSON(in *jlexer.Lexer) {
+	panic(errors.New("Trying to unmarshal genTODOType"))
+}
+
+// BoolInt is bool type which conforms to easyjson.Unmarshaler interface
+// and unmarshals from VK's favorite 1/0 int bools
+type BoolInt bool
+
+func (v *BoolInt) UnmarshalEasyJSON(in *jlexer.Lexer) {
+	*v = in.Int() != 0
+}
+
+func (v *BoolInt) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	v.UnmarshalEasyJSON(&r)
+	return r.Error()
 }
