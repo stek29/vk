@@ -4,6 +4,10 @@ import (
 	"github.com/mailru/easyjson/jlexer"
 )
 
+// Attachment is a wrapper for attachments
+// Photo, Video, Audio, Document, Link, Note,
+// Poll, Page, Album, MarketItem, MarketAlbum,
+// Sticker, Wall, WallReply, Gift
 type Attachment struct {
 	Val interface{}
 }
@@ -122,6 +126,24 @@ type DatabaseCity struct {
 	Area      string
 	Region    string
 	Important int
+}
+
+//easyjson:json
+type BaseObjectWithName struct {
+	ID   int
+	Name string
+}
+
+//easyjson:json
+type Category struct {
+	BaseObjectWithName
+	Subcategories []BaseObjectWithName
+}
+
+//easyjson:json
+type MarketCategory struct {
+	BaseObjectWithName
+	Section BaseObjectWithName
 }
 
 //easyjson:json
@@ -718,12 +740,6 @@ type Album struct {
 // TODO: PhotosList
 
 //easyjson:json
-type MarketCategory struct {
-	BaseObjectWithName
-	Section BaseObjectWithName
-}
-
-//easyjson:json
 type MarketItem struct {
 	ID          int
 	OwnerID     int
@@ -912,18 +928,6 @@ type Place struct {
 	GroupID int
 	// URL of the community's photo
 	GroupPhoto string
-}
-
-//easyjson:json
-type BaseObjectWithName struct {
-	ID   int
-	Name string
-}
-
-//easyjson:json
-type Category struct {
-	BaseObjectWithName
-	Subcategories []BaseObjectWithName
 }
 
 //easyjson:json
