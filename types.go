@@ -543,15 +543,29 @@ type Video struct {
 	AddingDate int
 	Views      int
 	Comments   int
+	Width      int
+	Height     int
 	Player     string
 	Platfrom   string
+
 	CanEdit    BoolInt
+	CanComment BoolInt
+	CanRepost  BoolInt
 	CanAdd     BoolInt
 	IsPrivate  BoolInt
 	Processing BoolInt
 	Live       BoolInt
 	Upcoming   BoolInt
 	Repeat     BoolInt
+
+	Likes struct {
+		UserLikes int
+		Count     int
+	}
+	Reposts struct {
+		UserLikes int
+		Count     int
+	}
 }
 
 //easyjson:json
@@ -566,10 +580,12 @@ type Audio struct {
 	LyricsID  int
 	AlbumID   int
 	// TODO: Genre list
-	GenreID  int
-	Date     int
-	NoSearch BoolInt
-	IsHQ     bool
+	GenreID      int
+	TrackGenreID int
+	Date         int
+	NoSearch     BoolInt
+	IsLicensed   bool
+	IsHQ         bool
 }
 
 //easyjson:json
