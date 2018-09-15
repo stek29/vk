@@ -28,7 +28,14 @@ func Example_echobot() {
 		log.Fatal("token is required")
 	}
 
-	bot, err := vkbot.NewBot(vk.BaseAPIWithAccessToken(*token), vkbot.BotConfig{
+	baseAPI, err := vk.NewBaseAPI(vk.BaseAPIConfig{
+		AccessToken: *token,
+	})
+	if err != nil {
+		log.Fatal("Cant create baseAPI:", err)
+	}
+
+	bot, err := vkbot.NewBot(baseAPI, vkbot.BotConfig{
 		GroupID: *groupID,
 		Poller: &vkbot.LongPoller{
 			Wait: 10 * time.Second,

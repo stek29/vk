@@ -80,7 +80,7 @@ func (p *LongPoller) getUpdates(ctx context.Context, b *Bot) ([]vk.CallbackEvent
 
 	req = req.WithContext(ctx)
 
-	r, err := http.DefaultClient.Do(req)
+	r, err := b.HTTPClient().Do(req)
 	if err != nil {
 		return nil, err
 	}

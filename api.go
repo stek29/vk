@@ -2,6 +2,7 @@ package vk
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/url"
 
@@ -14,8 +15,16 @@ const (
 	apiBaseURL = "https://api.vk.com/method/"
 )
 
+// API is entity which can perform API Requests
+// using HTTPClient client
 type API interface {
+	// Request performs an API request
+	//
+	// - method is method name
+	// - params: See BuildRequestParams
 	Request(method string, params interface{}) (json.RawMessage, error)
+
+	HTTPClient() *http.Client
 }
 
 // BaseAPI is a helper type used for making requests
@@ -24,18 +33,43 @@ type BaseAPI struct {
 	AccessToken string `url:"access_token,omitempty"`
 	Version     string `url:"v,omitempty"`
 	Language    string `url:"lang,omitempty"`
+
+	client *http.Client
 }
 
-// BaseAPIWithAccessToken creates and initializes a new API instance
-func BaseAPIWithAccessToken(token string) API {
+// BaseAPIConfig represents configuration used for BaseAPI creation
+type BaseAPIConfig struct {
+	// Required
+	AccessToken string
+	// Optional: if nil, lang is not passed in requests
+	Language string
+	// Optional: if nil, http.DefaultClient is used
+	Client *http.Client
+}
+
+// NewBaseAPI creates and initializes a new BaseAPI instance
+func NewBaseAPI(cfg BaseAPIConfig) (*BaseAPI, error) {
+	if cfg.AccessToken == "" {
+		return nil, errors.New("AccessToken is required")
+	}
+
+	client := cfg.Client
+	if client == nil {
+		client = http.DefaultClient
+	}
+
 	return &BaseAPI{
-		AccessToken: token,
+		AccessToken: cfg.AccessToken,
 		Version:     APIVersion,
 		BaseURL:     apiBaseURL,
-	}
+		Language:    cfg.Language,
+
+		client: client,
+	}, nil
 }
 
 // APIError is a type representing errors returned by VK API
+//
 //easyjson:json
 type APIError struct {
 	Code          int    `json:"error_code"`
@@ -52,45 +86,44 @@ func (e *APIError) Error() string {
 }
 
 // APIResponse is a type representing general response returned by VK API
+//
 //easyjson:json
 type APIResponse struct {
 	Error    *APIError
 	Response json.RawMessage
 }
 
-// Request performs an API request
-// method is method name
-// params should be nil, url.Values or an url tagged
-// struct (https://godoc.org/github.com/google/go-querystring/query)
+// HTTPClient conforms to API interface
+func (vk *BaseAPI) HTTPClient() *http.Client {
+	return vk.client
+}
+
+// Request conforms to API interface
 func (vk *BaseAPI) Request(method string, params interface{}) (json.RawMessage, error) {
 	u, err := url.Parse(vk.BaseURL + method)
 	if err != nil {
 		return nil, err
 	}
 
-	var q url.Values
-
-	switch v := params.(type) {
-	case nil:
-		q = make(url.Values)
-	case url.Values:
-		q = v
-	default:
-		q, err = query.Values(params)
-		if err != nil {
-			return nil, err
-		}
+	q, err := BuildRequestParams(params)
+	if err != nil {
+		return nil, err
 	}
 
 	if baseParams, err := query.Values(vk); err == nil {
-		urlValuesMerge(q, baseParams)
+		MergeURLValues(q, baseParams)
 	} else {
 		return nil, err
 	}
 
 	u.RawQuery = q.Encode()
 
-	r, err := http.Get(u.String())
+	req, err := http.NewRequest("GET", u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	r, err := vk.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
