@@ -23,7 +23,8 @@ def handle_special_caps(s):
 		.replace('Uid', 'UID')\
 		.replace('Html', 'HTML')\
 		.replace('Ip', 'IP')\
-		.replace('Https', 'HTTPS')
+		.replace('Https', 'HTTPS')\
+		.replace('Ts', 'TS')
 
 def goify_namespace(ns):
 	return ns.title()
@@ -469,7 +470,7 @@ for namespace, ns_methods in methods.items():
 		continue
 
 	go_ns = goify_namespace(namespace)
-	f = open('api' + go_ns + '.go', 'w')
+	f = open(namespace + '.go', 'w')
 	def writeln(s=None):
 		if s is not None:
 			f.write(str(s))
@@ -638,4 +639,4 @@ for namespace, ns_methods in methods.items():
 		writeln('}\n')
 
 	f.close()
-	os.system('goimports -w "api{}.go"'.format(go_ns))
+	os.system('goimports -w "{}.go"'.format(namespace))

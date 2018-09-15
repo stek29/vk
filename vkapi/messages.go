@@ -325,8 +325,8 @@ type MessagesSendParams struct {
 	Long float32 `url:"long,omitempty"`
 	// (Required if 'message' is not set.) List of objects attached to the message, separated by commas, in the following format: "<owner_id>_<media_id>", '' — Type of media attachment: 'photo' — photo, 'video' — video, 'audio' — audio, 'doc' — document, 'wall' — wall post, '<owner_id>' — ID of the media attachment owner. '<media_id>' — media attachment ID. Example: "photo100172_166443618"
 	Attachment CSVStringSlice `url:"attachment,omitempty"`
-	// ID of forwarded messages, separated with a comma. Listed messages of the sender will be shown in the message body at the recipient's. Example: "123,431,544"
-	ForwardMessages string `url:"forward_messages,omitempty"`
+	// ID of forwarded messages. Listed messages of the sender will be shown in the message body at the recipient's. Example: "123,431,544"
+	ForwardMessages CSVIntSlice `url:"forward_messages,omitempty"`
 	// Sticker id.
 	StickerID int `url:"sticker_id,omitempty"`
 	// '1' if the message is a notification (for community messages).
@@ -569,7 +569,7 @@ type MessagesGetLongPollServerResponse struct {
 	// Server URL
 	Server string `json:"server,omitempty"`
 	// Timestamp
-	Ts int `json:"ts,omitempty"`
+	TS int `json:"ts,omitempty"`
 	// Persistent timestamp
 	Pts int `json:"pts,omitempty"`
 }
@@ -592,7 +592,7 @@ func (v Messages) GetLongPollServer(params MessagesGetLongPollServerParams) (*Me
 // MessagesGetLongPollHistoryParams are params for Messages.GetLongPollHistory
 type MessagesGetLongPollHistoryParams struct {
 	// Last value of the 'ts' parameter returned from the Long Poll server or by using [vk.com/dev/messages.getLongPollHistory|messages.getLongPollHistory] method.
-	Ts int `url:"ts,omitempty"`
+	TS int `url:"ts,omitempty"`
 	// Lsat value of 'pts' parameter returned from the Long Poll server or by using [vk.com/dev/messages.getLongPollHistory|messages.getLongPollHistory] method.
 	Pts int `url:"pts,omitempty"`
 	// Number of characters after which to truncate a previewed message. To preview the full message, specify '0'. "NOTE: Messages are not truncated by default. Messages are truncated by words."
