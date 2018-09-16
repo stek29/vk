@@ -1,0 +1,11 @@
+Fix genTODOType's (see codegen & types.go)
+Enums support in codegen
+Add keyboards to vkbot
+Add file upload handling (to new subpackage vkmisc?)
+Add missing comments to types.go
+CI (Travis build & test?)
+Add error codes
+Add more tests
+Move events.go to vkbot
+Set longpoll/callback settings with API via vkbot wrappers
+Add throttled api
