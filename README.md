@@ -51,6 +51,4 @@ func main() {
 
 For bot example: See [echobot](vkbot/example_echobot_test.go)
 
-For callback API server: See [this
-gist](https://gist.github.com/stek29/7da818858713b7d82c1567800a478399)
--- server which deletes all comments containing cyrillic letters.
+Also see [this gist](https://gist.github.com/stek29/7da818858713b7d82c1567800a478399): A bit more advanced "bot" which supports multiple groups and works via callback poller.
