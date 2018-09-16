@@ -40,13 +40,12 @@ import (
 )
 
 func main() {
-	client := vk.BaseAPIWithAccessToken(os.Getenv("VK_TOKEN"))
+	client, _ := vk.NewBaseAPI(vk.BaseAPIConfig{AccessToken: os.Getenv("VK_TOKEN")})
 	users, _ := vkapi.Users{client}.Get(vkapi.UsersGetParams{
 		UserIDs: []string{"1"},
 		Fields:  []string{"followers_count"},
 	})
-	durov := users[0]
-	fmt.Printf("Pavel Durov has %v followers\n", durov.FollowersCount)
+	fmt.Printf("Pavel Durov has %v followers\n", users[0].FollowersCount)
 }
 ```
 
