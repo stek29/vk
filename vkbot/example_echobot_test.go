@@ -47,14 +47,11 @@ func Example_echobot() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 
-	func(cancel context.CancelFunc) {
-		c := make(chan os.Signal, 1)
-		signal.Notify(c, os.Interrupt)
-		go func() {
-			for range c {
-				cancel()
-			}
-		}()
+	go func(cancel context.CancelFunc) {
+		sigint := make(chan os.Signal, 1)
+		signal.Notify(sigint, os.Interrupt)
+		<-sigint
+		cancel()
 	}(cancel)
 
 	events, err := bot.StartPolling(ctx, 0)
