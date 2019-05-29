@@ -75,9 +75,9 @@ type APIError struct {
 	Code          int    `json:"error_code"`
 	Message       string `json:"error_msg"`
 	RequestParams []struct {
-		Key   string
-		Value string
-	}
+		Key   string `json:"key"`
+		Value string `json:"value"`
+	} `json:"request_params"`
 }
 
 // Error implements error interface
