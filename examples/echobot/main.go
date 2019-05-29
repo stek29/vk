@@ -1,4 +1,4 @@
-package vkbot_test
+package main
 
 import (
 	"context"
@@ -13,12 +13,7 @@ import (
 	"github.com/stek29/vk/vkbot"
 )
 
-type godocDontStripMe struct{}
-
-// Example_echobot is an echo bot which uses LongPoller
-func Example_echobot() {
-	_ = godocDontStripMe{}
-
+func main() {
 	token := pflag.String("token", "", "VK Token (required)")
 	groupID := pflag.Int("group-id", 0, "Group ID (optional)")
 

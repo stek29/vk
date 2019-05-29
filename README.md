@@ -56,6 +56,11 @@ func main() {
 }
 ```
 
-For bot example: See [echobot](vkbot/example_echobot_test.go)
+For bot example: See [echobot](examples/echobot)
 
-Also see [this gist](https://gist.github.com/stek29/7da818858713b7d82c1567800a478399): A bit more advanced "bot" which supports multiple groups and works via callback poller.
+Also see [nocyril](examples/nocyril): A bit more advanced "bot" which supports multiple groups and works via callback poller.
+
+## Uploading files
+Currently there's no wrapper to handle file uploads, since it's trivial to do it manually.
+
+See [vidloader](examples/vidloader) for an example of video uploader program.
