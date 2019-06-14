@@ -25,7 +25,7 @@ type LongPoller struct {
 }
 
 func (p *LongPoller) getServer(b *Bot) error {
-	srv, err := vkapi.Groups{b}.GetLongPollServer(vkapi.GroupsGetLongPollServerParams{
+	srv, err := vkapi.Groups{API: b}.GetLongPollServer(vkapi.GroupsGetLongPollServerParams{
 		GroupID: b.GroupID,
 	})
 	if err != nil {

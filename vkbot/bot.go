@@ -49,7 +49,7 @@ func (b *Bot) GetMe(flush bool) (*vk.Group, error) {
 		return b.me, nil
 	}
 
-	groups, err := vkapi.Groups{b}.GetByID(vkapi.GroupsGetByIDParams{
+	groups, err := vkapi.Groups{API: b}.GetByID(vkapi.GroupsGetByIDParams{
 		GroupID: strconv.Itoa(b.GroupID),
 	})
 
