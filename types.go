@@ -842,7 +842,7 @@ type Post struct {
 	Comments     *struct {
 		Count         int
 		CanPost       BoolInt
-		GroupsCanPost BoolInt
+		GroupsCanPost bool
 	}
 	Likes *struct {
 		Count      int
