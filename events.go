@@ -1,7 +1,8 @@
 package vk
 
 import (
-	"github.com/mailru/easyjson/jlexer"
+	"encoding/json"
+	"fmt"
 )
 
 // CallbackEvent is base event
@@ -28,250 +29,196 @@ type CallbackEvent struct {
 }
 
 // UnmarshalJSON implements json.Unmarshaler interface
-func (v *CallbackEvent) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	v.UnmarshalEasyJSON(&r)
-	return r.Error()
-}
-
-// UnmarshalEasyJSON implements easyjson.Unmarshaler interface
-func (v *CallbackEvent) UnmarshalEasyJSON(in *jlexer.Lexer) {
-	in.Delim('{')
-	var vType string
-
-	for !in.IsDelim('}') {
-		key := in.UnsafeString()
-		in.WantColon()
-
-		switch key {
-		case "group_id":
-			v.GroupID = in.Int()
-		case "secret":
-			v.Secret = in.String()
-		case "type":
-			vType = in.UnsafeString()
-		case "object":
-			switch vType {
-			// there's no object in "confirmation"
-			case "message_new":
-				tmp := MessageNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "message_reply":
-				tmp := MessageReply{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "message_edit":
-				tmp := MessageEdit{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "message_typing_state":
-				tmp := MessageTypingState{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "message_allow":
-				tmp := MessageAllow{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "message_deny":
-				tmp := MessageDeny{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "photo_new":
-				tmp := PhotoNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "photo_comment_new":
-				tmp := PhotoCommentNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "photo_comment_edit":
-				tmp := PhotoCommentEdit{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "photo_comment_restore":
-				tmp := PhotoCommentRestore{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "photo_comment_delete":
-				tmp := PhotoCommentDelete{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "audio_new":
-				tmp := AudioNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "video_new":
-				tmp := VideoNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "video_comment_new":
-				tmp := VideoCommentNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "video_comment_edit":
-				tmp := VideoCommentEdit{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "video_comment_restore":
-				tmp := VideoCommentRestore{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "video_comment_delete":
-				tmp := VideoCommentDelete{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "wall_post_new":
-				tmp := WallPostNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "wall_repost":
-				tmp := WallRepost{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "wall_reply_new":
-				tmp := WallReplyNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "wall_reply_edit":
-				tmp := WallReplyEdit{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "wall_reply_restore":
-				tmp := WallReplyRestore{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "wall_reply_delete":
-				tmp := WallReplyDelete{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "board_post_new":
-				tmp := BoardPostNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "board_post_edit":
-				tmp := BoardPostEdit{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "board_post_restore":
-				tmp := BoardPostRestore{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "board_post_delete":
-				tmp := BoardPostDelete{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "market_comment_new":
-				tmp := MarketCommentNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "market_comment_edit":
-				tmp := MarketCommentEdit{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "market_comment_restore":
-				tmp := MarketCommentRestore{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "market_comment_delete":
-				tmp := MarketCommentDelete{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "group_leave":
-				tmp := GroupLeave{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "group_join":
-				tmp := GroupJoin{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "user_block":
-				tmp := UserBlock{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "user_unblock":
-				tmp := UserUnblock{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "poll_vote_new":
-				tmp := PollVoteNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "group_officers_edit":
-				tmp := GroupOfficersEdit{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "group_change_settings":
-				tmp := GroupChangeSettings{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "group_change_photo":
-				tmp := GroupChangePhoto{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "lead_forms_new":
-				tmp := LeadFormsNew{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			case "vkpay_transaction":
-				tmp := NewVKPayTransaction{}
-				tmp.UnmarshalEasyJSON(in)
-				v.Event = tmp
-
-			default:
-				in.SkipRecursive()
-			}
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
+func (e *CallbackEvent) UnmarshalJSON(data []byte) error {
+	var rawEvent struct {
+		GroupID int             `json:"group_id"`
+		Secret  string          `json:"secret"`
+		Type    string          `json:"type"`
+		Object  json.RawMessage `json:"object"`
 	}
 
-	if vType == "confirmation" {
-		v.Event = Confirmation{}
+	err := json.Unmarshal(data, &rawEvent)
+	if err != nil {
+		return err
 	}
 
-	in.Delim('}')
+	e.GroupID = rawEvent.GroupID
+	e.Secret = rawEvent.Secret
+
+	switch rawEvent.Type {
+	case "confirmation":
+		// confirmation has no object
+		e.Event = Confirmation{}
+		err = nil
+	case "message_new":
+		evt := MessageNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "message_reply":
+		evt := MessageReply{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "message_edit":
+		evt := MessageEdit{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "message_typing_state":
+		evt := MessageTypingState{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "message_allow":
+		evt := MessageAllow{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "message_deny":
+		evt := MessageDeny{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "photo_new":
+		evt := PhotoNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "photo_comment_new":
+		evt := PhotoCommentNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "photo_comment_edit":
+		evt := PhotoCommentEdit{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "photo_comment_restore":
+		evt := PhotoCommentRestore{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "photo_comment_delete":
+		evt := PhotoCommentDelete{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "audio_new":
+		evt := AudioNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "video_new":
+		evt := VideoNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "video_comment_new":
+		evt := VideoCommentNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "video_comment_edit":
+		evt := VideoCommentEdit{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "video_comment_restore":
+		evt := VideoCommentRestore{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "video_comment_delete":
+		evt := VideoCommentDelete{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "wall_post_new":
+		evt := WallPostNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "wall_repost":
+		evt := WallRepost{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "wall_reply_new":
+		evt := WallReplyNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "wall_reply_edit":
+		evt := WallReplyEdit{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "wall_reply_restore":
+		evt := WallReplyRestore{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "wall_reply_delete":
+		evt := WallReplyDelete{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "board_post_new":
+		evt := BoardPostNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "board_post_edit":
+		evt := BoardPostEdit{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "board_post_restore":
+		evt := BoardPostRestore{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "board_post_delete":
+		evt := BoardPostDelete{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "market_comment_new":
+		evt := MarketCommentNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "market_comment_edit":
+		evt := MarketCommentEdit{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "market_comment_restore":
+		evt := MarketCommentRestore{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "market_comment_delete":
+		evt := MarketCommentDelete{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "group_leave":
+		evt := GroupLeave{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "group_join":
+		evt := GroupJoin{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "user_block":
+		evt := UserBlock{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "user_unblock":
+		evt := UserUnblock{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "poll_vote_new":
+		evt := PollVoteNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "group_officers_edit":
+		evt := GroupOfficersEdit{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "group_change_settings":
+		evt := GroupChangeSettings{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "group_change_photo":
+		evt := GroupChangePhoto{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "lead_forms_new":
+		evt := LeadFormsNew{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	case "vkpay_transaction":
+		evt := NewVKPayTransaction{}
+		err = json.Unmarshal(rawEvent.Object, &evt)
+		e.Event = evt
+	default:
+		return fmt.Errorf("Unknown event type: %v", rawEvent.Type)
+	}
+
+	return err
 }
 
 // Confirmation is used in Callback API.

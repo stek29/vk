@@ -1,7 +1,8 @@
 package vk
 
 import (
-	"github.com/mailru/easyjson/jlexer"
+	"encoding/json"
+	"fmt"
 )
 
 // Attachment is a wrapper for attachments
@@ -13,88 +14,99 @@ type Attachment struct {
 }
 
 // UnmarshalJSON implements json.Unmarshaler interface
-func (v *Attachment) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	v.UnmarshalEasyJSON(&r)
-	return r.Error()
-}
+func (a *Attachment) UnmarshalJSON(data []byte) error {
+	raw := map[string]json.RawMessage{}
+	err := json.Unmarshal(data, &raw)
+	if err != nil {
+		return err
+	}
 
-// UnmarshalEasyJSON implements easyjson.Unmarshaler interface
-func (v *Attachment) UnmarshalEasyJSON(in *jlexer.Lexer) {
-	in.Delim('{')
+	if len(raw) != 2 {
+		return fmt.Errorf("Unexpected number of fields in Attachment: Expected 1, got %v", len(raw))
+	}
 
-	for !in.IsDelim('}') {
-		key := in.UnsafeString()
-		in.WantColon()
+	var aType string
+	err = json.Unmarshal(raw["type"], &aType)
+	if err != nil {
+		return err
+	}
 
-		switch key {
+	for k, v := range raw {
+		if k == "type" {
+			continue
+		}
+		if k != aType {
+			return fmt.Errorf("Attachment type and field name don't match: aType is %v, field is %v", aType, k)
+		}
+		switch k {
 		case "photo":
-			tmp := Photo{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Photo{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "video":
-			tmp := Video{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Video{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "audio":
-			tmp := Audio{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Audio{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "doc":
-			tmp := Document{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Document{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "link":
-			tmp := Link{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Link{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "note":
-			tmp := Note{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Note{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "poll":
-			tmp := Poll{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Poll{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "page":
-			tmp := Page{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Page{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "album":
-			tmp := Album{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Album{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "market":
-			tmp := MarketItem{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := MarketItem{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "market_album":
-			tmp := MarketAlbum{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := MarketAlbum{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "sticker":
-			tmp := Sticker{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Sticker{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "wall":
-			tmp := Wall{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Wall{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "wall_reply":
-			tmp := WallReply{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := WallReply{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		case "gift":
-			tmp := Gift{}
-			tmp.UnmarshalEasyJSON(in)
-			v.Val = tmp
+			val := Gift{}
+			err = json.Unmarshal(v, &val)
+			a.Val = val
 		default:
-			in.SkipRecursive()
+			return fmt.Errorf("Unknown Attachment type: %v", k)
 		}
 
-		in.WantComma()
+		return err
 	}
-	in.Delim('}')
+
+	panic("unreachable code reached")
 }
 
 //easyjson:json
