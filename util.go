@@ -52,3 +52,20 @@ func (v *BoolInt) UnmarshalJSON(data []byte) error {
 func (v *BoolInt) UnmarshalEasyJSON(in *jlexer.Lexer) {
 	*v = in.Int() != 0
 }
+
+// IntFrac is int type which conforms to easyjson.Unmarshaler interface
+// and unmarshals as float to workaround VK bug with ints being sent
+// as fractionals
+type IntFrac int
+
+// UnmarshalJSON implements json.Unmarshaler interface
+func (v *IntFrac) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	v.UnmarshalEasyJSON(&r)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON implements easyjson.Unmarshaler interface
+func (v *IntFrac) UnmarshalEasyJSON(in *jlexer.Lexer) {
+	*v = IntFrac(int(in.Float32()))
+}

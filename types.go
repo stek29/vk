@@ -271,8 +271,8 @@ const (
 //easyjson:json
 type BaseImage struct {
 	URL    string
-	Width  int
-	Height int
+	Width  IntFrac
+	Height IntFrac
 }
 
 //easyjson:json
