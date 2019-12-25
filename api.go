@@ -85,6 +85,17 @@ func (e *APIError) Error() string {
 	return fmt.Sprintf("vk.APIError %d: %s", e.Code, e.Message)
 }
 
+// HTTPError is a type representing HTTP error returned by VK API
+type HTTPError struct {
+	StatusCode int
+	Status     string
+}
+
+// Error implements error interface
+func (e *HTTPError) Error() string {
+	return fmt.Sprintf("vk.HTTPError %d: %s", e.StatusCode, e.Status)
+}
+
 // APIResponse is a type representing general response returned by VK API
 //
 //easyjson:json
@@ -128,6 +139,13 @@ func (vk *BaseAPI) Request(method string, params interface{}) (json.RawMessage, 
 		return nil, err
 	}
 	defer r.Body.Close()
+
+	if r.StatusCode != http.StatusOK {
+		return nil, &HTTPError{
+			StatusCode: r.StatusCode,
+			Status:     r.Status,
+		}
+	}
 
 	resp := APIResponse{}
 
