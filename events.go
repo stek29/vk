@@ -640,6 +640,22 @@ type GroupOfficersEdit struct {
 	LevelNew GroupOfficerRole `json:"level_new"`
 }
 
+// ChangedStringValue -- holds old and new string values
+//
+//easyjson:json
+type ChangedStringValue struct {
+	OldValue string `json:"old_value"`
+	NewValue string `json:"new_value"`
+}
+
+// ChangedIntValue -- holds old and new int values
+//
+//easyjson:json
+type ChangedIntValue struct {
+	OldValue int `json:"old_value"`
+	NewValue int `json:"new_value"`
+}
+
 // GroupChangeSettings -- changes in community settings
 //
 //easyjson:json
@@ -647,56 +663,26 @@ type GroupChangeSettings struct {
 	// UserID of user who made changes
 	UserID  int `json:"user_id"`
 	Changes struct {
-		Title *struct {
-			OldValue, NewValue string `json:"old_value"`
-		} `json:"title"`
-		Description *struct {
-			OldValue, NewValue string `json:"old_value"`
-		} `json:"description"`
-		Access *struct {
-			OldValue, NewValue string `json:"old_value"`
-		} `json:"access"`
-		ScreenName *struct {
-			OldValue, NewValue string `json:"old_value"`
-		} `json:"screen_name"`
-		PublicCategory *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"public_category"`
-		PublicSubcategory *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"public_subcategory"`
-		Website *struct {
-			OldValue, NewValue string `json:"old_value"`
-		} `json:"website"`
+		Title             *ChangedStringValue `json:"title"`
+		Description       *ChangedStringValue `json:"description"`
+		Access            *ChangedStringValue `json:"access"`
+		ScreenName        *ChangedStringValue `json:"screen_name"`
+		PublicCategory    ChangedIntValue     `json:"public_category"`
+		PublicSubcategory ChangedIntValue     `json:"public_subcategory"`
+		Website           *ChangedStringValue `json:"website"`
 
 		// 0=None, 1=0-16, 2=16+, 3=18+
-		AgeLimits *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"age_limits"`
+		AgeLimits ChangedIntValue `json:"age_limits"`
 		// 0=No one/Disabled, 1=All members/Everyone, 2=Community only
-		Audio *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"audio"`
-		Photo *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"photo"`
-		Video *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"video"`
-		Market *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"market"`
-		Docs *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"docs"`
+		Audio  ChangedIntValue `json:"audio"`
+		Photo  ChangedIntValue `json:"photo"`
+		Video  ChangedIntValue `json:"video"`
+		Market ChangedIntValue `json:"market"`
+		Docs   ChangedIntValue `json:"docs"`
 		// Comments on wall
-		Replies *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"replies"`
+		Replies ChangedIntValue `json:"replies"`
 		// Wall posts?..
-		StatusDefault *struct {
-			OldValue, NewValue int `json:"old_value"`
-		} `json:"status_default"`
+		StatusDefault ChangedIntValue `json:"status_default"`
 	} `json:"changes"`
 }
 
