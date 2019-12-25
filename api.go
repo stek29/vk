@@ -1,6 +1,7 @@
 package vk
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -127,12 +128,11 @@ func (vk *BaseAPI) Request(method string, params interface{}) (json.RawMessage, 
 		return nil, err
 	}
 
-	u.RawQuery = q.Encode()
-
-	req, err := http.NewRequest("GET", u.String(), nil)
+	req, err := http.NewRequest("POST", u.String(), bytes.NewBufferString(q.Encode()))
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 
 	r, err := vk.client.Do(req)
 	if err != nil {
