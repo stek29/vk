@@ -111,148 +111,148 @@ func (a *Attachment) UnmarshalJSON(data []byte) error {
 
 //easyjson:json
 type CropPhoto struct {
-	Photo Photo
+	Photo Photo `json:"photo"`
 	Crop  struct {
-		X  int
-		Y  int
-		X2 int
-		Y2 int
-	}
+		X  int `json:"x"`
+		Y  int `json:"y"`
+		X2 int `json:"x2"`
+		Y2 int `json:"y2"`
+	} `json:"crop"`
 	Rect struct {
-		X  int
-		Y  int
-		X2 int
-		Y2 int
-	}
+		X  int `json:"x"`
+		Y  int `json:"y"`
+		X2 int `json:"x2"`
+		Y2 int `json:"y2"`
+	} `json:"rect"`
 }
 
 //easyjson:json
 type BaseObject struct {
-	ID    int
-	Title string
+	ID    int    `json:"id"`
+	Title string `json:"title"`
 }
 
 //easyjson:json
 type DatabaseCity struct {
 	BaseObject
-	Area      string
-	Region    string
-	Important int
+	Area      string `json:"area"`
+	Region    string `json:"region"`
+	Important int    `json:"important"`
 }
 
 //easyjson:json
 type BaseObjectWithName struct {
-	ID   int
-	Name string
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 //easyjson:json
 type Category struct {
 	BaseObjectWithName
-	Subcategories []BaseObjectWithName
+	Subcategories []BaseObjectWithName `json:"subcategories"`
 }
 
 //easyjson:json
 type MarketCategory struct {
 	BaseObjectWithName
-	Section BaseObjectWithName
+	Section BaseObjectWithName `json:"section"`
 }
 
 //easyjson:json
 type User struct {
-	ID          int
-	FirstName   string
-	LastName    string
-	Deactivated string
+	ID          int    `json:"id"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Deactivated string `json:"deactivated"`
 
-	Sex        int
-	Domain     string
-	MaidenName string
-	Nickname   string
-	ScreenName string
-	Status     string
+	Sex        int    `json:"sex"`
+	Domain     string `json:"domain"`
+	MaidenName string `json:"maiden_name"`
+	Nickname   string `json:"nickname"`
+	ScreenName string `json:"screen_name"`
+	Status     string `json:"status"`
 	BirthDate  string `json:"bdate"`
-	About      string
-	Books      string
-	Activites  string
-	Interests  string
-	Games      string
-	HomeTown   string
-	Movies     string
-	Music      string
-	Quotes     string
-	TV         string
-	Site       string
-	Verified   int
+	About      string `json:"about"`
+	Books      string `json:"books"`
+	Activites  string `json:"activites"`
+	Interests  string `json:"interests"`
+	Games      string `json:"games"`
+	HomeTown   string `json:"home_town"`
+	Movies     string `json:"movies"`
+	Music      string `json:"music"`
+	Quotes     string `json:"quotes"`
+	TV         string `json:"tv"`
+	Site       string `json:"site"`
+	Verified   int    `json:"verified"`
 
 	LastSeen struct {
-		Time     int
-		Platform int
-	}
+		Time     int `json:"time"`
+		Platform int `json:"platform"`
+	} `json:"last_seen"`
 
-	Online       *int
-	OnlineMobile BoolInt
-	OnlineApp    int
+	Online       *int    `json:"online"`
+	OnlineMobile BoolInt `json:"online_mobile"`
+	OnlineApp    int     `json:"online_app"`
 
-	PhotoID      string
-	PhotoMax     string
-	PhotoMaxOrig string
+	PhotoID      string `json:"photo_id"`
+	PhotoMax     string `json:"photo_max"`
+	PhotoMaxOrig string `json:"photo_max_orig"`
 
 	Career []struct {
-		GroupID   int
-		Company   string
-		CountryID int
-		CityID    int
-		CityName  string
-		From      int
-		Until     int
-		Position  string
-	}
-	City        *BaseObject
-	Country     *BaseObject
-	MobilePhone string
-	HomePhone   string
+		GroupID   int    `json:"group_id"`
+		Company   string `json:"company"`
+		CountryID int    `json:"country_id"`
+		CityID    int    `json:"city_id"`
+		CityName  string `json:"city_name"`
+		From      int    `json:"from"`
+		Until     int    `json:"until"`
+		Position  string `json:"position"`
+	} `json:"career"`
+	City        *BaseObject `json:"city"`
+	Country     *BaseObject `json:"country"`
+	MobilePhone string      `json:"mobile_phone"`
+	HomePhone   string      `json:"home_phone"`
 
-	CropPhoto *CropPhoto
+	CropPhoto *CropPhoto `json:"crop_photo"`
 
 	Counters *struct {
-		Albums        int
-		Videos        int
-		Audios        int
-		Photos        int
-		Notes         int
-		Friends       int
-		Groups        int
-		OnlineFriends int
-		MutualFriends int
-		UserVideos    int
-		Followers     int
-		Pages         int
-	}
+		Albums        int `json:"albums"`
+		Videos        int `json:"videos"`
+		Audios        int `json:"audios"`
+		Photos        int `json:"photos"`
+		Notes         int `json:"notes"`
+		Friends       int `json:"friends"`
+		Groups        int `json:"groups"`
+		OnlineFriends int `json:"online_friends"`
+		MutualFriends int `json:"mutual_friends"`
+		UserVideos    int `json:"user_videos"`
+		Followers     int `json:"followers"`
+		Pages         int `json:"pages"`
+	} `json:"counters"`
 
-	CommonCount    int
-	FollowersCount int
-	FriendStatus   int
+	CommonCount    int `json:"common_count"`
+	FollowersCount int `json:"followers_count"`
+	FriendStatus   int `json:"friend_status"`
 
 	// TODO: education, exports, first_name_{case}, last_name_{case}, military, occupation, personal, relatives, relation, schools, universities, wall_default
 	// TODO: Connections
 	// XXX: Can easyjson handle map[string]string?
 
-	CanPost                BoolInt
-	CanSeeAllPosts         BoolInt
-	CanSeeAudio            BoolInt
-	CanSendFriendRequest   BoolInt
-	CanWritePrivateMessage BoolInt
+	CanPost                BoolInt `json:"can_post"`
+	CanSeeAllPosts         BoolInt `json:"can_see_all_posts"`
+	CanSeeAudio            BoolInt `json:"can_see_audio"`
+	CanSendFriendRequest   BoolInt `json:"can_send_friend_request"`
+	CanWritePrivateMessage BoolInt `json:"can_write_private_message"`
 
-	HasMobile BoolInt
-	HasPhoto  BoolInt
+	HasMobile BoolInt `json:"has_mobile"`
+	HasPhoto  BoolInt `json:"has_photo"`
 
-	IsFavorite       BoolInt
-	IsFriend         BoolInt
-	IsHiddenFromFeed BoolInt
+	IsFavorite       BoolInt `json:"is_favorite"`
+	IsFriend         BoolInt `json:"is_friend"`
+	IsHiddenFromFeed BoolInt `json:"is_hidden_from_feed"`
 
-	Blacklisted     BoolInt
-	BlacklistedByMe BoolInt
+	Blacklisted     BoolInt `json:"blacklisted"`
+	BlacklistedByMe BoolInt `json:"blacklisted_by_me"`
 }
 
 const (
@@ -270,92 +270,92 @@ const (
 
 //easyjson:json
 type BaseImage struct {
-	URL    string
-	Width  IntFrac
-	Height IntFrac
+	URL    string  `json:"url"`
+	Width  IntFrac `json:"width"`
+	Height IntFrac `json:"height"`
 }
 
 //easyjson:json
 type Group struct {
-	ID          int
-	Name        string
-	ScreenName  string
-	IsClosed    BoolInt
-	Deactivated string
-	InvitedBy   int
-	Type        string
-	Description string
-	FixedPost   int
+	ID          int     `json:"id"`
+	Name        string  `json:"name"`
+	ScreenName  string  `json:"screen_name"`
+	IsClosed    BoolInt `json:"is_closed"`
+	Deactivated string  `json:"deactivated"`
+	InvitedBy   int     `json:"invited_by"`
+	Type        string  `json:"type"`
+	Description string  `json:"description"`
+	FixedPost   int     `json:"fixed_post"`
 
-	MainAlbumID int
-	MainSection int
+	MainAlbumID int `json:"main_album_id"`
+	MainSection int `json:"main_section"`
 	Market      *struct {
-		Enabled     int
-		PriceMin    int
-		PriceMax    int
-		MainAlbumID int
-		ContactID   int
+		Enabled     int `json:"enabled"`
+		PriceMin    int `json:"price_min"`
+		PriceMax    int `json:"price_max"`
+		MainAlbumID int `json:"main_album_id"`
+		ContactID   int `json:"contact_id"`
 		Currency    struct {
-			ID   int
-			Name string
-		}
-		CurrencyText string
-	}
+			ID   int    `json:"id"`
+			Name string `json:"name"`
+		} `json:"currency"`
+		CurrencyText string `json:"currency_text"`
+	} `json:"market"`
 
-	Photo50  string
-	Photo100 string
-	Photo200 string
+	Photo50  string `json:"photo_50"`
+	Photo100 string `json:"photo_100"`
+	Photo200 string `json:"photo_200"`
 
-	Activity  string
-	AgeLimits int
+	Activity  string `json:"activity"`
+	AgeLimits int    `json:"age_limits"`
 
-	AdminLevel        int
-	IsAdmin           BoolInt
-	IsMember          BoolInt
-	IsFavorite        BoolInt
-	IsHiddenFromFeed  BoolInt
-	IsMessagesBlocked BoolInt
-	CanCreateTopic    BoolInt
-	CanMessage        BoolInt
-	CanPost           BoolInt
-	CanSeeAllPosts    BoolInt
-	CanUploadDoc      BoolInt
-	CanUploadVideo    BoolInt
-	HasPhoto          BoolInt
+	AdminLevel        int     `json:"admin_level"`
+	IsAdmin           BoolInt `json:"is_admin"`
+	IsMember          BoolInt `json:"is_member"`
+	IsFavorite        BoolInt `json:"is_favorite"`
+	IsHiddenFromFeed  BoolInt `json:"is_hidden_from_feed"`
+	IsMessagesBlocked BoolInt `json:"is_messages_blocked"`
+	CanCreateTopic    BoolInt `json:"can_create_topic"`
+	CanMessage        BoolInt `json:"can_message"`
+	CanPost           BoolInt `json:"can_post"`
+	CanSeeAllPosts    BoolInt `json:"can_see_all_posts"`
+	CanUploadDoc      BoolInt `json:"can_upload_doc"`
+	CanUploadVideo    BoolInt `json:"can_upload_video"`
+	HasPhoto          BoolInt `json:"has_photo"`
 
 	BanInfo *struct {
-		EndDate int
-		Comment string
-	}
+		EndDate int    `json:"end_date"`
+		Comment string `json:"comment"`
+	} `json:"ban_info"`
 
-	City    *BaseObject
-	Country *BaseObject
+	City    *BaseObject `json:"city"`
+	Country *BaseObject `json:"country"`
 
 	Cover *struct {
-		Enabled int
-		Images  []BaseImage
-	}
+		Enabled int         `json:"enabled"`
+		Images  []BaseImage `json:"images"`
+	} `json:"cover"`
 
-	CropPhoto *CropPhoto
+	CropPhoto *CropPhoto `json:"crop_photo"`
 
 	Contacts []struct {
-		UserID      int
+		UserID      int    `json:"user_id"`
 		Description string `json:"desc"`
-		Phone       string
-		Email       string
-	}
+		Phone       string `json:"phone"`
+		Email       string `json:"email"`
+	} `json:"contacts"`
 
-	Links []MiniLink
+	Links []MiniLink `json:"links"`
 
 	Counters *struct {
-		Albums int
-		Videos int
-		Audios int
-		Photos int
-		Topics int
-		Docs   int
-		Market int
-	}
+		Albums int `json:"albums"`
+		Videos int `json:"videos"`
+		Audios int `json:"audios"`
+		Photos int `json:"photos"`
+		Topics int `json:"topics"`
+		Docs   int `json:"docs"`
+		Market int `json:"market"`
+	} `json:"counters"`
 }
 
 const (
@@ -387,30 +387,30 @@ const (
 
 //easyjson:json
 type Message struct {
-	ID          int
-	Date        int
-	PeerID      int
-	FromID      int
-	Text        string
-	RandomID    int
-	Attachments []Attachment
-	Important   bool
+	ID          int          `json:"id"`
+	Date        int          `json:"date"`
+	PeerID      int          `json:"peer_id"`
+	FromID      int          `json:"from_id"`
+	Text        string       `json:"text"`
+	RandomID    int          `json:"random_id"`
+	Attachments []Attachment `json:"attachments"`
+	Important   bool         `json:"important"`
 	// TODO: Geo
-	Payload           string
+	Payload           string    `json:"payload"`
 	ForwardedMessages []Message `json:"fwd_messages"`
 
 	// TODO: Action types
 	Action *struct {
-		Type     string
-		MemberID int
-		Text     string
-		Email    string
+		Type     string `json:"type"`
+		MemberID int    `json:"member_id"`
+		Text     string `json:"text"`
+		Email    string `json:"email"`
 		Photo    struct {
-			Photo50  string
-			Photo100 string
-			Photo200 string
-		}
-	}
+			Photo50  string `json:"photo_50"`
+			Photo100 string `json:"photo_100"`
+			Photo200 string `json:"photo_200"`
+		} `json:"photo"`
+	} `json:"action"`
 }
 
 const (
@@ -428,42 +428,42 @@ const (
 //easyjson:json
 type Conversation struct {
 	Peer struct {
-		ID      int
-		Type    string
-		LocalID int
-	}
+		ID      int    `json:"id"`
+		Type    string `json:"type"`
+		LocalID int    `json:"local_id"`
+	} `json:"peer"`
 
-	InRead      int
-	OutRead     int
-	UnreadCount int
+	InRead      int `json:"in_read"`
+	OutRead     int `json:"out_read"`
+	UnreadCount int `json:"unread_count"`
 
-	Important    bool
-	Unanswered   bool
+	Important    bool `json:"important"`
+	Unanswered   bool `json:"unanswered"`
 	PushSettings *struct {
-		DisabledUntil   int
-		DisabledForever bool
-		NoSound         bool
-	}
+		DisabledUntil   int  `json:"disabled_until"`
+		DisabledForever bool `json:"disabled_forever"`
+		NoSound         bool `json:"no_sound"`
+	} `json:"push_settings"`
 
 	CanWrite *struct {
-		Allowed bool
-		Reason  int
-	}
+		Allowed bool `json:"allowed"`
+		Reason  int  `json:"reason"`
+	} `json:"can_write"`
 
 	ChatSettings *struct {
-		MembersCount  int
-		Title         string
-		PinnedMessage *Message
-		State         string
+		MembersCount  int      `json:"members_count"`
+		Title         string   `json:"title"`
+		PinnedMessage *Message `json:"pinned_message"`
+		State         string   `json:"state"`
 
 		Photo struct {
-			Photo50  string
-			Photo100 string
-			Photo200 string
-		}
+			Photo50  string `json:"photo_50"`
+			Photo100 string `json:"photo_100"`
+			Photo200 string `json:"photo_200"`
+		} `json:"photo"`
 
-		ActiveIDs []int
-	}
+		ActiveIDs []int `json:"active_i_ds"`
+	} `json:"chat_settings"`
 }
 
 const (
@@ -489,35 +489,35 @@ const (
 
 //easyjson:json
 type Chat struct {
-	ID           int
-	Type         string
-	Title        string
-	AdminID      int
-	Users        []int
-	MembersCount int
+	ID           int    `json:"id"`
+	Type         string `json:"type"`
+	Title        string `json:"title"`
+	AdminID      int    `json:"admin_id"`
+	Users        []int  `json:"users"`
+	MembersCount int    `json:"members_count"`
 
 	PushSettings struct {
-		Sound         BoolInt
-		DisabledUntil int
-	}
+		Sound         BoolInt `json:"sound"`
+		DisabledUntil int     `json:"disabled_until"`
+	} `json:"push_settings"`
 
-	Photo50  string
-	Photo100 string
-	Photo200 string
+	Photo50  string `json:"photo_50"`
+	Photo100 string `json:"photo_100"`
+	Photo200 string `json:"photo_200"`
 
-	Left   BoolInt
-	Kicked BoolInt
+	Left   BoolInt `json:"left"`
+	Kicked BoolInt `json:"kicked"`
 }
 
 //easyjson:json
 type Comment struct {
-	ID             int
-	FromID         int
-	Date           int
-	Text           string
-	ReplyToUser    int
-	ReplyToComment int
-	Attachments    []Attachment
+	ID             int          `json:"id"`
+	FromID         int          `json:"from_id"`
+	Date           int          `json:"date"`
+	Text           string       `json:"text"`
+	ReplyToUser    int          `json:"reply_to_user"`
+	ReplyToComment int          `json:"reply_to_comment"`
+	Attachments    []Attachment `json:"attachments"`
 }
 
 //easyjson:json
@@ -527,17 +527,17 @@ type VideoFiles struct {
 	MP480    string `json:"mp4_480"`
 	MP720    string `json:"mp4_720"`
 	MP1080   string `json:"mp4_1080"`
-	External string
+	External string `json:"external"`
 }
 
 //easyjson:json
 type Video struct {
-	ID          int
-	OwnerID     int
-	AccessKey   string
-	Title       string
-	Description string
-	Duration    int
+	ID          int    `json:"id"`
+	OwnerID     int    `json:"owner_id"`
+	AccessKey   string `json:"access_key"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Duration    int    `json:"duration"`
 
 	Photo130 string `json:"photo_130"`
 	Photo320 string `json:"photo_320"`
@@ -549,108 +549,108 @@ type Video struct {
 	FirstFrame320 string `json:"first_frame_320"`
 	FirstFrame800 string `json:"first_frame_800"`
 
-	Files *VideoFiles
+	Files *VideoFiles `json:"files"`
 
-	Date       int
-	AddingDate int
-	Views      int
-	Comments   int
-	Width      int
-	Height     int
-	Player     string
-	Platfrom   string
+	Date       int    `json:"date"`
+	AddingDate int    `json:"adding_date"`
+	Views      int    `json:"views"`
+	Comments   int    `json:"comments"`
+	Width      int    `json:"width"`
+	Height     int    `json:"height"`
+	Player     string `json:"player"`
+	Platfrom   string `json:"platfrom"`
 
-	CanEdit    BoolInt
-	CanComment BoolInt
-	CanRepost  BoolInt
-	CanAdd     BoolInt
-	IsPrivate  BoolInt
-	Processing BoolInt
-	Live       BoolInt
-	Upcoming   BoolInt
-	Repeat     BoolInt
+	CanEdit    BoolInt `json:"can_edit"`
+	CanComment BoolInt `json:"can_comment"`
+	CanRepost  BoolInt `json:"can_repost"`
+	CanAdd     BoolInt `json:"can_add"`
+	IsPrivate  BoolInt `json:"is_private"`
+	Processing BoolInt `json:"processing"`
+	Live       BoolInt `json:"live"`
+	Upcoming   BoolInt `json:"upcoming"`
+	Repeat     BoolInt `json:"repeat"`
 
 	Likes struct {
-		UserLikes int
-		Count     int
-	}
+		UserLikes int `json:"user_likes"`
+		Count     int `json:"count"`
+	} `json:"likes"`
 	Reposts struct {
-		UserLikes int
-		Count     int
-	}
+		UserLikes int `json:"user_likes"`
+		Count     int `json:"count"`
+	} `json:"reposts"`
 }
 
 //easyjson:json
 type Audio struct {
-	ID        int
-	OwnerID   int
-	AccessKey string
-	Artist    string
-	Title     string
-	Duration  int
-	URL       string
-	LyricsID  int
-	AlbumID   int
+	ID        int    `json:"id"`
+	OwnerID   int    `json:"owner_id"`
+	AccessKey string `json:"access_key"`
+	Artist    string `json:"artist"`
+	Title     string `json:"title"`
+	Duration  int    `json:"duration"`
+	URL       string `json:"url"`
+	LyricsID  int    `json:"lyrics_id"`
+	AlbumID   int    `json:"album_id"`
 	// TODO: Genre list
-	GenreID      int
-	TrackGenreID int
-	Date         int
-	NoSearch     BoolInt
-	IsLicensed   bool
-	IsHQ         bool
+	GenreID      int     `json:"genre_id"`
+	TrackGenreID int     `json:"track_genre_id"`
+	Date         int     `json:"date"`
+	NoSearch     BoolInt `json:"no_search"`
+	IsLicensed   bool    `json:"is_licensed"`
+	IsHQ         bool    `json:"is_hq"`
 }
 
 //easyjson:json
 type PhotoSize struct {
 	BaseImage
-	Type string
+	Type string `json:"type"`
 }
 
 //easyjson:json
 type Photo struct {
-	ID        int
-	AlbumID   int
-	OwnerID   int
-	UserID    int
-	AccessKey string
-	Text      string
-	Date      int
-	Sizes     []PhotoSize
-	Width     int
-	Height    int
+	ID        int         `json:"id"`
+	AlbumID   int         `json:"album_id"`
+	OwnerID   int         `json:"owner_id"`
+	UserID    int         `json:"user_id"`
+	AccessKey string      `json:"access_key"`
+	Text      string      `json:"text"`
+	Date      int         `json:"date"`
+	Sizes     []PhotoSize `json:"sizes"`
+	Width     int         `json:"width"`
+	Height    int         `json:"height"`
 }
 
 //easyjson:json
 type Document struct {
-	ID        int
-	OwnerID   int
-	AccessKey string
-	Title     string
-	Size      int
-	Ext       string
-	URL       string
-	Date      int
-	Type      int
-	Preview   DocumentPreview
+	ID        int             `json:"id"`
+	OwnerID   int             `json:"owner_id"`
+	AccessKey string          `json:"access_key"`
+	Title     string          `json:"title"`
+	Size      int             `json:"size"`
+	Ext       string          `json:"ext"`
+	URL       string          `json:"url"`
+	Date      int             `json:"date"`
+	Type      int             `json:"type"`
+	Preview   DocumentPreview `json:"preview"`
 }
 
 //easyjson:json
 type DocumentPreview struct {
-	Photo *DocumentPreviewPhoto
-	Video *DocumentPreviewVideo
+	Photo *DocumentPreviewPhoto `json:"photo"`
+	Video *DocumentPreviewVideo `json:"video"`
 }
 
 //easyjson:json
 type DocumentPreviewPhoto struct {
-	Sizes []PhotoSize
+	Sizes []PhotoSize `json:"sizes"`
 }
 
 //easyjson:json
 type DocumentPreviewVideo struct {
-	Src      string
-	Width    int
-	Height   int
-	Filesize int
+	Src      string `json:"src"`
+	Width    int    `json:"width"`
+	Height   int    `json:"height"`
+	Filesize int    `json:"filesize"`
 }
 
 const (
@@ -666,160 +666,160 @@ const (
 
 //easyjson:json
 type Link struct {
-	URL         string
-	Title       string
-	Caption     string
-	Description string
-	Photo       Photo
+	URL         string `json:"url"`
+	Title       string `json:"title"`
+	Caption     string `json:"caption"`
+	Description string `json:"description"`
+	Photo       Photo  `json:"photo"`
 	// TODO: Product
 	// TODO: Button
-	PreviewPage string
-	PreviewURL  string
+	PreviewPage string `json:"preview_page"`
+	PreviewURL  string `json:"preview_url"`
 }
 
 //easyjson:json
 type MiniLink struct {
-	ID          int
-	URL         string
-	Name        string
+	ID          int    `json:"id"`
+	URL         string `json:"url"`
+	Name        string `json:"name"`
 	Description string `json:"desc"`
-	Photo50     string
-	Photo100    string
-	Photo200    string
+	Photo50     string `json:"photo_50"`
+	Photo100    string `json:"photo_100"`
+	Photo200    string `json:"photo_200"`
 }
 
 //easyjson:json
 type Note struct {
-	ID           int
-	OwnerID      int
-	Title        string
-	Text         string
-	Date         int
-	Comments     int
-	ReadComments int
-	ViewURL      string
+	ID           int    `json:"id"`
+	OwnerID      int    `json:"owner_id"`
+	Title        string `json:"title"`
+	Text         string `json:"text"`
+	Date         int    `json:"date"`
+	Comments     int    `json:"comments"`
+	ReadComments int    `json:"read_comments"`
+	ViewURL      string `json:"view_url"`
 }
 
 //easyjson:json
 type PollAnswer struct {
-	ID    int
-	Text  string
-	Votes int
-	Rate  float32
+	ID    int     `json:"id"`
+	Text  string  `json:"text"`
+	Votes int     `json:"votes"`
+	Rate  float32 `json:"rate"`
 }
 
 //easyjson:json
 type Poll struct {
-	ID        int
-	OwnerID   int
-	Created   int
-	Question  string
-	Votes     int
-	AnswerID  int
-	Asnwers   []PollAnswer
-	Anonymous BoolInt
+	ID        int          `json:"id"`
+	OwnerID   int          `json:"owner_id"`
+	Created   int          `json:"created"`
+	Question  string       `json:"question"`
+	Votes     int          `json:"votes"`
+	AnswerID  int          `json:"answer_id"`
+	Asnwers   []PollAnswer `json:"asnwers"`
+	Anonymous BoolInt      `json:"anonymous"`
 }
 
 //easyjson:json
 type BoardTopicPoll struct {
-	PollID   int
-	OwnerID  int
-	Created  int
-	Question string
-	Votes    int
-	AnswerID int
-	Asnwers  []PollAnswer
+	PollID   int          `json:"poll_id"`
+	OwnerID  int          `json:"owner_id"`
+	Created  int          `json:"created"`
+	Question string       `json:"question"`
+	Votes    int          `json:"votes"`
+	AnswerID int          `json:"answer_id"`
+	Asnwers  []PollAnswer `json:"asnwers"`
 }
 
 //easyjson:json
 type Page struct {
-	ID                       int
-	GroupID                  int
-	CreatorID                int
-	Title                    string
-	CurrentUserCanEdit       BoolInt
-	CurrentUserCanEditAccess BoolInt
+	ID                       int     `json:"id"`
+	GroupID                  int     `json:"group_id"`
+	CreatorID                int     `json:"creator_id"`
+	Title                    string  `json:"title"`
+	CurrentUserCanEdit       BoolInt `json:"current_user_can_edit"`
+	CurrentUserCanEditAccess BoolInt `json:"current_user_can_edit_access"`
 	// TODO: enums
-	WhoCanView int
-	WhoCanEdit int
-	Edited     int
-	Created    int
-	EditorID   int
-	Views      int
-	Parent     string
-	Parent2    string
-	Source     string
-	HTML       string
-	ViewURL    string
+	WhoCanView int    `json:"who_can_view"`
+	WhoCanEdit int    `json:"who_can_edit"`
+	Edited     int    `json:"edited"`
+	Created    int    `json:"created"`
+	EditorID   int    `json:"editor_id"`
+	Views      int    `json:"views"`
+	Parent     string `json:"parent"`
+	Parent2    string `json:"parent2"`
+	Source     string `json:"source"`
+	HTML       string `json:"html"`
+	ViewURL    string `json:"view_url"`
 }
 
 //easyjson:json
 type Album struct {
-	ID          int
-	Thumb       Photo
-	OwnerID     int
-	Title       string
-	Description string
-	Created     int
-	Updated     int
-	Size        int
+	ID          int    `json:"id"`
+	Thumb       Photo  `json:"thumb"`
+	OwnerID     int    `json:"owner_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Created     int    `json:"created"`
+	Updated     int    `json:"updated"`
+	Size        int    `json:"size"`
 }
 
 // TODO: PhotosList
 
 //easyjson:json
 type MarketItem struct {
-	ID          int
-	OwnerID     int
-	Title       string
-	Description string
+	ID          int    `json:"id"`
+	OwnerID     int    `json:"owner_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
 	Price       struct {
-		Amount   int
+		Amount   int `json:"amount"`
 		Currency struct {
-			ID   int
-			Name string
-		}
-		Text string
-	}
-	Category   MarketCategory
-	ThumbPhoto string
-	Date       int
+			ID   int    `json:"id"`
+			Name string `json:"name"`
+		} `json:"currency"`
+		Text string `json:"text"`
+	} `json:"price"`
+	Category   MarketCategory `json:"category"`
+	ThumbPhoto string         `json:"thumb_photo"`
+	Date       int            `json:"date"`
 	// TODO: Availability enum/type
-	Availability int
+	Availability int `json:"availability"`
 
-	Photos     []Photo
-	CanComment BoolInt
-	CanRepost  BoolInt
+	Photos     []Photo `json:"photos"`
+	CanComment BoolInt `json:"can_comment"`
+	CanRepost  BoolInt `json:"can_repost"`
 	Likes      struct {
-		UserLikes int
-		Count     int
-	}
+		UserLikes int `json:"user_likes"`
+		Count     int `json:"count"`
+	} `json:"likes"`
 }
 
 //easyjson:json
 type MarketAlbum struct {
-	ID          int
-	OwnerID     int
-	Title       string
-	Photo       Photo
-	Count       int
-	UpdatedTime int
+	ID          int    `json:"id"`
+	OwnerID     int    `json:"owner_id"`
+	Title       string `json:"title"`
+	Photo       Photo  `json:"photo"`
+	Count       int    `json:"count"`
+	UpdatedTime int    `json:"updated_time"`
 }
 
 //easyjson:json
 type Sticker struct {
-	ProductID int
-	StickerID int
+	ProductID int `json:"product_id"`
+	StickerID int `json:"sticker_id"`
 	Images    []struct {
-		URL    string
-		Width  int
-		Height int
-	}
+		URL    string `json:"url"`
+		Width  int    `json:"width"`
+		Height int    `json:"height"`
+	} `json:"images"`
 	ImagesWithBackground []struct {
-		URL    string
-		Width  int
-		Height int
-	}
+		URL    string `json:"url"`
+		Width  int    `json:"width"`
+		Height int    `json:"height"`
+	} `json:"images_with_background"`
 }
 
 // TODO: PrettyCards
@@ -827,59 +827,59 @@ type Sticker struct {
 //easyjson:json
 type WallReply struct {
 	Comment
-	PostID  int
-	OwnerID int
+	PostID  int `json:"post_id"`
+	OwnerID int `json:"owner_id"`
 }
 
 //easyjson:json
 type Gift struct {
-	ID       int
-	Thumb256 string
-	Thumb96  string
-	Thumb48  string
+	ID       int    `json:"id"`
+	Thumb256 string `json:"thumb_256"`
+	Thumb96  string `json:"thumb_96"`
+	Thumb48  string `json:"thumb_48"`
 }
 
 //easyjson:json
 type Post struct {
-	ID           int
-	OwnerID      int
-	FromID       int
-	AccessKey    string
-	CreatedBy    int
-	Date         int
-	Text         string
-	ReplyOwnerID int
-	ReplyPostID  int
-	FriendsOnly  BoolInt
+	ID           int     `json:"id"`
+	OwnerID      int     `json:"owner_id"`
+	FromID       int     `json:"from_id"`
+	AccessKey    string  `json:"access_key"`
+	CreatedBy    int     `json:"created_by"`
+	Date         int     `json:"date"`
+	Text         string  `json:"text"`
+	ReplyOwnerID int     `json:"reply_owner_id"`
+	ReplyPostID  int     `json:"reply_post_id"`
+	FriendsOnly  BoolInt `json:"friends_only"`
 	Comments     *struct {
-		Count         int
-		CanPost       BoolInt
-		GroupsCanPost bool
-	}
+		Count         int     `json:"count"`
+		CanPost       BoolInt `json:"can_post"`
+		GroupsCanPost bool    `json:"groups_can_post"`
+	} `json:"comments"`
 	Likes *struct {
-		Count      int
-		UserLikes  BoolInt
-		CanLike    BoolInt
-		CanPublish BoolInt
-	}
+		Count      int     `json:"count"`
+		UserLikes  BoolInt `json:"user_likes"`
+		CanLike    BoolInt `json:"can_like"`
+		CanPublish BoolInt `json:"can_publish"`
+	} `json:"likes"`
 	Reposts *struct {
-		Count        int
-		UserReposted BoolInt
-	}
+		Count        int     `json:"count"`
+		UserReposted BoolInt `json:"user_reposted"`
+	} `json:"reposts"`
 	Views *struct {
-		Count int
-	}
-	PostType string
+		Count int `json:"count"`
+	} `json:"views"`
+	PostType string `json:"post_type"`
 	// TODO: PostSource
-	Attachments []Attachment
+	Attachments []Attachment `json:"attachments"`
 	// TODO: Geo
-	SignerID    int
-	CopyHistory []Post
-	CanPin      BoolInt
-	CanDelete   BoolInt
-	CanEdit     BoolInt
-	IsPinned    BoolInt
-	MarkedAsAds BoolInt
+	SignerID    int     `json:"signer_id"`
+	CopyHistory []Post  `json:"copy_history"`
+	CanPin      BoolInt `json:"can_pin"`
+	CanDelete   BoolInt `json:"can_delete"`
+	CanEdit     BoolInt `json:"can_edit"`
+	IsPinned    BoolInt `json:"is_pinned"`
+	MarkedAsAds BoolInt `json:"marked_as_ads"`
 }
 
 const (
@@ -893,21 +893,21 @@ const (
 //easyjson:json
 type Wall struct {
 	Post
-	ToID int
+	ToID int `json:"to_id"`
 }
 
 //easyjson:json
 type CommentBoard struct {
-	ID          int
-	FromID      int
-	Date        int
-	Text        string
-	Attachments []Attachment
+	ID          int          `json:"id"`
+	FromID      int          `json:"from_id"`
+	Date        int          `json:"date"`
+	Text        string       `json:"text"`
+	Attachments []Attachment `json:"attachments"`
 	Likes       struct {
-		Count     int
-		UserLikes int
-		CanLike   int
-	}
+		Count     int `json:"count"`
+		UserLikes int `json:"user_likes"`
+		CanLike   int `json:"can_like"`
+	} `json:"likes"`
 	// XXX: Is RealOffset real?
 }
 
@@ -915,67 +915,67 @@ type CommentBoard struct {
 
 //easyjson:json
 type BoardTopic struct {
-	ID        int
-	Title     string
-	Created   int
-	CreatedBy int
-	Updated   int
-	UpdatedBy int
-	IsClosed  BoolInt
-	IsFixed   BoolInt
-	Comments  int
+	ID        int     `json:"id"`
+	Title     string  `json:"title"`
+	Created   int     `json:"created"`
+	CreatedBy int     `json:"created_by"`
+	Updated   int     `json:"updated"`
+	UpdatedBy int     `json:"updated_by"`
+	IsClosed  BoolInt `json:"is_closed"`
+	IsFixed   BoolInt `json:"is_fixed"`
+	Comments  int     `json:"comments"`
 }
 
 //easyjson:json
 type Place struct {
 	// Place ID
-	ID int
+	ID int `json:"id"`
 	// Place title
-	Title string
+	Title string `json:"title"`
 	// Place latitude
-	Latitude float32
+	Latitude float32 `json:"latitude"`
 	// Place longitude
-	Longitude float32
+	Longitude float32 `json:"longitude"`
 	// Date of the place creation in Unixtime
-	Created int
+	Created int `json:"created"`
 	// URL of the place's icon
-	Icon string
+	Icon string `json:"icon"`
 	// Checkins number
-	Checkins int
+	Checkins int `json:"checkins"`
 	// Place type
-	Type string
+	Type string `json:"type"`
 	// Country ID
-	Country int
+	Country int `json:"country"`
 	// City ID
-	City int
+	City int `json:"city"`
 	// Place address
-	Place string
+	Place string `json:"place"`
 	// Distance to the place
-	Distance int
+	Distance int `json:"distance"`
 	// Community ID
-	GroupID int
+	GroupID int `json:"group_id"`
 	// URL of the community's photo
-	GroupPhoto string
+	GroupPhoto string `json:"group_photo"`
 }
 
 //easyjson:json
 type WallpostStats struct {
 	// Subscribers reach
-	ReachSubscribers int
+	ReachSubscribers int `json:"reach_subscribers"`
 	// Total reach
-	ReachTotal int
+	ReachTotal int `json:"reach_total"`
 	// Link clickthrough
-	Links int
+	Links int `json:"links"`
 	// Clickthrough to community
-	ToGroup int
+	ToGroup int `json:"to_group"`
 	// People have joined the group
-	JoinGroup int
+	JoinGroup int `json:"join_group"`
 	// Reports number
-	Report int
+	Report int `json:"report"`
 	// Hidings number
-	Hide int
+	Hide int `json:"hide"`
 	// Unsubscribed members
-	Unsubscribe int
+	Unsubscribe int `json:"unsubscribe"`
 }
 
 const (
@@ -985,57 +985,57 @@ const (
 
 //easyjson:json
 type StoryVideo struct {
-	Video
-	IsPrivate BoolInt
+	Video     `json:"video"`
+	IsPrivate BoolInt `json:"is_private"`
 }
 
 //easyjson:json
 type Story struct {
 	// Story ID.
-	ID int
+	ID int `json:"id"`
 	// Story owner's ID.
-	OwnerID int
+	OwnerID int `json:"owner_id"`
 	// Date when story has been added in Unixtime.
-	Date int
+	Date int `json:"date"`
 	// Information whether current user has seen the story or not (0 - no, 1 - yes).
-	Seen  BoolInt
-	Type  string
-	Photo *Photo
-	Video *StoryVideo
+	Seen  BoolInt     `json:"seen"`
+	Type  string      `json:"type"`
+	Photo *Photo      `json:"photo"`
+	Video *StoryVideo `json:"video"`
 	// Views number.
-	Views int
+	Views int `json:"views"`
 	// Information whether current user can see the story (0 - no, 1 - yes).
-	CanSee BoolInt
+	CanSee BoolInt `json:"can_see"`
 	// Information whether current user can reply to the story (0 - no, 1 - yes).
-	CanReply BoolInt
+	CanReply BoolInt `json:"can_reply"`
 	// Information whether current user can share the story (0 - no, 1 - yes).
-	CanShare BoolInt
+	CanShare BoolInt `json:"can_share"`
 	// Information whether current user can comment the story (0 - no, 1 - yes).
-	CanComment BoolInt
+	CanComment BoolInt `json:"can_comment"`
 	// Information whether the story is deleted (false - no, true - yes).
-	IsDeleted bool
+	IsDeleted bool `json:"is_deleted"`
 	// Information whether the story is expired (false - no, true - yes).
-	IsExpired bool
+	IsExpired bool `json:"is_expired"`
 	// Access key for private object.
-	AccessKey string
+	AccessKey string `json:"access_key"`
 	// Parent story owner's ID.
-	ParentStoryOwnerID int
+	ParentStoryOwnerID int `json:"parent_story_owner_id"`
 	// Parent story ID.
-	ParentStoryID int
+	ParentStoryID int `json:"parent_story_id"`
 	// Access key for private object.
-	ParentStoryAccessKey string
-	ParentStory          *Story
+	ParentStoryAccessKey string `json:"parent_story_access_key"`
+	ParentStory          *Story `json:"parent_story"`
 	Link                 struct {
 		// Link text
-		Text string
+		Text string `json:"text"`
 		// Link URL
-		URL string
-	}
+		URL string `json:"url"`
+	} `json:"link"`
 	// Replies to current story.
 	Replies []struct {
 		// Replies number.
-		Count int
+		Count int `json:"count"`
 		// New replies number.
-		New int
-	}
+		New int `json:"new"`
+	} `json:"replies"`
 }

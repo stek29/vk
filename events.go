@@ -252,16 +252,16 @@ type MessageEdit struct {
 //
 //easyjson:json
 type MessageAllow struct {
-	UserID int
+	UserID int `json:"user_id"`
 	// Key is parameter from messages.allowMessagesFromGroup
-	Key string
+	Key string `json:"key"`
 }
 
 // MessageDeny -- new user prohibition to messages sending
 //
 //easyjson:json
 type MessageDeny struct {
-	UserID int
+	UserID int `json:"user_id"`
 }
 
 // MessageTypingState -- new message typing state
@@ -269,11 +269,11 @@ type MessageDeny struct {
 //easyjson:json
 type MessageTypingState struct {
 	// State is always "typing" (XXX: Ask VK devs)
-	State string
+	State string `json:"state"`
 	// FromID of peer who's typing
-	FromID int
+	FromID int `json:"from_id"`
 	// ToID of other peer
-	ToID int
+	ToID int `json:"to_id"`
 }
 
 // PhotoNew -- new photo in community
@@ -289,8 +289,8 @@ type PhotoNew struct {
 type PhotoCommentNew struct {
 	Comment
 
-	PhotoID      int
-	PhotoOwnerID int
+	PhotoID      int `json:"photo_id"`
+	PhotoOwnerID int `json:"photo_owner_id"`
 }
 
 // PhotoCommentEdit -- photo comment edited
@@ -299,8 +299,8 @@ type PhotoCommentNew struct {
 type PhotoCommentEdit struct {
 	Comment
 
-	PhotoID      int
-	PhotoOwnerID int
+	PhotoID      int `json:"photo_id"`
+	PhotoOwnerID int `json:"photo_owner_id"`
 }
 
 // PhotoCommentRestore -- photo comment restored
@@ -309,19 +309,19 @@ type PhotoCommentEdit struct {
 type PhotoCommentRestore struct {
 	Comment
 
-	PhotoID      int
-	PhotoOwnerID int
+	PhotoID      int `json:"photo_id"`
+	PhotoOwnerID int `json:"photo_owner_id"`
 }
 
 // PhotoCommentDelete -- photo comment deleted
 //
 //easyjson:json
 type PhotoCommentDelete struct {
-	OwnerID   int
-	ID        int
-	UserID    int
-	DeleterID int
-	PhotoID   int
+	OwnerID   int `json:"owner_id"`
+	ID        int `json:"id"`
+	UserID    int `json:"user_id"`
+	DeleterID int `json:"deleter_id"`
+	PhotoID   int `json:"photo_id"`
 }
 
 // AudioNew -- new audio in community
@@ -344,8 +344,8 @@ type VideoNew struct {
 type VideoCommentNew struct {
 	Comment
 
-	VideoID      int
-	VideoOwnerID int
+	VideoID      int `json:"video_id"`
+	VideoOwnerID int `json:"video_owner_id"`
 }
 
 // VideoCommentEdit -- video comment edited
@@ -354,8 +354,8 @@ type VideoCommentNew struct {
 type VideoCommentEdit struct {
 	Comment
 
-	VideoID      int
-	VideoOwnerID int
+	VideoID      int `json:"video_id"`
+	VideoOwnerID int `json:"video_owner_id"`
 }
 
 // VideoCommentRestore -- video comment restored
@@ -364,19 +364,19 @@ type VideoCommentEdit struct {
 type VideoCommentRestore struct {
 	Comment
 
-	VideoID      int
-	VideoOwnerID int
+	VideoID      int `json:"video_id"`
+	VideoOwnerID int `json:"video_owner_id"`
 }
 
 // VideoCommentDelete -- video comment deleted
 //
 //easyjson:json
 type VideoCommentDelete struct {
-	OwnerID   int
-	ID        int
-	UserID    int
-	DeleterID int
-	VideoID   int
+	OwnerID   int `json:"owner_id"`
+	ID        int `json:"id"`
+	UserID    int `json:"user_id"`
+	DeleterID int `json:"deleter_id"`
+	VideoID   int `json:"video_id"`
 }
 
 // WallPostNew -- new post on community wall
@@ -385,7 +385,7 @@ type VideoCommentDelete struct {
 type WallPostNew struct {
 	Post
 
-	PostponedID int
+	PostponedID int `json:"postponed_id"`
 }
 
 // WallRepost -- new repost
@@ -395,7 +395,7 @@ type WallPostNew struct {
 type WallRepost struct {
 	Post
 
-	PostponedID int
+	PostponedID int `json:"postponed_id"`
 }
 
 // WallReplyNew -- new wall comment
@@ -404,8 +404,8 @@ type WallRepost struct {
 type WallReplyNew struct {
 	Comment
 
-	PostID      int
-	PostOwnerID int
+	PostID      int `json:"post_id"`
+	PostOwnerID int `json:"post_owner_id"`
 }
 
 // WallReplyEdit -- wall comment edited
@@ -414,8 +414,8 @@ type WallReplyNew struct {
 type WallReplyEdit struct {
 	Comment
 
-	PostID      int
-	PostOwnerID int
+	PostID      int `json:"post_id"`
+	PostOwnerID int `json:"post_owner_id"`
 }
 
 // WallReplyRestore -- wall comment restored
@@ -424,18 +424,18 @@ type WallReplyEdit struct {
 type WallReplyRestore struct {
 	Comment
 
-	PostID      int
-	PostOwnerID int
+	PostID      int `json:"post_id"`
+	PostOwnerID int `json:"post_owner_id"`
 }
 
 // WallReplyDelete -- wall comment deleted
 //
 //easyjson:json
 type WallReplyDelete struct {
-	OwnerID   int
-	ID        int
-	DeleterID int
-	PostID    int
+	OwnerID   int `json:"owner_id"`
+	ID        int `json:"id"`
+	DeleterID int `json:"deleter_id"`
+	PostID    int `json:"post_id"`
 }
 
 // BoardPostNew -- new board comment
@@ -444,8 +444,8 @@ type WallReplyDelete struct {
 type BoardPostNew struct {
 	CommentBoard
 
-	TopicID      int
-	TopicOwnerID int
+	TopicID      int `json:"topic_id"`
+	TopicOwnerID int `json:"topic_owner_id"`
 }
 
 // BoardPostEdit -- board comment edited
@@ -454,8 +454,8 @@ type BoardPostNew struct {
 type BoardPostEdit struct {
 	CommentBoard
 
-	TopicID      int
-	TopicOwnerID int
+	TopicID      int `json:"topic_id"`
+	TopicOwnerID int `json:"topic_owner_id"`
 }
 
 // BoardPostRestore -- board comment restored
@@ -464,17 +464,17 @@ type BoardPostEdit struct {
 type BoardPostRestore struct {
 	CommentBoard
 
-	TopicID      int
-	TopicOwnerID int
+	TopicID      int `json:"topic_id"`
+	TopicOwnerID int `json:"topic_owner_id"`
 }
 
 // BoardPostDelete -- board comment deleted
 //
 //easyjson:json
 type BoardPostDelete struct {
-	TopicOwnerID int
-	TopicID      int
-	ID           int
+	TopicOwnerID int `json:"topic_owner_id"`
+	TopicID      int `json:"topic_id"`
+	ID           int `json:"id"`
 }
 
 // MarketCommentNew -- new market comment
@@ -483,8 +483,8 @@ type BoardPostDelete struct {
 type MarketCommentNew struct {
 	Comment
 
-	MarketOwnerID int
-	ItemID        int
+	MarketOwnerID int `json:"market_owner_id"`
+	ItemID        int `json:"item_id"`
 }
 
 // MarketCommentEdit -- market comment edited
@@ -493,8 +493,8 @@ type MarketCommentNew struct {
 type MarketCommentEdit struct {
 	Comment
 
-	MarketOwnerID int
-	ItemID        int
+	MarketOwnerID int `json:"market_owner_id"`
+	ItemID        int `json:"item_id"`
 }
 
 // MarketCommentRestore -- marked comment restored
@@ -503,19 +503,19 @@ type MarketCommentEdit struct {
 type MarketCommentRestore struct {
 	Comment
 
-	MarketOwnerID int
-	ItemID        int
+	MarketOwnerID int `json:"market_owner_id"`
+	ItemID        int `json:"item_id"`
 }
 
 // MarketCommentDelete -- market comment deleted
 //
 //easyjson:json
 type MarketCommentDelete struct {
-	OwnerID   int
-	ID        int
-	UserID    int
-	DeleterID int
-	ItemID    int
+	OwnerID   int `json:"owner_id"`
+	ID        int `json:"id"`
+	UserID    int `json:"user_id"`
+	DeleterID int `json:"deleter_id"`
+	ItemID    int `json:"item_id"`
 }
 
 // GroupLeave -- member removed from community
@@ -523,9 +523,9 @@ type MarketCommentDelete struct {
 //easyjson:json
 type GroupLeave struct {
 	// UserID of user who has left
-	UserID int
+	UserID int `json:"user_id"`
 	// Self is true if user has left on its own and false if user was kicked
-	Self BoolInt
+	Self BoolInt `json:"self"`
 }
 
 // GroupJoinType is type for GroupJoin event
@@ -549,9 +549,9 @@ const (
 //easyjson:json
 type GroupJoin struct {
 	// UserID who has joined
-	UserID int
+	UserID int `json:"user_id"`
 	// JoinType is how user got into group
-	JoinType GroupJoinType
+	JoinType GroupJoinType `json:"join_type"`
 }
 
 // UserBlockReason is the reason why user was blocked
@@ -575,15 +575,15 @@ const (
 //easyjson:json
 type UserBlock struct {
 	// AdminID of admin who has blocked user
-	AdminID int
+	AdminID int `json:"admin_id"`
 	// UserID who was unlocked
-	UserID int
+	UserID int `json:"user_id"`
 	// UnblockDate when the user will be unblocked
-	UnblockDate int
+	UnblockDate int `json:"unblock_date"`
 	// Reason of block
-	Reason UserBlockReason
+	Reason UserBlockReason `json:"reason"`
 	// Comment attached to block
-	Comment string
+	Comment string `json:"comment"`
 }
 
 // UserUnblock -- user has been removed from the blacklist
@@ -591,11 +591,11 @@ type UserBlock struct {
 //easyjson:json
 type UserUnblock struct {
 	// AdminID of admin who has unblocked user
-	AdminID int
+	AdminID int `json:"admin_id"`
 	// UserID who was unlocked
-	UserID int
+	UserID int `json:"user_id"`
 	// ByEndDate is true if the ban has expired
-	ByEndDate BoolInt
+	ByEndDate BoolInt `json:"by_end_date"`
 }
 
 // PollVoteNew -- new vote in a public poll
@@ -603,13 +603,13 @@ type UserUnblock struct {
 //easyjson:json
 type PollVoteNew struct {
 	// OwnerID of poll
-	OwnerID int
+	OwnerID int `json:"owner_id"`
 	// PollID of poll
-	PollID int
+	PollID int `json:"poll_id"`
 	// OptionID of option in poll
-	OptionID int
+	OptionID int `json:"option_id"`
 	// UserID of user who has voted
-	UserID int
+	UserID int `json:"user_id"`
 }
 
 // GroupOfficerRole is role of group admin
@@ -631,13 +631,13 @@ const (
 //easyjson:json
 type GroupOfficersEdit struct {
 	// AdminID of administrator who made changes
-	AdminID int
+	AdminID int `json:"admin_id"`
 	// UserID of whose role was changed
-	UserID int
+	UserID int `json:"user_id"`
 	// LevelOld is old role
-	LevelOld GroupOfficerRole
+	LevelOld GroupOfficerRole `json:"level_old"`
 	// LevelNew is new role
-	LevelNew GroupOfficerRole
+	LevelNew GroupOfficerRole `json:"level_new"`
 }
 
 // GroupChangeSettings -- changes in community settings
@@ -645,29 +645,59 @@ type GroupOfficersEdit struct {
 //easyjson:json
 type GroupChangeSettings struct {
 	// UserID of user who made changes
-	UserID  int
+	UserID  int `json:"user_id"`
 	Changes struct {
-		Title             *struct{ OldValue, NewValue string }
-		Description       *struct{ OldValue, NewValue string }
-		Access            *struct{ OldValue, NewValue string }
-		ScreenName        *struct{ OldValue, NewValue string }
-		PublicCategory    *struct{ OldValue, NewValue int }
-		PublicSubcategory *struct{ OldValue, NewValue int }
-		Website           *struct{ OldValue, NewValue string }
+		Title *struct {
+			OldValue, NewValue string `json:"old_value"`
+		} `json:"title"`
+		Description *struct {
+			OldValue, NewValue string `json:"old_value"`
+		} `json:"description"`
+		Access *struct {
+			OldValue, NewValue string `json:"old_value"`
+		} `json:"access"`
+		ScreenName *struct {
+			OldValue, NewValue string `json:"old_value"`
+		} `json:"screen_name"`
+		PublicCategory *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"public_category"`
+		PublicSubcategory *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"public_subcategory"`
+		Website *struct {
+			OldValue, NewValue string `json:"old_value"`
+		} `json:"website"`
 
 		// 0=None, 1=0-16, 2=16+, 3=18+
-		AgeLimits *struct{ OldValue, NewValue int }
+		AgeLimits *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"age_limits"`
 		// 0=No one/Disabled, 1=All members/Everyone, 2=Community only
-		Audio  *struct{ OldValue, NewValue int }
-		Photo  *struct{ OldValue, NewValue int }
-		Video  *struct{ OldValue, NewValue int }
-		Market *struct{ OldValue, NewValue int }
-		Docs   *struct{ OldValue, NewValue int }
+		Audio *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"audio"`
+		Photo *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"photo"`
+		Video *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"video"`
+		Market *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"market"`
+		Docs *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"docs"`
 		// Comments on wall
-		Replies *struct{ OldValue, NewValue int }
+		Replies *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"replies"`
 		// Wall posts?..
-		StatusDefault *struct{ OldValue, NewValue int }
-	}
+		StatusDefault *struct {
+			OldValue, NewValue int `json:"old_value"`
+		} `json:"status_default"`
+	} `json:"changes"`
 }
 
 // GroupChangePhoto -- changes of community main photo
@@ -675,9 +705,9 @@ type GroupChangeSettings struct {
 //easyjson:json
 type GroupChangePhoto struct {
 	// UserID of user who changed photo
-	UserID int
+	UserID int `json:"user_id"`
 	// Photo new photo
-	Photo Photo
+	Photo Photo `json:"photo"`
 }
 
 // LeadFormsNew -- new lead forms filled
