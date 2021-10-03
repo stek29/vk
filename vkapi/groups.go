@@ -2,7 +2,6 @@ package vkapi
 
 import (
 	"encoding/json"
-	"strconv"
 
 	"github.com/stek29/vk"
 )
@@ -32,7 +31,8 @@ type GroupsIsMemberResponse interface {
 
 // GroupsIsMemberResponseNormal is non-extended version of GroupsIsMemberResponse
 // Information whether user is a member of the group
-type GroupsIsMemberResponseNormal int
+//easyjson:json
+type GroupsIsMemberResponseNormal vk.BoolInt
 
 func (GroupsIsMemberResponseNormal) isGroupsIsMember() {}
 
@@ -63,11 +63,7 @@ func (v Groups) IsMember(params GroupsIsMemberParams) (GroupsIsMemberResponse, e
 		resp = &tmp
 	} else {
 		var tmp GroupsIsMemberResponseNormal
-
-		var cnv int
-		cnv, err = strconv.Atoi(string(r))
-		tmp = GroupsIsMemberResponseNormal(cnv)
-
+		err = json.Unmarshal(r, &tmp)
 		resp = &tmp
 	}
 	if err != nil {
@@ -349,14 +345,8 @@ func (GroupsGetCatalogInfoResponseNormal) isGroupsGetCatalogInfo() {}
 //easyjson:json
 type GroupsGetCatalogInfoResponseExtended struct {
 	// Information whether catalog is enabled for current user
-	Enabled    int `json:"enabled,omitempty"`
-	Categories []struct {
-		vk.Category
-
-		// Pages number
-		PageCount    int        `json:"page_count,omitempty"`
-		PagePreviews []vk.Group `json:"page_previews,omitempty"`
-	} `json:"categories,omitempty"`
+	Enabled    int           `json:"enabled,omitempty"`
+	Categories []vk.Category `json:"categories,omitempty"`
 }
 
 func (GroupsGetCatalogInfoResponseExtended) isGroupsGetCatalogInfo() {}
@@ -481,50 +471,6 @@ func (v Groups) GetInvitedUsers(params GroupsGetInvitedUsersParams) (*GroupsGetI
 	return &resp, nil
 }
 
-// GroupsBanParams are params for Groups.Ban
-type GroupsBanParams struct {
-	// Community ID.
-	GroupID int `url:"group_id"`
-	// User/Group ID to be banned.
-	OwnerID int `url:"owner_id"`
-	// Date (in Unix time) when the user will be removed from the blacklist.
-	EndDate int `url:"end_date,omitempty"`
-	// Reason for ban: '1' — spam, '2' — verbal abuse, '3' — strong language, '4' — irrelevant messages, '0' — other (default)
-	Reason int `url:"reason,omitempty"`
-	// Text of comment to ban.
-	Comment string `url:"comment,omitempty"`
-	// '1' — text of comment will be visible to the user,, '0' — text of comment will be invisible to the user. By default: '0'.
-	CommentVisible bool `url:"comment_visible,omitempty"`
-}
-
-// Ban Adds a user or group to a community blacklist.
-func (v Groups) Ban(params GroupsBanParams) (bool, error) {
-	r, err := v.API.Request("groups.ban", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
-}
-
-// GroupsUnbanParams are params for Groups.Unban
-type GroupsUnbanParams struct {
-	// Community ID.
-	GroupID int `url:"group_id"`
-	// User/Group ID to be banned.
-	UserID int `url:"user_id"`
-}
-
-// Unban Removes a user or group from a community blacklist.
-func (v Groups) Unban(params GroupsUnbanParams) (bool, error) {
-	r, err := v.API.Request("groups.unban", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
-}
-
 // GroupsGetBannedParams are params for Groups.GetBanned
 type GroupsGetBannedParams struct {
 	// Community ID.
@@ -532,9 +478,9 @@ type GroupsGetBannedParams struct {
 	// Offset needed to return a specific subset of users.
 	Offset int `url:"offset,omitempty"`
 	// Number of users to return.
-	Count  int            `url:"count,omitempty"`
-	Fields CSVStringSlice `url:"fields,omitempty"`
-	UserID int            `url:"user_id,omitempty"`
+	Count   int            `url:"count,omitempty"`
+	Fields  CSVStringSlice `url:"fields,omitempty"`
+	OwnerID int            `url:"owner_id,omitempty"`
 }
 
 // GroupsGetBannedResponse is response for Groups.GetBanned
@@ -669,7 +615,9 @@ type GroupsEditParams struct {
 	// Wiki pages settings. Possible values: *'0' – disabled,, *'1' – open,, *'2' – limited (for groups and events only).
 	Wiki int `url:"wiki,omitempty"`
 	// Community messages. Possible values: *'0' — disabled,, *'1' — enabled.
-	Messages bool `url:"messages,omitempty"`
+	Messages  bool `url:"messages,omitempty"`
+	Articles  bool `url:"articles,omitempty"`
+	Addresses bool `url:"addresses,omitempty"`
 	// Community age limits. Possible values: *'1' — no limits,, *'2' — 16+,, *'3' — 18+.
 	AgeLimits int `url:"age_limits,omitempty"`
 	// Market settings. Possible values: *'0' – disabled,, *'1' – enabled.
@@ -691,7 +639,13 @@ type GroupsEditParams struct {
 	// Stopwords filter in comments. Possible values: , *'0' – disabled,, *'1' – enabled.
 	ObsceneStopwords bool `url:"obscene_stopwords,omitempty"`
 	// Keywords for stopwords filter.
-	ObsceneWords CSVStringSlice `url:"obscene_words,omitempty"`
+	ObsceneWords     CSVStringSlice `url:"obscene_words,omitempty"`
+	MainSection      int            `url:"main_section,omitempty"`
+	SecondarySection int            `url:"secondary_section,omitempty"`
+	// Country of the community.
+	Country int `url:"country,omitempty"`
+	// City of the community.
+	City int `url:"city,omitempty"`
 }
 
 // Edit Edits a community.
@@ -702,47 +656,6 @@ func (v Groups) Edit(params GroupsEditParams) (bool, error) {
 	}
 
 	return decodeBoolIntResponse(r)
-}
-
-// GroupsEditPlaceParams are params for Groups.EditPlace
-type GroupsEditPlaceParams struct {
-	// Community ID.
-	GroupID int `url:"group_id"`
-	// Place title.
-	Title string `url:"title,omitempty"`
-	// Place address.
-	Address string `url:"address,omitempty"`
-	// Country ID.
-	CountryID int `url:"country_id,omitempty"`
-	// City ID.
-	CityID int `url:"city_id,omitempty"`
-	// Geographical latitude.
-	Latitude float32 `url:"latitude,omitempty"`
-	// Geographical longitude.
-	Longitude float32 `url:"longitude,omitempty"`
-}
-
-// GroupsEditPlaceResponse is response for Groups.EditPlace
-//easyjson:json
-type GroupsEditPlaceResponse struct {
-	Success vk.BoolInt `json:"success,omitempty"`
-	// Place address
-	Address string `json:"address,omitempty"`
-}
-
-// EditPlace Edits the place in community.
-func (v Groups) EditPlace(params GroupsEditPlaceParams) (*GroupsEditPlaceResponse, error) {
-	r, err := v.API.Request("groups.editPlace", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp GroupsEditPlaceResponse
-	err = json.Unmarshal(r, &resp)
-	if err != nil {
-		return nil, err
-	}
-	return &resp, nil
 }
 
 // GroupsGetSettingsParams are params for Groups.GetSettings
@@ -759,8 +672,7 @@ type GroupsGetSettingsResponse struct {
 	// Community description
 	Description string `json:"description,omitempty"`
 	// Community's page domain
-	Address string   `json:"address,omitempty"`
-	Place   vk.Place `json:"place,omitempty"`
+	Address string `json:"address,omitempty"`
 	// Wall settings
 	Wall int `json:"wall,omitempty"`
 	// Photos settings
@@ -904,14 +816,34 @@ type GroupsAddLinkParams struct {
 	Text string `url:"text,omitempty"`
 }
 
+// GroupsAddLinkResponse is response for Groups.AddLink
+//easyjson:json
+type GroupsAddLinkResponse struct {
+	// Link ID
+	ID int `json:"id,omitempty"`
+	// Link URL
+	URL string `json:"url,omitempty"`
+	// Information whether the title can be edited
+	EditTitle vk.BoolInt `json:"edit_title,omitempty"`
+	// Link description
+	Desc string `json:"desc,omitempty"`
+	// Information whether the image on processing
+	ImageProcessing vk.BoolInt `json:"image_processing,omitempty"`
+}
+
 // AddLink Allows to add a link to the community.
-func (v Groups) AddLink(params GroupsAddLinkParams) (bool, error) {
+func (v Groups) AddLink(params GroupsAddLinkParams) (*GroupsAddLinkResponse, error) {
 	r, err := v.API.Request("groups.addLink", params)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
-	return decodeBoolIntResponse(r)
+	var resp GroupsAddLinkResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
 }
 
 // GroupsDeleteLinkParams are params for Groups.DeleteLink
@@ -1113,7 +1045,8 @@ type GroupsSetCallbackSettingsParams struct {
 	// Community ID.
 	GroupID int `url:"group_id"`
 	// Server ID.
-	ServerID int `url:"server_id,omitempty"`
+	ServerID   int    `url:"server_id,omitempty"`
+	APIVersion string `url:"api_version,omitempty"`
 	// A new incoming message has been received ('0' — disabled, '1' — enabled).
 	MessageNew bool `url:"message_new,omitempty"`
 	// A new outcoming message has been received ('0' — disabled, '1' — enabled).
@@ -1121,7 +1054,8 @@ type GroupsSetCallbackSettingsParams struct {
 	// Allowed messages notifications ('0' — disabled, '1' — enabled).
 	MessageAllow bool `url:"message_allow,omitempty"`
 	// Denied messages notifications ('0' — disabled, '1' — enabled).
-	MessageDeny bool `url:"message_deny,omitempty"`
+	MessageDeny        bool `url:"message_deny,omitempty"`
+	MessageTypingState bool `url:"message_typing_state,omitempty"`
 	// New photos notifications ('0' — disabled, '1' — enabled).
 	PhotoNew bool `url:"photo_new,omitempty"`
 	// New audios notifications ('0' — disabled, '1' — enabled).
@@ -1177,7 +1111,10 @@ type GroupsSetCallbackSettingsParams struct {
 	// Joined community notifications ('0' — disabled, '1' — enabled).
 	GroupJoin bool `url:"group_join,omitempty"`
 	// Left community notifications ('0' — disabled, '1' — enabled).
-	GroupLeave bool `url:"group_leave,omitempty"`
+	GroupLeave          bool `url:"group_leave,omitempty"`
+	GroupChangeSettings bool `url:"group_change_settings,omitempty"`
+	GroupChangePhoto    bool `url:"group_change_photo,omitempty"`
+	GroupOfficersEdit   bool `url:"group_officers_edit,omitempty"`
 	// User added to community blacklist
 	UserBlock bool `url:"user_block,omitempty"`
 	// User removed from community blacklist
@@ -1310,12 +1247,13 @@ type GroupsSetLongPollSettingsParams struct {
 	MessageNew bool `url:"message_new,omitempty"`
 	// A new outcoming message has been received ('0' — disabled, '1' — enabled).
 	MessageReply bool `url:"message_reply,omitempty"`
-	// A message has been edited ('0' — disabled, '1' — enabled).
-	MessageEdit bool `url:"message_edit,omitempty"`
 	// Allowed messages notifications ('0' — disabled, '1' — enabled).
 	MessageAllow bool `url:"message_allow,omitempty"`
 	// Denied messages notifications ('0' — disabled, '1' — enabled).
 	MessageDeny bool `url:"message_deny,omitempty"`
+	// A message has been edited ('0' — disabled, '1' — enabled).
+	MessageEdit        bool `url:"message_edit,omitempty"`
+	MessageTypingState bool `url:"message_typing_state,omitempty"`
 	// New photos notifications ('0' — disabled, '1' — enabled).
 	PhotoNew bool `url:"photo_new,omitempty"`
 	// New audios notifications ('0' — disabled, '1' — enabled).
@@ -1371,7 +1309,10 @@ type GroupsSetLongPollSettingsParams struct {
 	// Joined community notifications ('0' — disabled, '1' — enabled).
 	GroupJoin bool `url:"group_join,omitempty"`
 	// Left community notifications ('0' — disabled, '1' — enabled).
-	GroupLeave bool `url:"group_leave,omitempty"`
+	GroupLeave          bool `url:"group_leave,omitempty"`
+	GroupChangeSettings bool `url:"group_change_settings,omitempty"`
+	GroupChangePhoto    bool `url:"group_change_photo,omitempty"`
+	GroupOfficersEdit   bool `url:"group_officers_edit,omitempty"`
 	// User added to community blacklist
 	UserBlock bool `url:"user_block,omitempty"`
 	// User removed from community blacklist
@@ -1386,4 +1327,219 @@ func (v Groups) SetLongPollSettings(params GroupsSetLongPollSettingsParams) (boo
 	}
 
 	return decodeBoolIntResponse(r)
+}
+
+// GroupsGetAddressesParams are params for Groups.GetAddresses
+type GroupsGetAddressesParams struct {
+	// ID or screen name of the community.
+	GroupID    int         `url:"group_id"`
+	AddressIDs CSVIntSlice `url:"address_ids,omitempty"`
+	// Latitude of  the user geo position.
+	Latitude float32 `url:"latitude,omitempty"`
+	// Longitude of the user geo position.
+	Longitude float32 `url:"longitude,omitempty"`
+	// Offset needed to return a specific subset of community addresses.
+	Offset int `url:"offset,omitempty"`
+	// Number of community addresses to return.
+	Count int `url:"count,omitempty"`
+	// Address fields
+	Fields CSVStringSlice `url:"fields,omitempty"`
+}
+
+// GroupsGetAddressesResponse is response for Groups.GetAddresses
+//easyjson:json
+type GroupsGetAddressesResponse struct {
+	// Total count of addresses
+	Count int               `json:"count,omitempty"`
+	Items []vk.GroupAddress `json:"items,omitempty"`
+}
+
+// GetAddresses Returns a list of community addresses.
+func (v Groups) GetAddresses(params GroupsGetAddressesParams) (*GroupsGetAddressesResponse, error) {
+	r, err := v.API.Request("groups.getAddresses", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp GroupsGetAddressesResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// GroupsBanParams are params for Groups.Ban
+type GroupsBanParams struct {
+	GroupID        int    `url:"group_id"`
+	OwnerID        int    `url:"owner_id,omitempty"`
+	EndDate        int    `url:"end_date,omitempty"`
+	Reason         int    `url:"reason,omitempty"`
+	Comment        string `url:"comment,omitempty"`
+	CommentVisible bool   `url:"comment_visible,omitempty"`
+}
+
+// Ban does groups.ban
+func (v Groups) Ban(params GroupsBanParams) (bool, error) {
+	r, err := v.API.Request("groups.ban", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// GroupsDeleteCallbackServerParams are params for Groups.DeleteCallbackServer
+type GroupsDeleteCallbackServerParams struct {
+	GroupID  int `url:"group_id"`
+	ServerID int `url:"server_id"`
+}
+
+// DeleteCallbackServer does groups.deleteCallbackServer
+func (v Groups) DeleteCallbackServer(params GroupsDeleteCallbackServerParams) (bool, error) {
+	r, err := v.API.Request("groups.deleteCallbackServer", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// GroupsDisableOnlineParams are params for Groups.DisableOnline
+type GroupsDisableOnlineParams struct {
+	GroupID int `url:"group_id"`
+}
+
+// DisableOnline does groups.disableOnline
+func (v Groups) DisableOnline(params GroupsDisableOnlineParams) (bool, error) {
+	r, err := v.API.Request("groups.disableOnline", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// GroupsEditCallbackServerParams are params for Groups.EditCallbackServer
+type GroupsEditCallbackServerParams struct {
+	GroupID   int    `url:"group_id"`
+	ServerID  int    `url:"server_id"`
+	URL       string `url:"url"`
+	Title     string `url:"title"`
+	SecretKey string `url:"secret_key,omitempty"`
+}
+
+// EditCallbackServer does groups.editCallbackServer
+func (v Groups) EditCallbackServer(params GroupsEditCallbackServerParams) (bool, error) {
+	r, err := v.API.Request("groups.editCallbackServer", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// GroupsEnableOnlineParams are params for Groups.EnableOnline
+type GroupsEnableOnlineParams struct {
+	GroupID int `url:"group_id"`
+}
+
+// EnableOnline does groups.enableOnline
+func (v Groups) EnableOnline(params GroupsEnableOnlineParams) (bool, error) {
+	r, err := v.API.Request("groups.enableOnline", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// GroupsUnbanParams are params for Groups.Unban
+type GroupsUnbanParams struct {
+	GroupID int `url:"group_id"`
+	OwnerID int `url:"owner_id,omitempty"`
+}
+
+// Unban does groups.unban
+func (v Groups) Unban(params GroupsUnbanParams) (bool, error) {
+	r, err := v.API.Request("groups.unban", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// GroupsAddAddressParams are params for Groups.AddAddress
+type GroupsAddAddressParams struct {
+	GroupID           int     `url:"group_id"`
+	Title             string  `url:"title"`
+	Address           string  `url:"address"`
+	AdditionalAddress string  `url:"additional_address,omitempty"`
+	CountryID         int     `url:"country_id"`
+	CityID            int     `url:"city_id"`
+	MetroID           int     `url:"metro_id,omitempty"`
+	Latitude          float32 `url:"latitude"`
+	Longitude         float32 `url:"longitude"`
+	Phone             string  `url:"phone,omitempty"`
+	WorkInfoStatus    string  `url:"work_info_status,omitempty"`
+	Timetable         string  `url:"timetable,omitempty"`
+	IsMainAddress     bool    `url:"is_main_address,omitempty"`
+}
+
+// GroupsAddAddressResponse is response for Groups.AddAddress
+//easyjson:json
+type GroupsAddAddressResponse vk.GroupAddress
+
+// AddAddress does groups.addAddress
+func (v Groups) AddAddress(params GroupsAddAddressParams) (*GroupsAddAddressResponse, error) {
+	r, err := v.API.Request("groups.addAddress", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp GroupsAddAddressResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// GroupsEditAddressParams are params for Groups.EditAddress
+type GroupsEditAddressParams struct {
+	GroupID           int     `url:"group_id"`
+	AddressID         int     `url:"address_id"`
+	Title             string  `url:"title,omitempty"`
+	Address           string  `url:"address,omitempty"`
+	AdditionalAddress string  `url:"additional_address,omitempty"`
+	CountryID         int     `url:"country_id,omitempty"`
+	CityID            int     `url:"city_id,omitempty"`
+	MetroID           int     `url:"metro_id,omitempty"`
+	Latitude          float32 `url:"latitude,omitempty"`
+	Longitude         float32 `url:"longitude,omitempty"`
+	Phone             string  `url:"phone,omitempty"`
+	WorkInfoStatus    string  `url:"work_info_status,omitempty"`
+	Timetable         string  `url:"timetable,omitempty"`
+	IsMainAddress     bool    `url:"is_main_address,omitempty"`
+}
+
+// GroupsEditAddressResponse is response for Groups.EditAddress
+// Result
+//easyjson:json
+type GroupsEditAddressResponse vk.GroupAddress
+
+// EditAddress does groups.editAddress
+func (v Groups) EditAddress(params GroupsEditAddressParams) (*GroupsEditAddressResponse, error) {
+	r, err := v.API.Request("groups.editAddress", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp GroupsEditAddressResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
 }

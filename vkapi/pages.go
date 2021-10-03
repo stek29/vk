@@ -91,8 +91,7 @@ type PagesSaveAccessParams struct {
 	PageID int `url:"page_id"`
 	// ID of the community that owns the wiki page.
 	GroupID int `url:"group_id,omitempty"`
-	//
-	UserID int `url:"user_id,omitempty"`
+	UserID  int `url:"user_id,omitempty"`
 	// Who can view the wiki page: '1' — only community members, '2' — all users can view the page, '0' — only community managers
 	View int `url:"view,omitempty"`
 	// Who can edit the wiki page: '1' — only community members, '2' — all users can edit the page, '0' — only community managers
@@ -128,8 +127,7 @@ type PagesGetHistoryParams struct {
 	PageID int `url:"page_id"`
 	// ID of the community that owns the wiki page.
 	GroupID int `url:"group_id,omitempty"`
-	//
-	UserID int `url:"user_id,omitempty"`
+	UserID  int `url:"user_id,omitempty"`
 }
 
 // PagesGetHistoryResponse is response for Pages.GetHistory
@@ -189,12 +187,10 @@ func (v Pages) GetTitles(params PagesGetTitlesParams) (PagesGetTitlesResponse, e
 
 // PagesGetVersionParams are params for Pages.GetVersion
 type PagesGetVersionParams struct {
-	//
 	VersionID int `url:"version_id"`
 	// ID of the community that owns the wiki page.
 	GroupID int `url:"group_id,omitempty"`
-	//
-	UserID int `url:"user_id,omitempty"`
+	UserID  int `url:"user_id,omitempty"`
 	// '1' — to return the page as HTML
 	NeedHTML bool `url:"need_html,omitempty"`
 }

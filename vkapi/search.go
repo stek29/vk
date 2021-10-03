@@ -18,11 +18,10 @@ type SearchGetHintsParams struct {
 	// Offset for querying specific result subset
 	Offset int `url:"offset,omitempty"`
 	// Maximum number of results to return.
-	Limit int `url:"limit,omitempty"`
-	//
-	Filters CSVStringSlice `url:"filters,omitempty"`
-	//
-	SearchGlobal bool `url:"search_global,omitempty"`
+	Limit        int            `url:"limit,omitempty"`
+	Filters      CSVStringSlice `url:"filters,omitempty"`
+	Fields       CSVStringSlice `url:"fields,omitempty"`
+	SearchGlobal bool           `url:"search_global,omitempty"`
 }
 
 // SearchGetHintsResponse is response for Search.GetHints

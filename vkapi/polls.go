@@ -18,7 +18,11 @@ type PollsGetByIDParams struct {
 	// '1' – poll is in a board, '0' – poll is on a wall. '0' by default.
 	IsBoard bool `url:"is_board,omitempty"`
 	// Poll ID.
-	PollID int `url:"poll_id"`
+	PollID       int            `url:"poll_id"`
+	Extended     bool           `url:"extended,omitempty"`
+	FriendsCount int            `url:"friends_count,omitempty"`
+	Fields       CSVStringSlice `url:"fields,omitempty"`
+	NameCase     string         `url:"name_case,omitempty"`
 }
 
 // PollsGetByIDResponse is response for Polls.GetByID
@@ -45,10 +49,9 @@ type PollsAddVoteParams struct {
 	// ID of the user or community that owns the poll. Use a negative value to designate a community ID.
 	OwnerID int `url:"owner_id,omitempty"`
 	// Poll ID.
-	PollID int `url:"poll_id"`
-	// Answer ID.
-	AnswerID int  `url:"answer_id"`
-	IsBoard  bool `url:"is_board,omitempty"`
+	PollID    int         `url:"poll_id"`
+	AnswerIDs CSVIntSlice `url:"answer_ids"`
+	IsBoard   bool        `url:"is_board,omitempty"`
 }
 
 // AddVote Adds the current user's vote to the selected answer in the poll.
@@ -137,10 +140,14 @@ type PollsCreateParams struct {
 	Question string `url:"question,omitempty"`
 	// '1' – anonymous poll, participants list is hidden,, '0' – public poll, participants list is available,, Default value is '0'.
 	IsAnonymous bool `url:"is_anonymous,omitempty"`
+	IsMultiple  bool `url:"is_multiple,omitempty"`
+	EndDate     int  `url:"end_date,omitempty"`
 	// If a poll will be added to a communty it is required to send a negative group identifier. Current user by default.
 	OwnerID int `url:"owner_id,omitempty"`
 	// available answers list, for example: " ["yes","no","maybe"]", There can be from 1 to 10 answers.
-	AddAnswers string `url:"add_answers,omitempty"`
+	AddAnswers   string `url:"add_answers,omitempty"`
+	PhotoID      int    `url:"photo_id,omitempty"`
+	BackgroundID string `url:"background_id,omitempty"`
 }
 
 // PollsCreateResponse is response for Polls.Create
@@ -165,7 +172,7 @@ func (v Polls) Create(params PollsCreateParams) (*PollsCreateResponse, error) {
 // PollsEditParams are params for Polls.Edit
 type PollsEditParams struct {
 	// poll owner id
-	OwnerID int `url:"owner_id"`
+	OwnerID int `url:"owner_id,omitempty"`
 	// edited poll's id
 	PollID int `url:"poll_id"`
 	// new question text
@@ -176,6 +183,9 @@ type PollsEditParams struct {
 	EditAnswers string `url:"edit_answers,omitempty"`
 	// list of answer ids to be deleted. For example: "[382967099, 382967103]"
 	DeleteAnswers string `url:"delete_answers,omitempty"`
+	EndDate       int    `url:"end_date,omitempty"`
+	PhotoID       int    `url:"photo_id,omitempty"`
+	BackgroundID  string `url:"background_id,omitempty"`
 }
 
 // Edit Edits created polls

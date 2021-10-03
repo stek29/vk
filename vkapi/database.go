@@ -81,31 +81,6 @@ func (v Database) GetRegions(params DatabaseGetRegionsParams) (*DatabaseGetRegio
 	return &resp, nil
 }
 
-// DatabaseGetStreetsByIDParams are params for Database.GetStreetsByID
-type DatabaseGetStreetsByIDParams struct {
-	// Street IDs.
-	StreetIDs CSVIntSlice `url:"street_ids"`
-}
-
-// DatabaseGetStreetsByIDResponse is response for Database.GetStreetsByID
-//easyjson:json
-type DatabaseGetStreetsByIDResponse []vk.BaseObject
-
-// GetStreetsByID Returns information about streets by their IDs.
-func (v Database) GetStreetsByID(params DatabaseGetStreetsByIDParams) (DatabaseGetStreetsByIDResponse, error) {
-	r, err := v.API.Request("database.getStreetsById", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp DatabaseGetStreetsByIDResponse
-	err = json.Unmarshal(r, &resp)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 // DatabaseGetCountriesByIDParams are params for Database.GetCountriesByID
 type DatabaseGetCountriesByIDParams struct {
 	// Country IDs.
@@ -357,4 +332,77 @@ func (v Database) GetChairs(params DatabaseGetChairsParams) (*DatabaseGetChairsR
 		return nil, err
 	}
 	return &resp, nil
+}
+
+// DatabaseGetMetroStationsParams are params for Database.GetMetroStations
+type DatabaseGetMetroStationsParams struct {
+	CityID   int  `url:"city_id"`
+	Offset   int  `url:"offset,omitempty"`
+	Count    int  `url:"count,omitempty"`
+	Extended bool `url:"extended,omitempty"`
+}
+
+// DatabaseGetMetroStationsResponse is response for Database.GetMetroStations
+//easyjson:json
+type DatabaseGetMetroStationsResponse struct {
+	// Total number
+	Count int `json:"count,omitempty"`
+	Items []struct {
+		// City ID
+		CityID int `json:"city_id,omitempty"`
+		// Hex color code without #
+		Color string `json:"color,omitempty"`
+		// Station ID
+		ID int `json:"id,omitempty"`
+		// Station name
+		Name string `json:"name,omitempty"`
+	} `json:"items,omitempty"`
+}
+
+// GetMetroStations Get metro stations by city
+func (v Database) GetMetroStations(params DatabaseGetMetroStationsParams) (*DatabaseGetMetroStationsResponse, error) {
+	r, err := v.API.Request("database.getMetroStations", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp DatabaseGetMetroStationsResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// DatabaseGetMetroStationsByIDParams are params for Database.GetMetroStationsByID
+type DatabaseGetMetroStationsByIDParams struct {
+	StationIDs CSVIntSlice `url:"station_ids,omitempty"`
+}
+
+// DatabaseGetMetroStationsByIDResponse is response for Database.GetMetroStationsByID
+//easyjson:json
+type DatabaseGetMetroStationsByIDResponse []struct {
+	// City ID
+	CityID int `json:"city_id,omitempty"`
+	// Hex color code without #
+	Color string `json:"color,omitempty"`
+	// Station ID
+	ID int `json:"id,omitempty"`
+	// Station name
+	Name string `json:"name,omitempty"`
+}
+
+// GetMetroStationsByID Get metro station by his id
+func (v Database) GetMetroStationsByID(params DatabaseGetMetroStationsByIDParams) (DatabaseGetMetroStationsByIDResponse, error) {
+	r, err := v.API.Request("database.getMetroStationsById", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp DatabaseGetMetroStationsByIDResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }

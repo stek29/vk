@@ -16,6 +16,7 @@ type Market struct {
 type MarketGetParams struct {
 	// ID of an item owner community, "Note that community id in the 'owner_id' parameter should be negative number. For example 'owner_id'=-1 matches the [vk.com/apiclub|VK API] community "
 	OwnerID int `url:"owner_id"`
+	AlbumID int `url:"album_id,omitempty"`
 	// Number of items to return.
 	Count int `url:"count,omitempty"`
 	// Offset needed to return a specific subset of results.
@@ -134,6 +135,7 @@ func (v Market) GetByID(params MarketGetByIDParams) (MarketGetByIDResponse, erro
 type MarketSearchParams struct {
 	// ID of an items owner community.
 	OwnerID int `url:"owner_id"`
+	AlbumID int `url:"album_id,omitempty"`
 	// Search query, for example "pink slippers".
 	Q string `url:"q,omitempty"`
 	// Minimum item price value.
@@ -142,6 +144,7 @@ type MarketSearchParams struct {
 	PriceTo int `url:"price_to,omitempty"`
 	// Comma-separated tag IDs list.
 	Tags CSVIntSlice `url:"tags,omitempty"`
+	Sort int         `url:"sort,omitempty"`
 	// '0' — do not use reverse order, '1' — use reverse order
 	Rev int `url:"rev,omitempty"`
 	// Offset needed to return a specific subset of results.
@@ -150,6 +153,7 @@ type MarketSearchParams struct {
 	Count int `url:"count,omitempty"`
 	// '1' – to return additional fields: 'likes, can_comment, car_repost, photos'. By default: '0'.
 	Extended bool `url:"extended,omitempty"`
+	Status   int  `url:"status,omitempty"`
 }
 
 // MarketSearchResponse is response for Market.Search
@@ -318,6 +322,7 @@ type MarketGetCommentsParams struct {
 	NeedLikes bool `url:"need_likes,omitempty"`
 	// ID of a comment to start a list from (details below).
 	StartCommentID int `url:"start_comment_id,omitempty"`
+	Offset         int `url:"offset,omitempty"`
 	// Number of results to return.
 	Count int `url:"count,omitempty"`
 	// Sort order ('asc' — from old to new, 'desc' — from new to old)
@@ -467,7 +472,7 @@ type MarketReportParams struct {
 	// Item ID.
 	ItemID int `url:"item_id"`
 	// Complaint reason. Possible values: *'0' — spam,, *'1' — child porn,, *'2' — extremism,, *'3' — violence,, *'4' — drugs propaganda,, *'5' — adult materials,, *'6' — insult.
-	Reason int `url:"reason"`
+	Reason int `url:"reason,omitempty"`
 }
 
 // Report Sends a complaint to the item.
@@ -498,6 +503,8 @@ type MarketAddParams struct {
 	MainPhotoID int `url:"main_photo_id"`
 	// IDs of additional photos.
 	PhotoIDs CSVIntSlice `url:"photo_ids,omitempty"`
+	// Url for button in market item.
+	URL string `url:"url,omitempty"`
 }
 
 // MarketAddResponse is response for Market.Add
@@ -542,6 +549,8 @@ type MarketEditParams struct {
 	MainPhotoID int `url:"main_photo_id"`
 	// IDs of additional photos.
 	PhotoIDs CSVIntSlice `url:"photo_ids,omitempty"`
+	// Url for button in market item.
+	URL string `url:"url,omitempty"`
 }
 
 // Edit Edits an item.

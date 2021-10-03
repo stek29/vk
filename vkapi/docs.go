@@ -17,6 +17,7 @@ type DocsGetParams struct {
 	Count int `url:"count,omitempty"`
 	// Offset needed to return a specific subset of documents.
 	Offset int `url:"offset,omitempty"`
+	Type   int `url:"type,omitempty"`
 	// ID of the user or community that owns the documents. Use a negative value to designate a community ID.
 	OwnerID int `url:"owner_id,omitempty"`
 }

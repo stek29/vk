@@ -150,6 +150,8 @@ type BaseObjectWithName struct {
 type Category struct {
 	BaseObjectWithName
 	Subcategories []BaseObjectWithName `json:"subcategories"`
+	PageCount     int                  `json:"page_count,omitempty"`
+	PagePreviews  []Group              `json:"page_previews,omitempty"`
 }
 
 //easyjson:json
@@ -386,15 +388,49 @@ const (
 )
 
 //easyjson:json
+type GroupAddress struct {
+	// Address id
+	ID int `json:"id,omitempty"`
+	// Title of the place (Zinger, etc)
+	Title string `json:"title,omitempty"`
+	// String address to the place (Nevsky, 28)
+	Address string `json:"address,omitempty"`
+	// Additional address to the place (6 floor, left door)
+	AdditionalAddress string `json:"additional_address,omitempty"`
+	// Country id of address
+	CountryID int `json:"country_id,omitempty"`
+	// City id of address
+	CityID int `json:"city_id,omitempty"`
+	// Metro id of address
+	MetroStationID int `json:"metro_station_id,omitempty"`
+	// Address latitude
+	Latitude float32 `json:"latitude,omitempty"`
+	// Address longitude
+	Longitude float32 `json:"longitude,omitempty"`
+	// Distance from the point
+	Distance int `json:"distance,omitempty"`
+	// Status of information about timetable
+	WorkInfoStatus string `json:"work_info_status,omitempty"`
+	// Week timetable for the address
+	// Timetable genTODOType /* #/definitions/groups_address_timetable */ `json:"timetable,omitempty"`
+	// Address phone
+	Phone string `json:"phone,omitempty"`
+	// Time offset int minutes from utc time
+	TimeOffset int `json:"time_offset,omitempty"`
+}
+
+//easyjson:json
 type Message struct {
-	ID          int          `json:"id"`
-	Date        int          `json:"date"`
-	PeerID      int          `json:"peer_id"`
-	FromID      int          `json:"from_id"`
-	Text        string       `json:"text"`
-	RandomID    int          `json:"random_id"`
-	Attachments []Attachment `json:"attachments"`
-	Important   bool         `json:"important"`
+	ID int `json:"id"`
+	// Unique auto-incremented number for all messages with this peer
+	ConversationID int          `json:"conversation_message_id"`
+	Date           int          `json:"date"`
+	PeerID         int          `json:"peer_id"`
+	FromID         int          `json:"from_id"`
+	Text           string       `json:"text"`
+	RandomID       int          `json:"random_id"`
+	Attachments    []Attachment `json:"attachments"`
+	Important      bool         `json:"important"`
 	// TODO: Geo
 	Payload           string    `json:"payload"`
 	ForwardedMessages []Message `json:"fwd_messages"`
@@ -1038,4 +1074,14 @@ type Story struct {
 		// New replies number.
 		New int `json:"new"`
 	} `json:"replies"`
+}
+
+//easyjson:json
+type NewsfeedItem struct {
+	// Item type
+	Type string `json:"type,omitempty"`
+	// Item source ID
+	SourceID int `json:"source_id,omitempty"`
+	// Date when item has been added in Unixtime
+	Date int `json:"date,omitempty"`
 }

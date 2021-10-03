@@ -165,7 +165,8 @@ type FriendsGetRequestsParams struct {
 	// '1' — to return outgoing requests, '0' — to return incoming requests (default)
 	Out bool `url:"out,omitempty"`
 	// Sort order: '1' — by number of mutual friends, '0' — by date
-	Sort int `url:"sort,omitempty"`
+	Sort       int  `url:"sort,omitempty"`
+	NeedViewed bool `url:"need_viewed,omitempty"`
 	// '1' — to return a list of suggested friends, '0' — to return friend requests (default)
 	Suggested bool `url:"suggested,omitempty"`
 }
@@ -194,7 +195,20 @@ func (FriendsGetRequestsResponseNormal) isFriendsGetRequests() {}
 type FriendsGetRequestsResponseExtended struct {
 	// Total requests number
 	Count int `json:"count,omitempty"`
-	Items []genTODOType/* objects.json#/definitions/friends_requests_xtr_message */ `json:"items,omitempty"`
+	Items []struct {
+		// User ID
+		UserID int `json:"user_id,omitempty"`
+		// ID of the user by whom friend has been suggested
+		From   string `json:"from,omitempty"`
+		Mutual struct {
+			// Total mutual friends number
+			Count int `json:"count,omitempty"`
+			// User ID
+			Users []int `json:"users,omitempty"`
+		} `json:"mutual,omitempty"`
+		// Message sent with a request
+		Message string `json:"message,omitempty"`
+	} `json:"items,omitempty"`
 }
 
 func (FriendsGetRequestsResponseExtended) isFriendsGetRequests() {}
@@ -225,7 +239,7 @@ func (v Friends) GetRequests(params FriendsGetRequestsParams) (FriendsGetRequest
 // FriendsAddParams are params for Friends.Add
 type FriendsAddParams struct {
 	// ID of the user whose friend request will be approved or to whom a friend request will be sent.
-	UserID int `url:"user_id"`
+	UserID int `url:"user_id,omitempty"`
 	// Text of the message (up to 500 characters) for the friend request, if any.
 	Text string `url:"text,omitempty"`
 	// '1' to pass an incoming request to followers list.
@@ -276,7 +290,7 @@ func (v Friends) Edit(params FriendsEditParams) (bool, error) {
 // FriendsDeleteParams are params for Friends.Delete
 type FriendsDeleteParams struct {
 	// ID of the user whose friend request is to be declined or who is to be deleted from the current user's friend list.
-	UserID int `url:"user_id"`
+	UserID int `url:"user_id,omitempty"`
 }
 
 // FriendsDeleteResponse is response for Friends.Delete
@@ -544,38 +558,6 @@ func (v Friends) AreFriends(params FriendsAreFriendsParams) (FriendsAreFriendsRe
 		return nil, err
 	}
 	return resp, nil
-}
-
-// FriendsGetAvailableForCallParams are params for Friends.GetAvailableForCall
-type FriendsGetAvailableForCallParams struct {
-	// Profile fields to return. Sample values: 'uid', 'first_name', 'last_name', 'nickname', 'sex', 'bdate' (birthdate), 'city', 'country', 'timezone', 'photo', 'photo_medium', 'photo_big', 'domain', 'has_mobile', 'rate', 'contacts', 'education'.
-	Fields CSVStringSlice `url:"fields,omitempty"`
-	// Case for declension of user name and surname: , 'nom' — nominative (default) , 'gen' — genitive , 'dat' — dative , 'acc' — accusative , 'ins' — instrumental , 'abl' — prepositional
-	NameCase string `url:"name_case,omitempty"`
-}
-
-// FriendsGetAvailableForCallResponse is response for Friends.GetAvailableForCall
-//easyjson:json
-type FriendsGetAvailableForCallResponse struct {
-	// Total number
-	Count int `json:"count,omitempty"`
-	// User ID
-	Items []int `json:"items,omitempty"`
-}
-
-// GetAvailableForCall Returns a list of friends who can be called by the current user.
-func (v Friends) GetAvailableForCall(params FriendsGetAvailableForCallParams) (*FriendsGetAvailableForCallResponse, error) {
-	r, err := v.API.Request("friends.getAvailableForCall", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp FriendsGetAvailableForCallResponse
-	err = json.Unmarshal(r, &resp)
-	if err != nil {
-		return nil, err
-	}
-	return &resp, nil
 }
 
 // FriendsSearchParams are params for Friends.Search

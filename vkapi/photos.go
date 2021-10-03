@@ -266,10 +266,9 @@ func (v Photos) GetByID(params PhotosGetByIDParams) (PhotosGetByIDResponse, erro
 
 // PhotosGetUploadServerParams are params for Photos.GetUploadServer
 type PhotosGetUploadServerParams struct {
-	// Album ID.
-	AlbumID int `url:"album_id,omitempty"`
 	// ID of community that owns the album (if the photo will be uploaded to a community album).
 	GroupID int `url:"group_id,omitempty"`
+	AlbumID int `url:"album_id,omitempty"`
 }
 
 // PhotosGetUploadServerResponse is response for Photos.GetUploadServer
@@ -301,7 +300,7 @@ func (v Photos) GetUploadServer(params PhotosGetUploadServerParams) (*PhotosGetU
 // PhotosGetOwnerCoverPhotoUploadServerParams are params for Photos.GetOwnerCoverPhotoUploadServer
 type PhotosGetOwnerCoverPhotoUploadServerParams struct {
 	// ID of community that owns the album (if the photo will be uploaded to a community album).
-	GroupID int `url:"group_id,omitempty"`
+	GroupID int `url:"group_id"`
 	// X coordinate of the left-upper corner
 	CropX int `url:"crop_x,omitempty"`
 	// Y coordinate of the left-upper corner
@@ -366,10 +365,8 @@ func (v Photos) GetOwnerPhotoUploadServer(params PhotosGetOwnerPhotoUploadServer
 type PhotosGetChatUploadServerParams struct {
 	// ID of the chat for which you want to upload a cover photo.
 	ChatID int `url:"chat_id"`
-	//
-	CropX int `url:"crop_x,omitempty"`
-	//
-	CropY int `url:"crop_y,omitempty"`
+	CropX  int `url:"crop_x,omitempty"`
+	CropY  int `url:"crop_y,omitempty"`
 	// Width (in pixels) of the photo after cropping.
 	CropWidth int `url:"crop_width,omitempty"`
 }
@@ -377,8 +374,12 @@ type PhotosGetChatUploadServerParams struct {
 // PhotosGetChatUploadServerResponse is response for Photos.GetChatUploadServer
 //easyjson:json
 type PhotosGetChatUploadServerResponse struct {
-	// Upload URL
+	// URL to upload photo
 	UploadURL string `json:"upload_url,omitempty"`
+	// Album ID
+	AlbumID int `json:"album_id,omitempty"`
+	// User ID
+	UserID int `json:"user_id,omitempty"`
 }
 
 // GetChatUploadServer Returns an upload link for chat cover pictures.
@@ -498,9 +499,9 @@ func (v Photos) SaveMarketPhoto(params PhotosSaveMarketPhotoParams) (PhotosSaveM
 // PhotosSaveOwnerCoverPhotoParams are params for Photos.SaveOwnerCoverPhoto
 type PhotosSaveOwnerCoverPhotoParams struct {
 	// Parameter returned when photos are [vk.com/dev/upload_files|uploaded to server].
-	Photo string `url:"photo"`
-	// Parameter returned when photos are [vk.com/dev/upload_files|uploaded to server].
 	Hash string `url:"hash"`
+	// Parameter returned when photos are [vk.com/dev/upload_files|uploaded to server].
+	Photo string `url:"photo"`
 }
 
 // PhotosSaveOwnerCoverPhotoResponse is response for Photos.SaveOwnerCoverPhoto
@@ -762,11 +763,9 @@ type PhotosSearchParams struct {
 	// Geographical latitude, in degrees (from '-90' to '90').
 	Lat float32 `url:"lat,omitempty"`
 	// Geographical longitude, in degrees (from '-180' to '180').
-	Long float32 `url:"long,omitempty"`
-	//
-	StartTime int `url:"start_time,omitempty"`
-	//
-	EndTime int `url:"end_time,omitempty"`
+	Long      float32 `url:"long,omitempty"`
+	StartTime int     `url:"start_time,omitempty"`
+	EndTime   int     `url:"end_time,omitempty"`
 	// Sort order:
 	Sort int `url:"sort,omitempty"`
 	// Offset needed to return a specific subset of photos.
@@ -1288,8 +1287,7 @@ type PhotosCreateCommentParams struct {
 	// (Required if 'message' is not set.) List of objects attached to the post, in the following format: "<owner_id>_<media_id>,<owner_id>_<media_id>", '' — Type of media attachment: 'photo' — photo, 'video' — video, 'audio' — audio, 'doc' — document, '<owner_id>' — Media attachment owner ID. '<media_id>' — Media attachment ID. Example: "photo100172_166443618,photo66748_265827614"
 	Attachments CSVStringSlice `url:"attachments,omitempty"`
 	// '1' — to post a comment from the community
-	FromGroup bool `url:"from_group,omitempty"`
-	//
+	FromGroup      bool   `url:"from_group,omitempty"`
 	ReplyToComment int    `url:"reply_to_comment,omitempty"`
 	StickerID      int    `url:"sticker_id,omitempty"`
 	AccessKey      string `url:"access_key,omitempty"`

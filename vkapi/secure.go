@@ -35,6 +35,16 @@ func (v Secure) GetAppBalance() (SecureGetAppBalanceResponse, error) {
 	return resp, nil
 }
 
+// SecureGetTransactionsHistoryParams are params for Secure.GetTransactionsHistory
+type SecureGetTransactionsHistoryParams struct {
+	Type     int `url:"type,omitempty"`
+	UIDFrom  int `url:"uid_from,omitempty"`
+	UIDTo    int `url:"uid_to,omitempty"`
+	DateFrom int `url:"date_from,omitempty"`
+	DateTo   int `url:"date_to,omitempty"`
+	Limit    int `url:"limit,omitempty"`
+}
+
 // SecureGetTransactionsHistoryResponse is response for Secure.GetTransactionsHistory
 //easyjson:json
 type SecureGetTransactionsHistoryResponse []struct {
@@ -51,8 +61,8 @@ type SecureGetTransactionsHistoryResponse []struct {
 }
 
 // GetTransactionsHistory Shows history of votes transaction between users and the application.
-func (v Secure) GetTransactionsHistory() (SecureGetTransactionsHistoryResponse, error) {
-	r, err := v.API.Request("secure.getTransactionsHistory", nil)
+func (v Secure) GetTransactionsHistory(params SecureGetTransactionsHistoryParams) (SecureGetTransactionsHistoryResponse, error) {
+	r, err := v.API.Request("secure.getTransactionsHistory", params)
 	if err != nil {
 		return nil, err
 	}
@@ -157,30 +167,13 @@ type SecureSetCounterParams struct {
 	Counters CSVStringSlice `url:"counters,omitempty"`
 	UserID   int            `url:"user_id,omitempty"`
 	// counter value.
-	Counter int `url:"counter,omitempty"`
+	Counter   int  `url:"counter,omitempty"`
+	Increment bool `url:"increment,omitempty"`
 }
 
 // SetCounter Sets a counter which is shown to the user in bold in the left menu.
 func (v Secure) SetCounter(params SecureSetCounterParams) (bool, error) {
 	r, err := v.API.Request("secure.setCounter", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
-}
-
-// SecureSetUserLevelParams are params for Secure.SetUserLevel
-type SecureSetUserLevelParams struct {
-	Levels CSVStringSlice `url:"levels,omitempty"`
-	UserID int            `url:"user_id,omitempty"`
-	// level value.
-	Level int `url:"level,omitempty"`
-}
-
-// SetUserLevel Sets user game level in the application which can be seen by his/her friends.
-func (v Secure) SetUserLevel(params SecureSetUserLevelParams) (bool, error) {
-	r, err := v.API.Request("secure.setUserLevel", params)
 	if err != nil {
 		return false, err
 	}

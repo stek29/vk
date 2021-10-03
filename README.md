@@ -4,7 +4,7 @@
 
 VK API lib for Golang
 
-Current VK API version: 5.80
+Current VK API version: 5.92
 
 Almost everything is supported, but not everything is tested (VK API Schema has a lot of issues).
 

@@ -102,53 +102,6 @@ func (v Account) SetOffline() (bool, error) {
 	return decodeBoolIntResponse(r)
 }
 
-// AccountLookupContactsParams are params for Account.LookupContacts
-type AccountLookupContactsParams struct {
-	// List of contacts separated with commas
-	Contacts CSVStringSlice `url:"contacts,omitempty"`
-	// String identifier of a service which contacts are used for searching. Possible values: , * email, * phone, * twitter, * facebook, * odnoklassniki, * instagram, * google
-	Service string `url:"service"`
-	// Contact of a current user on a specified service
-	Mycontact string `url:"mycontact,omitempty"`
-	// '1' – also return contacts found using this service before, '0' – return only contacts found using 'contacts' field.
-	ReturnAll bool `url:"return_all,omitempty"`
-	// Profile fields to return. Possible values: 'nickname, domain, sex, bdate, city, country, timezone, photo_50, photo_100, photo_200_orig, has_mobile, contacts, education, online, relation, last_seen, status, can_write_private_message, can_see_all_posts, can_post, universities'.
-	Fields CSVStringSlice `url:"fields,omitempty"`
-}
-
-// AccountLookupContactsResponse is response for Account.LookupContacts
-//easyjson:json
-type AccountLookupContactsResponse struct {
-	Found []struct {
-		vk.User
-
-		Contact     string `json:"contact,omitempty"`
-		RequestSent int    `json:"request_sent,omitempty"`
-		SortNum     int    `json:"sort_num,omitempty"`
-	} `json:"found,omitempty"`
-	Other []struct {
-		// Contact
-		Contact string `json:"contact,omitempty"`
-		// Mutual friends count
-		CommonCount int `json:"common_count,omitempty"`
-	} `json:"other,omitempty"`
-}
-
-// LookupContacts Allows to search the VK users using phone numbers, e-mail addresses and user IDs on other services.
-func (v Account) LookupContacts(params AccountLookupContactsParams) (*AccountLookupContactsResponse, error) {
-	r, err := v.API.Request("account.lookupContacts", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp AccountLookupContactsResponse
-	err = json.Unmarshal(r, &resp)
-	if err != nil {
-		return nil, err
-	}
-	return &resp, nil
-}
-
 // AccountRegisterDeviceParams are params for Account.RegisterDevice
 type AccountRegisterDeviceParams struct {
 	// Device token used to send notifications. (for mpns, the token shall be URL for sending of notifications)
@@ -163,6 +116,7 @@ type AccountRegisterDeviceParams struct {
 	SystemVersion string `url:"system_version,omitempty"`
 	// Push settings in a [vk.com/dev/push_settings|special format].
 	Settings string `url:"settings,omitempty"`
+	Sandbox  bool   `url:"sandbox,omitempty"`
 }
 
 // RegisterDevice Subscribes an iOS/Android/Windows Phone-based device to receive push notifications
@@ -179,6 +133,7 @@ func (v Account) RegisterDevice(params AccountRegisterDeviceParams) (bool, error
 type AccountUnregisterDeviceParams struct {
 	// Unique device ID.
 	DeviceID string `url:"device_id,omitempty"`
+	Sandbox  bool   `url:"sandbox,omitempty"`
 }
 
 // UnregisterDevice Unsubscribes a device from push notifications.
@@ -350,6 +305,7 @@ func (v Account) GetAppPermissions(params AccountGetAppPermissionsParams) (Accou
 
 // AccountGetActiveOffersParams are params for Account.GetActiveOffers
 type AccountGetActiveOffersParams struct {
+	Offset int `url:"offset,omitempty"`
 	// Number of results to return.
 	Count int `url:"count,omitempty"`
 }
@@ -394,38 +350,6 @@ func (v Account) GetActiveOffers(params AccountGetActiveOffersParams) (*AccountG
 		return nil, err
 	}
 	return &resp, nil
-}
-
-// AccountBanParams are params for Account.Ban
-type AccountBanParams struct {
-	// User/Group ID to be banned.
-	OwnerID int `url:"owner_id"`
-}
-
-// Ban Adds user or group to the banlist.
-func (v Account) Ban(params AccountBanParams) (bool, error) {
-	r, err := v.API.Request("account.ban", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
-}
-
-// AccountUnbanParams are params for Account.Unban
-type AccountUnbanParams struct {
-	// User/Group ID to be unbanned.
-	UserID int `url:"user_id"`
-}
-
-// Unban Deletes user or group from the blacklist.
-func (v Account) Unban(params AccountUnbanParams) (bool, error) {
-	r, err := v.API.Request("account.unban", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
 }
 
 // AccountGetBannedParams are params for Account.GetBanned
@@ -673,4 +597,34 @@ func (v Account) SaveProfileInfo(params AccountSaveProfileInfoParams) (*AccountS
 		return nil, err
 	}
 	return &resp, nil
+}
+
+// AccountBanParams are params for Account.Ban
+type AccountBanParams struct {
+	OwnerID int `url:"owner_id,omitempty"`
+}
+
+// Ban does account.ban
+func (v Account) Ban(params AccountBanParams) (bool, error) {
+	r, err := v.API.Request("account.ban", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// AccountUnbanParams are params for Account.Unban
+type AccountUnbanParams struct {
+	OwnerID int `url:"owner_id,omitempty"`
+}
+
+// Unban does account.unban
+func (v Account) Unban(params AccountUnbanParams) (bool, error) {
+	r, err := v.API.Request("account.unban", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
 }

@@ -18,8 +18,10 @@ type NotesGetParams struct {
 	NoteIDs CSVIntSlice `url:"note_ids,omitempty"`
 	// Note owner ID.
 	UserID int `url:"user_id,omitempty"`
+	Offset int `url:"offset,omitempty"`
 	// Number of notes to return.
 	Count int `url:"count,omitempty"`
+	Sort  int `url:"sort,omitempty"`
 }
 
 // NotesGetResponse is response for Notes.Get
@@ -50,7 +52,8 @@ type NotesGetByIDParams struct {
 	// Note ID.
 	NoteID int `url:"note_id"`
 	// Note owner ID.
-	OwnerID int `url:"owner_id,omitempty"`
+	OwnerID  int  `url:"owner_id,omitempty"`
+	NeedWiki bool `url:"need_wiki,omitempty"`
 }
 
 // NotesGetByIDResponse is response for Notes.GetByID
@@ -149,6 +152,8 @@ type NotesGetCommentsParams struct {
 	NoteID int `url:"note_id"`
 	// Note owner ID.
 	OwnerID int `url:"owner_id,omitempty"`
+	Sort    int `url:"sort,omitempty"`
+	Offset  int `url:"offset,omitempty"`
 	// Number of comments to return.
 	Count int `url:"count,omitempty"`
 }
@@ -219,7 +224,7 @@ type NotesEditCommentParams struct {
 	// Note owner ID.
 	OwnerID int `url:"owner_id,omitempty"`
 	// New comment text.
-	Message string `url:"message,omitempty"`
+	Message string `url:"message"`
 }
 
 // EditComment Edits a comment on a note.

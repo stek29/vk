@@ -18,6 +18,7 @@ type WidgetsGetCommentsParams struct {
 	PageID      string         `url:"page_id,omitempty"`
 	Order       string         `url:"order,omitempty"`
 	Fields      CSVStringSlice `url:"fields,omitempty"`
+	Offset      int            `url:"offset,omitempty"`
 	Count       int            `url:"count,omitempty"`
 }
 
@@ -49,6 +50,7 @@ type WidgetsGetPagesParams struct {
 	WidgetAPIID int    `url:"widget_api_id,omitempty"`
 	Order       string `url:"order,omitempty"`
 	Period      string `url:"period,omitempty"`
+	Offset      int    `url:"offset,omitempty"`
 	Count       int    `url:"count,omitempty"`
 }
 

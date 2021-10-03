@@ -12,10 +12,66 @@ type Messages struct {
 	API vk.API
 }
 
+// MessagesJoinChatByInviteLinkParams are params for Messages.JoinChatByInviteLink
+type MessagesJoinChatByInviteLinkParams struct {
+	// Invitation link.
+	Link string `url:"link"`
+}
+
+// MessagesJoinChatByInviteLinkResponse is response for Messages.JoinChatByInviteLink
+//easyjson:json
+type MessagesJoinChatByInviteLinkResponse struct {
+	ChatID int `json:"chat_id,omitempty"`
+}
+
+// JoinChatByInviteLink does messages.joinChatByInviteLink
+func (v Messages) JoinChatByInviteLink(params MessagesJoinChatByInviteLinkParams) (*MessagesJoinChatByInviteLinkResponse, error) {
+	r, err := v.API.Request("messages.joinChatByInviteLink", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp MessagesJoinChatByInviteLinkResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// MessagesGetInviteLinkParams are params for Messages.GetInviteLink
+type MessagesGetInviteLinkParams struct {
+	// Destination ID.
+	PeerID int `url:"peer_id"`
+	// 1 — to generate new link (revoke previous), 0 — to return previous link.
+	Reset bool `url:"reset,omitempty"`
+	// Group ID
+	GroupID int `url:"group_id,omitempty"`
+}
+
+// MessagesGetInviteLinkResponse is response for Messages.GetInviteLink
+//easyjson:json
+type MessagesGetInviteLinkResponse struct {
+	Link string `json:"link,omitempty"`
+}
+
+// GetInviteLink does messages.getInviteLink
+func (v Messages) GetInviteLink(params MessagesGetInviteLinkParams) (*MessagesGetInviteLinkResponse, error) {
+	r, err := v.API.Request("messages.getInviteLink", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp MessagesGetInviteLinkResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
 // MessagesGetConversationsParams are params for Messages.GetConversations
 type MessagesGetConversationsParams struct {
-	// Group ID (for group messages with group access token)
-	GroupID int `url:"group_id,omitempty"`
 	// Offset needed to return a specific subset of conversations.
 	Offset int `url:"offset,omitempty"`
 	// Number of conversations to return.
@@ -28,6 +84,8 @@ type MessagesGetConversationsParams struct {
 	StartMessageID int `url:"start_message_id,omitempty"`
 	// Profile and communities fields to return.
 	Fields CSVStringSlice `url:"fields,omitempty"`
+	// Group ID (for group messages with group access token)
+	GroupID int `url:"group_id,omitempty"`
 }
 
 // MessagesGetConversationsResponse is response for Messages.GetConversations
@@ -36,15 +94,13 @@ type MessagesGetConversationsResponse struct {
 	// Total number
 	Count int `json:"count,omitempty"`
 	// Unread dialogs number
-	UnreadCount int               `json:"unread_count,omitempty"`
-	Items       []vk.Conversation `json:"items,omitempty"`
-	Profiles    []vk.User         `json:"profiles,omitempty"`
-	Groups      []vk.Group        `json:"groups,omitempty"`
-	Emails      []struct {
-		ID int `json:"id,omitempty"`
-		// Email address
-		Address string `json:"address,omitempty"`
-	} `json:"emails,omitempty"`
+	UnreadCount int `json:"unread_count,omitempty"`
+	Items       []struct {
+		Conversation vk.Conversation `json:"conversation,omitempty"`
+		LastMessage  vk.Message      `json:"last_message,omitempty"`
+	} `json:"items,omitempty"`
+	Profiles []vk.User  `json:"profiles,omitempty"`
+	Groups   []vk.Group `json:"groups,omitempty"`
 }
 
 // GetConversations Returns a list of the current user's conversations.
@@ -78,8 +134,11 @@ type MessagesGetConversationsByIDParams struct {
 //easyjson:json
 type MessagesGetConversationsByIDResponse struct {
 	// Total number
-	Count int               `json:"count,omitempty"`
-	Items []vk.Conversation `json:"items,omitempty"`
+	Count int `json:"count,omitempty"`
+	Items []struct {
+		Conversation vk.Conversation `json:"conversation,omitempty"`
+		LastMessage  vk.Message      `json:"last_message,omitempty"`
+	} `json:"items,omitempty"`
 }
 
 // GetConversationsByID Returns conversations by their IDs
@@ -137,7 +196,7 @@ func (v Messages) GetByID(params MessagesGetByIDParams) (*MessagesGetByIDRespons
 // MessagesGetByConversationMessageIDParams are params for Messages.GetByConversationMessageID
 type MessagesGetByConversationMessageIDParams struct {
 	// Destination ID. "For user: 'User ID', e.g. '12345'. For chat: '2000000000' + 'chat_id', e.g. '2000000001'. For community: '- community ID', e.g. '-12345'. "
-	PeerID int `url:"peer_id,omitempty"`
+	PeerID int `url:"peer_id"`
 	// Conversation message IDs.
 	ConversationMessageIDs CSVIntSlice `url:"conversation_message_ids"`
 	// Information whether the response should be extended
@@ -184,7 +243,9 @@ type MessagesSearchParams struct {
 	// Offset needed to return a specific subset of messages.
 	Offset int `url:"offset,omitempty"`
 	// Number of messages to return.
-	Count int `url:"count,omitempty"`
+	Count    int            `url:"count,omitempty"`
+	Extended bool           `url:"extended,omitempty"`
+	Fields   CSVStringSlice `url:"fields,omitempty"`
 	// Group ID (for group messages with group access token)
 	GroupID int `url:"group_id,omitempty"`
 }
@@ -223,14 +284,14 @@ type MessagesGetHistoryParams struct {
 	PeerID int `url:"peer_id,omitempty"`
 	// Starting message ID from which to return history.
 	StartMessageID int `url:"start_message_id,omitempty"`
+	// Sort order: '1' — return messages in chronological order. '0' — return messages in reverse chronological order.
+	Rev int `url:"rev,omitempty"`
 	// Information whether the response should be extended
 	Extended bool `url:"extended,omitempty"`
 	// Profile fields to return.
 	Fields CSVStringSlice `url:"fields,omitempty"`
 	// Group ID (for group messages with group access token)
 	GroupID int `url:"group_id,omitempty"`
-	// Sort order: '1' — return messages in chronological order. '0' — return messages in reverse chronological order.
-	Rev int `url:"rev,omitempty"`
 }
 
 // MessagesGetHistoryResponse is response for Messages.GetHistory
@@ -325,14 +386,16 @@ type MessagesSendParams struct {
 	Long float32 `url:"long,omitempty"`
 	// (Required if 'message' is not set.) List of objects attached to the message, separated by commas, in the following format: "<owner_id>_<media_id>", '' — Type of media attachment: 'photo' — photo, 'video' — video, 'audio' — audio, 'doc' — document, 'wall' — wall post, '<owner_id>' — ID of the media attachment owner. '<media_id>' — media attachment ID. Example: "photo100172_166443618"
 	Attachment CSVStringSlice `url:"attachment,omitempty"`
-	// ID of forwarded messages. Listed messages of the sender will be shown in the message body at the recipient's. Example: "123,431,544"
+	ReplyTo    int            `url:"reply_to,omitempty"`
+	// ID of forwarded messages, separated with a comma. Listed messages of the sender will be shown in the message body at the recipient's. Example: "123,431,544"
 	ForwardMessages CSVIntSlice `url:"forward_messages,omitempty"`
 	// Sticker id.
 	StickerID int `url:"sticker_id,omitempty"`
-	// '1' if the message is a notification (for community messages).
-	Notification bool `url:"notification,omitempty"`
 	// Group ID (for group messages with group access token)
-	GroupID int `url:"group_id,omitempty"`
+	GroupID        int    `url:"group_id,omitempty"`
+	Keyboard       string `url:"keyboard,omitempty"`
+	Payload        string `url:"payload,omitempty"`
+	DontParseLinks bool   `url:"dont_parse_links,omitempty"`
 }
 
 // MessagesSendResponse is response for Messages.Send
@@ -363,7 +426,8 @@ type MessagesEditParams struct {
 	// Destination ID. "For user: 'User ID', e.g. '12345'. For chat: '2000000000' + 'chat_id', e.g. '2000000001'. For community: '- community ID', e.g. '-12345'. "
 	PeerID int `url:"peer_id"`
 	// (Required if 'attachments' is not set.) Text of the message.
-	Message string `url:"message,omitempty"`
+	Message   string `url:"message,omitempty"`
+	MessageID int    `url:"message_id"`
 	// Geographical latitude of a check-in, in degrees (from -90 to 90).
 	Lat float32 `url:"lat,omitempty"`
 	// Geographical longitude of a check-in, in degrees (from -180 to 180).
@@ -375,7 +439,8 @@ type MessagesEditParams struct {
 	// '1' — to keep attached snippets.
 	KeepSnippets bool `url:"keep_snippets,omitempty"`
 	// Group ID (for group messages with user access token)
-	GroupID int `url:"group_id,omitempty"`
+	GroupID        int  `url:"group_id,omitempty"`
+	DontParseLinks bool `url:"dont_parse_links,omitempty"`
 }
 
 // Edit Edits the message.
@@ -394,10 +459,10 @@ type MessagesDeleteParams struct {
 	MessageIDs CSVIntSlice `url:"message_ids,omitempty"`
 	// '1' — to mark message as spam.
 	Spam bool `url:"spam,omitempty"`
-	// '1' — delete message for for all.
-	DeleteForAll bool `url:"delete_for_all,omitempty"`
 	// Group ID (for group messages with user access token)
 	GroupID int `url:"group_id,omitempty"`
+	// '1' — delete message for for all.
+	DeleteForAll bool `url:"delete_for_all,omitempty"`
 }
 
 // MessagesDeleteResponse is response for Messages.Delete
@@ -422,25 +487,63 @@ func (v Messages) Delete(params MessagesDeleteParams) (*MessagesDeleteResponse, 
 // MessagesDeleteConversationParams are params for Messages.DeleteConversation
 type MessagesDeleteConversationParams struct {
 	// User ID. To clear a chat history use 'chat_id'
-	UserID string `url:"user_id,omitempty"`
-	// Group ID (for group messages with user access token)
-	GroupID int `url:"group_id,omitempty"`
+	UserID int `url:"user_id,omitempty"`
 	// Destination ID. "For user: 'User ID', e.g. '12345'. For chat: '2000000000' + 'chat_id', e.g. '2000000001'. For community: '- community ID', e.g. '-12345'. "
 	PeerID int `url:"peer_id,omitempty"`
 	// Offset needed to delete a specific subset of conversations.
 	Offset int `url:"offset,omitempty"`
 	// Number of conversations to delete. "NOTE: If the number of messages exceeds the maximum, the method shall be called several times."
 	Count int `url:"count,omitempty"`
+	// Group ID (for group messages with user access token)
+	GroupID int `url:"group_id,omitempty"`
+}
+
+// MessagesDeleteConversationResponse is response for Messages.DeleteConversation
+//easyjson:json
+type MessagesDeleteConversationResponse struct {
+	// Id of the last message, that was deleted
+	LastDeletedID int `json:"last_deleted_id,omitempty"`
 }
 
 // DeleteConversation Deletes all private messages in a conversation.
-func (v Messages) DeleteConversation(params MessagesDeleteConversationParams) (bool, error) {
+func (v Messages) DeleteConversation(params MessagesDeleteConversationParams) (*MessagesDeleteConversationResponse, error) {
 	r, err := v.API.Request("messages.deleteConversation", params)
 	if err != nil {
-		return false, err
+		return nil, err
 	}
 
-	return decodeBoolIntResponse(r)
+	var resp MessagesDeleteConversationResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
+// MessagesPinParams are params for Messages.Pin
+type MessagesPinParams struct {
+	// Destination ID. "For user: 'User ID', e.g. '12345'. For chat: '2000000000' + 'Chat ID', e.g. '2000000001'. For community: '- Community ID', e.g. '-12345'. "
+	PeerID    int `url:"peer_id"`
+	MessageID int `url:"message_id,omitempty"`
+}
+
+// MessagesPinResponse is response for Messages.Pin
+//easyjson:json
+type MessagesPinResponse vk.Message
+
+// Pin Pin a message.
+func (v Messages) Pin(params MessagesPinParams) (*MessagesPinResponse, error) {
+	r, err := v.API.Request("messages.pin", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp MessagesPinResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
 }
 
 // MessagesRestoreParams are params for Messages.Restore
@@ -463,8 +566,6 @@ func (v Messages) Restore(params MessagesRestoreParams) (bool, error) {
 
 // MessagesMarkAsReadParams are params for Messages.MarkAsRead
 type MessagesMarkAsReadParams struct {
-	// IDs of messages to mark as read.
-	MessageIDs CSVIntSlice `url:"message_ids,omitempty"`
 	// Destination ID. "For user: 'User ID', e.g. '12345'. For chat: '2000000000' + 'chat_id', e.g. '2000000001'. For community: '- community ID', e.g. '-12345'. "
 	PeerID int `url:"peer_id,omitempty"`
 	// Message ID to start from.
@@ -488,7 +589,7 @@ type MessagesMarkAsImportantParams struct {
 	// IDs of messages to mark as important.
 	MessageIDs CSVIntSlice `url:"message_ids,omitempty"`
 	// '1' — to add a star (mark as important), '0' — to remove the star
-	Important bool `url:"important,omitempty"`
+	Important int `url:"important,omitempty"`
 }
 
 // MessagesMarkAsImportantResponse is response for Messages.MarkAsImportant
@@ -513,12 +614,12 @@ func (v Messages) MarkAsImportant(params MessagesMarkAsImportantParams) (Message
 
 // MessagesMarkAsImportantConversationParams are params for Messages.MarkAsImportantConversation
 type MessagesMarkAsImportantConversationParams struct {
-	// Group ID (for group messages with group access token)
-	GroupID int `url:"group_id,omitempty"`
 	// ID of conversation to mark as important.
 	PeerID int `url:"peer_id"`
 	// '1' — to add a star (mark as important), '0' — to remove the star
 	Important bool `url:"important,omitempty"`
+	// Group ID (for group messages with group access token)
+	GroupID int `url:"group_id,omitempty"`
 }
 
 // MarkAsImportantConversation Marks and unmarks conversations as important.
@@ -533,12 +634,12 @@ func (v Messages) MarkAsImportantConversation(params MessagesMarkAsImportantConv
 
 // MessagesMarkAsAnsweredConversationParams are params for Messages.MarkAsAnsweredConversation
 type MessagesMarkAsAnsweredConversationParams struct {
-	// Group ID (for group messages with group access token)
-	GroupID int `url:"group_id,omitempty"`
 	// ID of conversation to mark as important.
 	PeerID int `url:"peer_id"`
 	// '1' — to mark as answered, '0' — to remove the mark
 	Answered bool `url:"answered,omitempty"`
+	// Group ID (for group messages with group access token)
+	GroupID int `url:"group_id,omitempty"`
 }
 
 // MarkAsAnsweredConversation Marks and unmarks conversations as unanswered.
@@ -553,12 +654,12 @@ func (v Messages) MarkAsAnsweredConversation(params MessagesMarkAsAnsweredConver
 
 // MessagesGetLongPollServerParams are params for Messages.GetLongPollServer
 type MessagesGetLongPollServerParams struct {
-	// Long poll version
-	LpVersion int `url:"lp_version,omitempty"`
 	// '1' — to return the 'pts' field, needed for the [vk.com/dev/messages.getLongPollHistory|messages.getLongPollHistory] method.
 	NeedPts bool `url:"need_pts,omitempty"`
 	// Group ID (for group messages with user access token)
 	GroupID int `url:"group_id,omitempty"`
+	// Long poll version
+	LpVersion int `url:"lp_version,omitempty"`
 }
 
 // MessagesGetLongPollServerResponse is response for Messages.GetLongPollServer
@@ -608,7 +709,8 @@ type MessagesGetLongPollHistoryParams struct {
 	// Maximum ID of the message among existing ones in the local copy. Both messages received with API methods (for example, , ), and data received from a Long Poll server (events with code 4) are taken into account.
 	MaxMsgID int `url:"max_msg_id,omitempty"`
 	// Group ID (for group messages with user access token)
-	GroupID int `url:"group_id,omitempty"`
+	GroupID   int `url:"group_id,omitempty"`
+	LpVersion int `url:"lp_version,omitempty"`
 }
 
 // MessagesGetLongPollHistoryResponse is response for Messages.GetLongPollHistory
@@ -645,10 +747,47 @@ func (v Messages) GetLongPollHistory(params MessagesGetLongPollHistoryParams) (*
 	return &resp, nil
 }
 
+// MessagesGetChatPreviewParams are params for Messages.GetChatPreview
+type MessagesGetChatPreviewParams struct {
+	// Invitation link.
+	Link string `url:"link"`
+	// Profile fields to return.
+	Fields CSVStringSlice `url:"fields,omitempty"`
+}
+
+// MessagesGetChatPreviewResponse is response for Messages.GetChatPreview
+//easyjson:json
+type MessagesGetChatPreviewResponse struct {
+	Preview struct {
+		AdminID      int    `json:"admin_id,omitempty"`
+		MembersCount int    `json:"members_count,omitempty"`
+		Members      []int  `json:"members,omitempty"`
+		Title        string `json:"title,omitempty"`
+		LocalID      int    `json:"local_id,omitempty"`
+		Joined       bool   `json:"joined,omitempty"`
+	} `json:"preview,omitempty"`
+	Profiles []vk.User `json:"profiles,omitempty"`
+}
+
+// GetChatPreview does messages.getChatPreview
+func (v Messages) GetChatPreview(params MessagesGetChatPreviewParams) (*MessagesGetChatPreviewResponse, error) {
+	r, err := v.API.Request("messages.getChatPreview", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp MessagesGetChatPreviewResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
+}
+
 // MessagesCreateChatParams are params for Messages.CreateChat
 type MessagesCreateChatParams struct {
 	// IDs of the users to be added to the chat.
-	UserIDs CSVIntSlice `url:"user_ids"`
+	UserIDs CSVIntSlice `url:"user_ids,omitempty"`
 	// Chat title.
 	Title string `url:"title,omitempty"`
 }
@@ -696,34 +835,40 @@ func (v Messages) EditChat(params MessagesEditChatParams) (bool, error) {
 
 // MessagesGetConversationMembersParams are params for Messages.GetConversationMembers
 type MessagesGetConversationMembersParams struct {
-	// Group ID (for group messages with group access token)
-	GroupID int `url:"group_id,omitempty"`
 	// Peer ID.
-	PeerID int `url:"peer_id,omitempty"`
+	PeerID int `url:"peer_id"`
 	// Profile fields to return.
 	Fields CSVStringSlice `url:"fields,omitempty"`
-	// Case for declension of user name and surname: 'nom' — nominative (default), 'gen' — genitive, 'dat' — dative, 'acc' — accusative, 'ins' — instrumental, 'abl' — prepositional
-	NameCase string `url:"name_case,omitempty"`
+	// Group ID (for group messages with group access token)
+	GroupID int `url:"group_id,omitempty"`
 }
 
 // MessagesGetConversationMembersResponse is response for Messages.GetConversationMembers
 //easyjson:json
 type MessagesGetConversationMembersResponse struct {
-	// Total number
+	// Chat members count
 	Count int `json:"count,omitempty"`
-	// Conversation members
 	Items []struct {
-		// Conversation member ID
-		MemberID int `json:"member_id,omitempty"`
-		// ID of the member who invited this member to the conversation
-		InvitedBy int `json:"invited_by,omitempty"`
-		// Date of joining the conversation
-		JoinDate int `json:"join_date,omitempty"`
-		// Information whether the member is conversation admin
-		IsAdmin vk.BoolInt `json:"is_admin,omitempty"`
-		// Information whether current user can kick the member
-		CanKick vk.BoolInt `json:"can_kick,omitempty"`
+		MemberID  int  `json:"member_id,omitempty"`
+		JoinDate  int  `json:"join_date,omitempty"`
+		InvitedBy int  `json:"invited_by,omitempty"`
+		IsOwner   bool `json:"is_owner,omitempty"`
+		IsAdmin   bool `json:"is_admin,omitempty"`
+		// Is it possible for user to kick this member
+		CanKick bool `json:"can_kick,omitempty"`
 	} `json:"items,omitempty"`
+	ChatRestrictions struct {
+		// Only admins can invite users to this chat
+		OnlyAdminsInvite bool `json:"only_admins_invite,omitempty"`
+		// Only admins can kick users from this chat
+		OnlyAdminsKick bool `json:"only_admins_kick,omitempty"`
+		// Only admins can change chat info
+		OnlyAdminsEditInfo bool `json:"only_admins_edit_info,omitempty"`
+		// Only admins can edit pinned message
+		OnlyAdminsEditPin bool `json:"only_admins_edit_pin,omitempty"`
+		// Only admins can promote users to admins
+		AdminsPromoteUsers bool `json:"admins_promote_users,omitempty"`
+	} `json:"chat_restrictions,omitempty"`
 	Profiles []vk.User  `json:"profiles,omitempty"`
 	Groups   []vk.Group `json:"groups,omitempty"`
 }
@@ -746,7 +891,7 @@ func (v Messages) GetConversationMembers(params MessagesGetConversationMembersPa
 // MessagesSetActivityParams are params for Messages.SetActivity
 type MessagesSetActivityParams struct {
 	// User ID.
-	UserID string `url:"user_id,omitempty"`
+	UserID int `url:"user_id,omitempty"`
 	// 'typing' — user has started to type.
 	Type string `url:"type,omitempty"`
 	// Destination ID. "For user: 'User ID', e.g. '12345'. For chat: '2000000000' + 'chat_id', e.g. '2000000001'. For community: '- community ID', e.g. '-12345'. "
@@ -782,9 +927,11 @@ type MessagesSearchConversationsParams struct {
 // MessagesSearchConversationsResponse is response for Messages.SearchConversations
 //easyjson:json
 type MessagesSearchConversationsResponse struct {
-	// Total number
-	Count int               `json:"count,omitempty"`
-	Items []vk.Conversation `json:"items,omitempty"`
+	// Total results number
+	Count    int               `json:"count,omitempty"`
+	Items    []vk.Conversation `json:"items,omitempty"`
+	Profiles []vk.User         `json:"profiles,omitempty"`
+	Groups   []vk.Group        `json:"groups,omitempty"`
 }
 
 // SearchConversations Returns a list of the current user's conversations that match search criteria.
@@ -825,7 +972,8 @@ type MessagesRemoveChatUserParams struct {
 	// Chat ID.
 	ChatID int `url:"chat_id"`
 	// ID of the user to be removed from the chat.
-	UserID string `url:"user_id"`
+	UserID   int `url:"user_id,omitempty"`
+	MemberID int `url:"member_id,omitempty"`
 }
 
 // RemoveChatUser Allows the current user to leave a chat or, if the current user started the chat, allows the user to remove another user from the chat.
@@ -900,7 +1048,8 @@ func (v Messages) SetChatPhoto(params MessagesSetChatPhotoParams) (*MessagesSetC
 // MessagesDeleteChatPhotoParams are params for Messages.DeleteChatPhoto
 type MessagesDeleteChatPhotoParams struct {
 	// Chat ID.
-	ChatID int `url:"chat_id"`
+	ChatID  int `url:"chat_id"`
+	GroupID int `url:"group_id,omitempty"`
 }
 
 // MessagesDeleteChatPhotoResponse is response for Messages.DeleteChatPhoto
@@ -945,7 +1094,8 @@ func (v Messages) DenyMessagesFromGroup(params MessagesDenyMessagesFromGroupPara
 // MessagesAllowMessagesFromGroupParams are params for Messages.AllowMessagesFromGroup
 type MessagesAllowMessagesFromGroupParams struct {
 	// Group ID.
-	GroupID int `url:"group_id"`
+	GroupID int    `url:"group_id"`
+	Key     string `url:"key,omitempty"`
 }
 
 // AllowMessagesFromGroup Allows sending messages from community to the current user.
@@ -985,4 +1135,20 @@ func (v Messages) IsMessagesFromGroupAllowed(params MessagesIsMessagesFromGroupA
 		return nil, err
 	}
 	return &resp, nil
+}
+
+// MessagesUnpinParams are params for Messages.Unpin
+type MessagesUnpinParams struct {
+	PeerID  int `url:"peer_id"`
+	GroupID int `url:"group_id,omitempty"`
+}
+
+// Unpin does messages.unpin
+func (v Messages) Unpin(params MessagesUnpinParams) (bool, error) {
+	r, err := v.API.Request("messages.unpin", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
 }

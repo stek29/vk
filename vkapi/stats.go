@@ -16,11 +16,14 @@ type StatsGetParams struct {
 	// Community ID.
 	GroupID int `url:"group_id,omitempty"`
 	// Application ID.
-	AppID int `url:"app_id,omitempty"`
-	// Latest datestamp (in Unix time) of statistics to return.
-	DateFrom string `url:"date_from,omitempty"`
-	// End datestamp (in Unix time) of statistics to return.
-	DateTo string `url:"date_to,omitempty"`
+	AppID          int            `url:"app_id,omitempty"`
+	TimestampFrom  int            `url:"timestamp_from,omitempty"`
+	TimestampTo    int            `url:"timestamp_to,omitempty"`
+	Interval       string         `url:"interval,omitempty"`
+	IntervalsCount int            `url:"intervals_count,omitempty"`
+	Filters        CSVStringSlice `url:"filters,omitempty"`
+	StatsGroups    CSVStringSlice `url:"stats_groups,omitempty"`
+	Extended       bool           `url:"extended,omitempty"`
 }
 
 // StatsGetResponse is response for Stats.Get
@@ -41,9 +44,14 @@ func (v Stats) Get(params StatsGetParams) (StatsGetResponse, error) {
 	return resp, nil
 }
 
+// StatsTrackVisitorParams are params for Stats.TrackVisitor
+type StatsTrackVisitorParams struct {
+	ID string `url:"id"`
+}
+
 // TrackVisitor does stats.trackVisitor
-func (v Stats) TrackVisitor() (bool, error) {
-	r, err := v.API.Request("stats.trackVisitor", nil)
+func (v Stats) TrackVisitor(params StatsTrackVisitorParams) (bool, error) {
+	r, err := v.API.Request("stats.trackVisitor", params)
 	if err != nil {
 		return false, err
 	}

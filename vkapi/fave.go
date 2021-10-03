@@ -48,8 +48,6 @@ type FaveGetPhotosParams struct {
 	Offset int `url:"offset,omitempty"`
 	// Number of photos to return.
 	Count int `url:"count,omitempty"`
-	// '1' — to return photo sizes in a [vk.com/dev/photo_sizes|special format].
-	PhotoSizes bool `url:"photo_sizes,omitempty"`
 }
 
 // FaveGetPhotosResponse is response for Fave.GetPhotos
@@ -175,7 +173,8 @@ func (v Fave) GetLinks(params FaveGetLinksParams) (*FaveGetLinksResponse, error)
 // FaveGetMarketItemsParams are params for Fave.GetMarketItems
 type FaveGetMarketItemsParams struct {
 	// Number of results to return.
-	Count int `url:"count,omitempty"`
+	Count  int `url:"count,omitempty"`
+	Offset int `url:"offset,omitempty"`
 	// '1' – to return additional fields 'likes, can_comment, can_repost, photos'. By default: '0'.
 	Extended bool `url:"extended,omitempty"`
 }
@@ -271,8 +270,6 @@ func (v Fave) RemoveGroup(params FaveRemoveGroupParams) (bool, error) {
 type FaveAddLinkParams struct {
 	// Link URL.
 	Link string `url:"link"`
-	// Description text.
-	Text string `url:"text,omitempty"`
 }
 
 // AddLink Adds a link to user faves.
@@ -288,7 +285,7 @@ func (v Fave) AddLink(params FaveAddLinkParams) (bool, error) {
 // FaveRemoveLinkParams are params for Fave.RemoveLink
 type FaveRemoveLinkParams struct {
 	// Link ID (can be obtained by [vk.com/dev/faves.getLinks|faves.getLinks] method).
-	LinkID string `url:"link_id"`
+	LinkID string `url:"link_id,omitempty"`
 }
 
 // RemoveLink Removes link from the user's faves.

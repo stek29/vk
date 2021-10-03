@@ -63,7 +63,9 @@ type AppsGetParams struct {
 	// List of application ID
 	AppIDs CSVStringSlice `url:"app_ids,omitempty"`
 	// platform. Possible values: *'ios' — iOS,, *'android' — Android,, *'winphone' — Windows Phone,, *'web' — приложения на vk.com. By default: 'web'.
-	Platform string `url:"platform,omitempty"`
+	Platform      string `url:"platform,omitempty"`
+	Extended      bool   `url:"extended,omitempty"`
+	ReturnFriends bool   `url:"return_friends,omitempty"`
 	// Profile fields to return. Sample values: 'nickname', 'screen_name', 'sex', 'bdate' (birthdate), 'city', 'country', 'timezone', 'photo', 'photo_medium', 'photo_big', 'has_mobile', 'contacts', 'education', 'online', 'counters', 'relation', 'last_seen', 'activity', 'can_write_private_message', 'can_see_all_posts', 'can_post', 'universities', (only if return_friends - 1)
 	Fields CSVStringSlice `url:"fields,omitempty"`
 	// Case for declension of user name and surname: 'nom' — nominative (default),, 'gen' — genitive,, 'dat' — dative,, 'acc' — accusative,, 'ins' — instrumental,, 'abl' — prepositional. (only if 'return_friends' = '1')
@@ -142,8 +144,10 @@ func (v Apps) DeleteAppRequests() (bool, error) {
 
 // AppsGetFriendsListParams are params for Apps.GetFriendsList
 type AppsGetFriendsListParams struct {
+	Extended bool `url:"extended,omitempty"`
 	// List size.
-	Count int `url:"count,omitempty"`
+	Count  int `url:"count,omitempty"`
+	Offset int `url:"offset,omitempty"`
 	// List type. Possible values: * 'invite' — available for invites (don't play the game),, * 'request' — available for request (play the game). By default: 'invite'.
 	Type string `url:"type,omitempty"`
 	// Additional profile fields, see [vk.com/dev/fields|description].
@@ -277,4 +281,38 @@ func (v Apps) GetScore(params AppsGetScoreParams) (AppsGetScoreResponse, error) 
 		return 0, err
 	}
 	return resp, nil
+}
+
+// AppsGetScopesParams are params for Apps.GetScopes
+type AppsGetScopesParams struct {
+	Type string `url:"type,omitempty"`
+}
+
+// AppsGetScopesResponse is response for Apps.GetScopes
+//easyjson:json
+type AppsGetScopesResponse struct {
+	// Total number
+	Count int `json:"count,omitempty"`
+	// Scope description
+	Items []struct {
+		// Scope name
+		Name string `json:"name,omitempty"`
+		// Scope title
+		Title string `json:"title,omitempty"`
+	} `json:"items,omitempty"`
+}
+
+// GetScopes Returns scopes for auth
+func (v Apps) GetScopes(params AppsGetScopesParams) (*AppsGetScopesResponse, error) {
+	r, err := v.API.Request("apps.getScopes", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp AppsGetScopesResponse
+	err = json.Unmarshal(r, &resp)
+	if err != nil {
+		return nil, err
+	}
+	return &resp, nil
 }

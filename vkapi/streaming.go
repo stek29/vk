@@ -34,3 +34,18 @@ func (v Streaming) GetServerURL() (*StreamingGetServerURLResponse, error) {
 	}
 	return &resp, nil
 }
+
+// StreamingSetSettingsParams are params for Streaming.SetSettings
+type StreamingSetSettingsParams struct {
+	MonthlyTier string `url:"monthly_tier,omitempty"`
+}
+
+// SetSettings does streaming.setSettings
+func (v Streaming) SetSettings(params StreamingSetSettingsParams) (bool, error) {
+	r, err := v.API.Request("streaming.setSettings", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}

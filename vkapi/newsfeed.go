@@ -31,15 +31,16 @@ type NewsfeedGetParams struct {
 	// Number of news items to return (default 50, maximum 100). For auto feed, you can use the 'new_offset' parameter returned by this method.
 	Count int `url:"count,omitempty"`
 	// Additional fields of [vk.com/dev/fields|profiles] and [vk.com/dev/fields_groups|communities] to return.
-	Fields CSVStringSlice `url:"fields,omitempty"`
+	Fields  CSVStringSlice `url:"fields,omitempty"`
+	Section string         `url:"section,omitempty"`
 }
 
 // NewsfeedGetResponse is response for Newsfeed.Get
 //easyjson:json
 type NewsfeedGetResponse struct {
-	Items    []genTODOType/* objects.json#/definitions/newsfeed_newsfeed_item */ `json:"items,omitempty"`
-	Profiles []vk.User  `json:"profiles,omitempty"`
-	Groups   []vk.Group `json:"groups,omitempty"`
+	Items    []vk.NewsfeedItem `json:"items,omitempty"`
+	Profiles []vk.User         `json:"profiles,omitempty"`
+	Groups   []vk.Group        `json:"groups,omitempty"`
 }
 
 // Get Returns data required to show newsfeed for the current user.
@@ -76,9 +77,9 @@ type NewsfeedGetRecommendedParams struct {
 // NewsfeedGetRecommendedResponse is response for Newsfeed.GetRecommended
 //easyjson:json
 type NewsfeedGetRecommendedResponse struct {
-	Items    []genTODOType/* objects.json#/definitions/newsfeed_newsfeed_item */ `json:"items,omitempty"`
-	Profiles []vk.User  `json:"profiles,omitempty"`
-	Groups   []vk.Group `json:"groups,omitempty"`
+	Items    []vk.NewsfeedItem `json:"items,omitempty"`
+	Profiles []vk.User         `json:"profiles,omitempty"`
+	Groups   []vk.Group        `json:"groups,omitempty"`
 	// New offset value
 	NewOffset string `json:"new_offset,omitempty"`
 	// New from value
@@ -111,7 +112,8 @@ type NewsfeedGetCommentsParams struct {
 	// Earliest timestamp (in Unix time) of a comment to return. By default, 24 hours ago.
 	StartTime int `url:"start_time,omitempty"`
 	// Latest timestamp (in Unix time) of a comment to return. By default, the current time.
-	EndTime int `url:"end_time,omitempty"`
+	EndTime           int `url:"end_time,omitempty"`
+	LastCommentsCount int `url:"last_comments_count,omitempty"`
 	// Identificator needed to return the next page with results. Value for this parameter returns in 'next_from' field.
 	StartFrom string `url:"start_from,omitempty"`
 	// Additional fields of [vk.com/dev/fields|profiles] and [vk.com/dev/fields_groups|communities] to return.
@@ -121,9 +123,9 @@ type NewsfeedGetCommentsParams struct {
 // NewsfeedGetCommentsResponse is response for Newsfeed.GetComments
 //easyjson:json
 type NewsfeedGetCommentsResponse struct {
-	Items    []genTODOType/* objects.json#/definitions/newsfeed_newsfeed_item */ `json:"items,omitempty"`
-	Profiles []vk.User  `json:"profiles,omitempty"`
-	Groups   []vk.Group `json:"groups,omitempty"`
+	Items    []vk.NewsfeedItem `json:"items,omitempty"`
+	Profiles []vk.User         `json:"profiles,omitempty"`
+	Groups   []vk.Group        `json:"groups,omitempty"`
 	// New from value
 	NextFrom string `json:"next_from,omitempty"`
 }

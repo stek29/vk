@@ -55,7 +55,11 @@ type LeadsStartParams struct {
 	// Lead ID.
 	LeadID int `url:"lead_id"`
 	// Secret key from the lead testing interface.
-	Secret string `url:"secret"`
+	Secret   string `url:"secret"`
+	UID      int    `url:"uid,omitempty"`
+	Aid      int    `url:"aid,omitempty"`
+	TestMode bool   `url:"test_mode,omitempty"`
+	Force    bool   `url:"force,omitempty"`
 }
 
 // LeadsStartResponse is response for Leads.Start
@@ -193,7 +197,9 @@ type LeadsCheckUserParams struct {
 	// Lead ID.
 	LeadID int `url:"lead_id"`
 	// Value to be return in 'result' field when test mode is used.
-	TestResult int `url:"test_result,omitempty"`
+	TestResult int  `url:"test_result,omitempty"`
+	TestMode   bool `url:"test_mode,omitempty"`
+	AutoStart  bool `url:"auto_start,omitempty"`
 	// User age.
 	Age int `url:"age,omitempty"`
 	// User country code.

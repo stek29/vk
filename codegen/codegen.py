@@ -67,6 +67,12 @@ NATIVE_TYPES_ZERO_VALS = {
 	"""),
 }
 
+BOOL_INTS = [
+	'base_ok_response',
+	'base_property_exists',
+	'base_bool_int',
+]
+
 KNOWN_TYPE_REFS = {
 	'wall_comment_attachment': 'Attachment',
 	'wall_wallpost_attachment': 'Attachment',
@@ -108,12 +114,9 @@ KNOWN_TYPE_REFS = {
 	# Lost xtr
 	'groups_group_xtr_invited_by': 'Group',
 
-	'base_ok_response': 'BoolInt',
-	'base_property_exists': 'BoolInt',
-	'base_bool_int': 'BoolInt',
-
 	'base_object': 'BaseObject',
 	'base_object_with_name': 'BaseObjectWithName',
+	'groups_subject_item': 'BaseObjectWithName',
 	'base_country': 'BaseObject',
 	'database_faculty': 'BaseObject',
 	'database_faculty': 'BaseObject',
@@ -169,18 +172,23 @@ KNOWN_TYPE_REFS = {
 	'places_place_full': 'Place',
 
 	'groups_group_category': 'Category',
+	'groups_group_category_full': 'Category',
 	'groups_group_public_category_list': 'Category',
 
 	'stats_wallpost_stat': 'WallpostStats',
 
 	'stories_story': 'Story',
 	'notes_note': 'Note',
+
+	'groups_address': 'GroupAddress',
+	'messages_pinned_message': 'Message',
+	'newsfeed_newsfeed_item': 'NewsfeedItem',
 }
+
+KNOWN_TYPE_REFS.update({k: 'BoolInt' for k in BOOL_INTS})
 
 FORCE_CODE_GENERATE = {
 	'messages_conversation_member',
-
-	'groups_group_category_full',
 
 	'video_save_result',
 
@@ -266,6 +274,14 @@ FORCE_CODE_GENERATE = {
 	'stories_story_stats', 'stories_story_stats_stat', 'stories_story_stats_state',
 
 	'photos_photo_upload',
+
+	'database_station',
+	'friends_requests_xtr_message',
+	'friends_requests_mutual',
+	'apps_scope',
+	'groups_group_link',
+	'messages_chat_restrictions',
+	'message_chat_preview',
 }
 
 def goify_field_name(name):
@@ -294,8 +310,13 @@ def goify_field(field):
 			'integer': 'CSVIntSlice',
 			'string': 'CSVStringSlice',
 		}
-		t = field['items']['type']
 
+		t = field['items']
+
+		while '$ref' in t:
+			t = resolve_ref(t['$ref'])
+
+		t = t['type']
 		go_type = native[t]
 	else:
 		go_type = NATIVE_TYPES[t]
@@ -349,8 +370,8 @@ def goify_ref(r):
 	if last_part in KNOWN_TYPE_REFS:
 		return 'vk.' + KNOWN_TYPE_REFS[last_part], None
 
-	resolved = resolve_ref(r)
-	if resolved is not None:
+	if last_part in FORCE_CODE_GENERATE:
+		resolved = resolve_ref(r)
 		return goify_type(resolved)
 
 	return 'genTODOType /* {} */'.format(r), None
@@ -362,10 +383,9 @@ def resolve_ref(r):
 	if file == '':
 		file = 'objects.json'
 	
-	if file == 'responses.json' or last_part in FORCE_CODE_GENERATE:
-		j = get_json_cached(file)
-		return traverse_dict(j, path)
-	
+	j = get_json_cached(file)
+	return traverse_dict(j, path)
+
 def goify_type(resp):
 	slice_level = 0
 	desc = resp.get('description')
@@ -517,7 +537,20 @@ for namespace, ns_methods in methods.items():
 				writeln(goify_field(param))
 			writeln('}\n')
 
-		if '#/definitions/ok_response' in res.get('$ref', ''):
+		
+		is_bool_int = False
+		if extref is None:
+			nref = res
+			ref_path = ''
+			while '$ref' in nref:
+				ref_path = nref['$ref']
+				nref = resolve_ref(ref_path)
+				if 'properties' in nref and 'response' in nref['properties']:
+					nref = nref['properties']['response']
+			
+			is_bool_int = ref_path.split('/')[-1] in BOOL_INTS
+
+		if is_bool_int:
 			return_type = resp_typename = 'bool'
 			zero_val = 'false'
 			return_val = 'resp'

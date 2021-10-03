@@ -230,9 +230,10 @@ type WallPostParams struct {
 	// ID of the location where the user was tagged.
 	PlaceID int `url:"place_id,omitempty"`
 	// Post ID. Used for publishing of scheduled and suggested posts.
-	PostID    int    `url:"post_id,omitempty"`
-	GUID      string `url:"guid,omitempty"`
-	MarkAsAds bool   `url:"mark_as_ads,omitempty"`
+	PostID        int    `url:"post_id,omitempty"`
+	GUID          string `url:"guid,omitempty"`
+	MarkAsAds     bool   `url:"mark_as_ads,omitempty"`
+	CloseComments bool   `url:"close_comments,omitempty"`
 }
 
 // WallPostResponse is response for Wall.Post
@@ -257,42 +258,6 @@ func (v Wall) Post(params WallPostParams) (*WallPostResponse, error) {
 	return &resp, nil
 }
 
-// WallOpenCommentsParams are params for Wall.OpenComments
-type WallOpenCommentsParams struct {
-	// User ID or community ID.
-	OwnerID int `url:"owner_id"`
-	// Post ID.
-	PostID int `url:"post_id"`
-}
-
-// OpenComments Enables comments on post.
-func (v Wall) OpenComments(params WallOpenCommentsParams) (bool, error) {
-	r, err := v.API.Request("wall.openComments", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
-}
-
-// WallCloseCommentsParams are params for Wall.CloseComments
-type WallCloseCommentsParams struct {
-	// User ID or community ID.
-	OwnerID int `url:"owner_id"`
-	// Post ID.
-	PostID int `url:"post_id"`
-}
-
-// CloseComments Disables comments on post.
-func (v Wall) CloseComments(params WallCloseCommentsParams) (bool, error) {
-	r, err := v.API.Request("wall.closeComments", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
-}
-
 // WallPostAdsStealthParams are params for Wall.PostAdsStealth
 type WallPostAdsStealthParams struct {
 	// User ID or community ID. Use a negative value to designate a community ID.
@@ -309,8 +274,6 @@ type WallPostAdsStealthParams struct {
 	Long float32 `url:"long,omitempty"`
 	// ID of the location where the user was tagged.
 	PlaceID int `url:"place_id,omitempty"`
-	// Post ID. Used for publishing of scheduled and suggested posts.
-	PostID int `url:"post_id,omitempty"`
 	// Unique identifier to avoid duplication the same post.
 	GUID string `url:"guid,omitempty"`
 	// Link button ID
@@ -419,28 +382,22 @@ func (v Wall) GetReposts(params WallGetRepostsParams) (*WallGetRepostsResponse, 
 // WallEditParams are params for Wall.Edit
 type WallEditParams struct {
 	// User ID or community ID. Use a negative value to designate a community ID.
-	OwnerID int `url:"owner_id,omitempty"`
-	// Post ID.
-	PostID int `url:"post_id"`
-	// (Applies only when editing a scheduled post.), '1' — post will be available to friends only, '0' — post will be available to all users (default)
+	OwnerID     int  `url:"owner_id,omitempty"`
+	PostID      int  `url:"post_id"`
 	FriendsOnly bool `url:"friends_only,omitempty"`
 	// (Required if 'attachments' is not set.) Text of the post.
 	Message string `url:"message,omitempty"`
 	// (Required if 'message' is not set.) List of objects attached to the post, in the following format: "<owner_id>_<media_id>,<owner_id>_<media_id>", '' — Type of media attachment: 'photo' — photo, 'video' — video, 'audio' — audio, 'doc' — document, '<owner_id>' — ID of the media application owner. '<media_id>' — Media application ID. Example: "photo100172_166443618,photo66748_265827614", May contain a link to an external page to include in the post. Example: "photo66748_265827614,http://habrahabr.ru", "NOTE: If more than one link is being attached, an error is thrown."
-	Attachments CSVStringSlice `url:"attachments,omitempty"`
-	// (Applies only to a scheduled post.) List of services or websites where status will be updated, if the user has so requested. Sample values: 'twitter', 'facebook'.
-	Services string `url:"services,omitempty"`
-	// (Applies only to a post that was created "as community" on a community wall.), '1' — to add the signature of the user who created the post
-	Signed bool `url:"signed,omitempty"`
-	// (Applies only to a scheduled post.) Publication date (in Unix time). If used, posting will be delayed until the set time.
-	PublishDate int `url:"publish_date,omitempty"`
-	// Geographical latitude of the check-in, in degrees (from -90 to 90).
-	Lat float32 `url:"lat,omitempty"`
-	// Geographical longitude of the check-in, in degrees (from -180 to 180).
-	Long float32 `url:"long,omitempty"`
-	// ID of the location where the user was tagged.
-	PlaceID   int  `url:"place_id,omitempty"`
-	MarkAsAds bool `url:"mark_as_ads,omitempty"`
+	Attachments   CSVStringSlice `url:"attachments,omitempty"`
+	Services      string         `url:"services,omitempty"`
+	Signed        bool           `url:"signed,omitempty"`
+	PublishDate   int            `url:"publish_date,omitempty"`
+	Lat           float32        `url:"lat,omitempty"`
+	Long          float32        `url:"long,omitempty"`
+	PlaceID       int            `url:"place_id,omitempty"`
+	MarkAsAds     bool           `url:"mark_as_ads,omitempty"`
+	CloseComments bool           `url:"close_comments,omitempty"`
+	PosterBkgID   int            `url:"poster_bkg_id,omitempty"`
 }
 
 // Edit Edits a post on a user wall or community wall.
@@ -457,7 +414,7 @@ func (v Wall) Edit(params WallEditParams) (bool, error) {
 type WallEditAdsStealthParams struct {
 	// User ID or community ID. Use a negative value to designate a community ID.
 	OwnerID int `url:"owner_id,omitempty"`
-	// Post ID
+	// Post ID. Used for publishing of scheduled and suggested posts.
 	PostID int `url:"post_id"`
 	// (Required if 'attachments' is not set.) Text of the post.
 	Message string `url:"message,omitempty"`
@@ -566,7 +523,7 @@ type WallGetCommentsParams struct {
 	// User ID or community ID. Use a negative value to designate a community ID.
 	OwnerID int `url:"owner_id,omitempty"`
 	// Post ID.
-	PostID int `url:"post_id"`
+	PostID int `url:"post_id,omitempty"`
 	// '1' — to return the 'likes' field, '0' — not to return the 'likes' field (default)
 	NeedLikes      bool `url:"need_likes,omitempty"`
 	StartCommentID int  `url:"start_comment_id,omitempty"`
@@ -577,8 +534,13 @@ type WallGetCommentsParams struct {
 	// Sort order: 'asc' — chronological, 'desc' — reverse chronological
 	Sort string `url:"sort,omitempty"`
 	// Number of characters at which to truncate comments when previewed. By default, '90'. Specify '0' if you do not want to truncate comments.
-	PreviewLength int  `url:"preview_length,omitempty"`
-	Extended      bool `url:"extended,omitempty"`
+	PreviewLength int            `url:"preview_length,omitempty"`
+	Extended      bool           `url:"extended,omitempty"`
+	Fields        CSVStringSlice `url:"fields,omitempty"`
+	// Comment ID.
+	CommentID int `url:"comment_id,omitempty"`
+	// Count items in threads.
+	ThreadItemsCount int `url:"thread_items_count,omitempty"`
 }
 
 // WallGetCommentsResponse is response for Wall.GetComments
@@ -593,6 +555,12 @@ type WallGetCommentsResponseNormal struct {
 	// Total number
 	Count int          `json:"count,omitempty"`
 	Items []vk.Comment `json:"items,omitempty"`
+	// Information whether current user can comment the post
+	CanPost vk.BoolInt `json:"can_post,omitempty"`
+	// Information whether groups can comment the post
+	GroupsCanPost bool `json:"groups_can_post,omitempty"`
+	// Count of replies of current level
+	CurrentLevelCount int `json:"current_level_count,omitempty"`
 }
 
 func (WallGetCommentsResponseNormal) isWallGetComments() {}
@@ -601,10 +569,16 @@ func (WallGetCommentsResponseNormal) isWallGetComments() {}
 //easyjson:json
 type WallGetCommentsResponseExtended struct {
 	// Total number
-	Count    int          `json:"count,omitempty"`
-	Items    []vk.Comment `json:"items,omitempty"`
-	Profiles []vk.User    `json:"profiles,omitempty"`
-	Groups   []vk.Group   `json:"groups,omitempty"`
+	Count int          `json:"count,omitempty"`
+	Items []vk.Comment `json:"items,omitempty"`
+	// Information whether current user can comment the post
+	CanPost vk.BoolInt `json:"can_post,omitempty"`
+	// Information whether groups can comment the post
+	GroupsCanPost bool `json:"groups_can_post,omitempty"`
+	// Count of replies of current level
+	CurrentLevelCount int        `json:"current_level_count,omitempty"`
+	Profiles          []vk.User  `json:"profiles,omitempty"`
+	Groups            []vk.Group `json:"groups,omitempty"`
 }
 
 func (WallGetCommentsResponseExtended) isWallGetComments() {}
@@ -765,6 +739,38 @@ type WallReportCommentParams struct {
 // ReportComment Reports (submits a complaint about) a comment on a post on a user wall or community wall.
 func (v Wall) ReportComment(params WallReportCommentParams) (bool, error) {
 	r, err := v.API.Request("wall.reportComment", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// WallCloseCommentsParams are params for Wall.CloseComments
+type WallCloseCommentsParams struct {
+	OwnerID int `url:"owner_id"`
+	PostID  int `url:"post_id"`
+}
+
+// CloseComments does wall.closeComments
+func (v Wall) CloseComments(params WallCloseCommentsParams) (bool, error) {
+	r, err := v.API.Request("wall.closeComments", params)
+	if err != nil {
+		return false, err
+	}
+
+	return decodeBoolIntResponse(r)
+}
+
+// WallOpenCommentsParams are params for Wall.OpenComments
+type WallOpenCommentsParams struct {
+	OwnerID int `url:"owner_id"`
+	PostID  int `url:"post_id"`
+}
+
+// OpenComments does wall.openComments
+func (v Wall) OpenComments(params WallOpenCommentsParams) (bool, error) {
+	r, err := v.API.Request("wall.openComments", params)
 	if err != nil {
 		return false, err
 	}

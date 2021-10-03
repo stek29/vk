@@ -13,6 +13,7 @@ type Orders struct {
 
 // OrdersGetParams are params for Orders.Get
 type OrdersGetParams struct {
+	Offset int `url:"offset,omitempty"`
 	// number of returned orders.
 	Count int `url:"count,omitempty"`
 	// if this parameter is set to 1, this method returns a list of test mode orders. By default — 0.

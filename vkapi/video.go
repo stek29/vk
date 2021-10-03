@@ -149,7 +149,8 @@ type VideoSaveParams struct {
 	PrivacyComment CSVStringSlice `url:"privacy_comment,omitempty"`
 	NoComments     bool           `url:"no_comments,omitempty"`
 	// '1' — to repeat the playback of the video, '0' — to play the video once,
-	Repeat bool `url:"repeat,omitempty"`
+	Repeat      bool `url:"repeat,omitempty"`
+	Compression bool `url:"compression,omitempty"`
 }
 
 // VideoSaveResponse is response for Video.Save
@@ -230,16 +231,14 @@ type VideoSearchParams struct {
 	// '1' — to disable the Safe Search filter, '0' — to enable the Safe Search filter
 	Adult bool `url:"adult,omitempty"`
 	// Filters to apply: 'youtube' — return YouTube videos only, 'vimeo' — return Vimeo videos only, 'short' — return short videos only, 'long' — return long videos only
-	Filters CSVStringSlice `url:"filters,omitempty"`
-	//
-	SearchOwn bool `url:"search_own,omitempty"`
+	Filters   CSVStringSlice `url:"filters,omitempty"`
+	SearchOwn bool           `url:"search_own,omitempty"`
 	// Offset needed to return a specific subset of videos.
 	Offset  int `url:"offset,omitempty"`
 	Longer  int `url:"longer,omitempty"`
 	Shorter int `url:"shorter,omitempty"`
 	// Number of videos to return.
-	Count int `url:"count,omitempty"`
-	//
+	Count    int  `url:"count,omitempty"`
 	Extended bool `url:"extended,omitempty"`
 }
 
@@ -294,69 +293,6 @@ func (v Video) Search(params VideoSearchParams) (VideoSearchResponse, error) {
 	return resp, nil
 }
 
-// VideoGetUserVideosParams are params for Video.GetUserVideos
-type VideoGetUserVideosParams struct {
-	// User ID.
-	UserID int `url:"user_id,omitempty"`
-	// Offset needed to return a specific subset of videos.
-	Offset int `url:"offset,omitempty"`
-	// Number of videos to return.
-	Count int `url:"count,omitempty"`
-	//
-	Extended bool `url:"extended,omitempty"`
-}
-
-// VideoGetUserVideosResponse is response for Video.GetUserVideos
-// Either VideoGetUserVideosResponseNormal or VideoGetUserVideosResponseExtended, depending on Extended flag
-type VideoGetUserVideosResponse interface {
-	isVideoGetUserVideos()
-}
-
-// VideoGetUserVideosResponseNormal is non-extended version of VideoGetUserVideosResponse
-//easyjson:json
-type VideoGetUserVideosResponseNormal struct {
-	// Total number
-	Count int        `json:"count,omitempty"`
-	Items []vk.Video `json:"items,omitempty"`
-}
-
-func (VideoGetUserVideosResponseNormal) isVideoGetUserVideos() {}
-
-// VideoGetUserVideosResponseExtended is extended version of VideoGetUserVideosResponse
-//easyjson:json
-type VideoGetUserVideosResponseExtended struct {
-	// Total number
-	Count    int        `json:"count,omitempty"`
-	Items    []vk.Video `json:"items,omitempty"`
-	Profiles []vk.User  `json:"profiles,omitempty"`
-	Groups   []vk.Group `json:"groups,omitempty"`
-}
-
-func (VideoGetUserVideosResponseExtended) isVideoGetUserVideos() {}
-
-// GetUserVideos Returns list of videos in which the user is tagged.
-func (v Video) GetUserVideos(params VideoGetUserVideosParams) (VideoGetUserVideosResponse, error) {
-	r, err := v.API.Request("video.getUserVideos", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp VideoGetUserVideosResponse
-	if params.Extended {
-		var tmp VideoGetUserVideosResponseExtended
-		err = json.Unmarshal(r, &tmp)
-		resp = &tmp
-	} else {
-		var tmp VideoGetUserVideosResponseNormal
-		err = json.Unmarshal(r, &tmp)
-		resp = &tmp
-	}
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 // VideoGetAlbumsParams are params for Video.GetAlbums
 type VideoGetAlbumsParams struct {
 	// ID of the user or community that owns the video album(s).
@@ -366,7 +302,8 @@ type VideoGetAlbumsParams struct {
 	// Number of video albums to return.
 	Count int `url:"count,omitempty"`
 	// '1' — to return additional information about album privacy settings for the current user
-	Extended bool `url:"extended,omitempty"`
+	Extended   bool `url:"extended,omitempty"`
+	NeedSystem bool `url:"need_system,omitempty"`
 }
 
 // VideoGetAlbumsResponse is response for Video.GetAlbums
@@ -608,10 +545,9 @@ func (v Video) RemoveFromAlbum(params VideoRemoveFromAlbumParams) (bool, error) 
 
 // VideoGetAlbumsByVideoParams are params for Video.GetAlbumsByVideo
 type VideoGetAlbumsByVideoParams struct {
-	TargetID int `url:"target_id,omitempty"`
-	OwnerID  int `url:"owner_id"`
-	VideoID  int `url:"video_id"`
-	//
+	TargetID int  `url:"target_id,omitempty"`
+	OwnerID  int  `url:"owner_id"`
+	VideoID  int  `url:"video_id"`
 	Extended bool `url:"extended,omitempty"`
 }
 
@@ -675,8 +611,9 @@ type VideoGetCommentsParams struct {
 	// Number of comments to return.
 	Count int `url:"count,omitempty"`
 	// Sort order: 'asc' — oldest comment first, 'desc' — newest comment first
-	Sort     string `url:"sort,omitempty"`
-	Extended bool   `url:"extended,omitempty"`
+	Sort     string         `url:"sort,omitempty"`
+	Extended bool           `url:"extended,omitempty"`
+	Fields   CSVStringSlice `url:"fields,omitempty"`
 }
 
 // VideoGetCommentsResponse is response for Video.GetComments
@@ -741,8 +678,7 @@ type VideoCreateCommentParams struct {
 	// List of objects attached to the comment, in the following format: "<owner_id>_<media_id>,<owner_id>_<media_id>", '' — Type of media attachment: 'photo' — photo, 'video' — video, 'audio' — audio, 'doc' — document, '<owner_id>' — ID of the media attachment owner. '<media_id>' — Media attachment ID. Example: "photo100172_166443618,photo66748_265827614"
 	Attachments CSVStringSlice `url:"attachments,omitempty"`
 	// '1' — to post the comment from a community name (only if 'owner_id'<0)
-	FromGroup bool `url:"from_group,omitempty"`
-	//
+	FromGroup      bool   `url:"from_group,omitempty"`
 	ReplyToComment int    `url:"reply_to_comment,omitempty"`
 	StickerID      int    `url:"sticker_id,omitempty"`
 	GUID           string `url:"guid,omitempty"`
@@ -829,118 +765,6 @@ func (v Video) EditComment(params VideoEditCommentParams) (bool, error) {
 	return decodeBoolIntResponse(r)
 }
 
-// VideoGetTagsParams are params for Video.GetTags
-type VideoGetTagsParams struct {
-	// ID of the user or community that owns the video.
-	OwnerID int `url:"owner_id,omitempty"`
-	// Video ID.
-	VideoID int `url:"video_id"`
-}
-
-// VideoGetTagsResponse is response for Video.GetTags
-//easyjson:json
-type VideoGetTagsResponse []genTODOType /* objects.json#/definitions/video_video_tag */
-// GetTags Returns a list of tags on a video.
-func (v Video) GetTags(params VideoGetTagsParams) (VideoGetTagsResponse, error) {
-	r, err := v.API.Request("video.getTags", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp VideoGetTagsResponse
-	err = json.Unmarshal(r, &resp)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-// VideoPutTagParams are params for Video.PutTag
-type VideoPutTagParams struct {
-	// ID of the user to be tagged.
-	UserID int `url:"user_id"`
-	// ID of the user or community that owns the video.
-	OwnerID int `url:"owner_id,omitempty"`
-	// Video ID.
-	VideoID int `url:"video_id"`
-	// Tag text.
-	TaggedName string `url:"tagged_name,omitempty"`
-}
-
-// VideoPutTagResponse is response for Video.PutTag
-// Created tag ID
-type VideoPutTagResponse int
-
-// PutTag Adds a tag on a video.
-func (v Video) PutTag(params VideoPutTagParams) (VideoPutTagResponse, error) {
-	r, err := v.API.Request("video.putTag", params)
-	if err != nil {
-		return 0, err
-	}
-
-	var resp VideoPutTagResponse
-
-	var cnv int
-	cnv, err = strconv.Atoi(string(r))
-	resp = VideoPutTagResponse(cnv)
-
-	if err != nil {
-		return 0, err
-	}
-	return resp, nil
-}
-
-// VideoRemoveTagParams are params for Video.RemoveTag
-type VideoRemoveTagParams struct {
-	// Tag ID.
-	TagID int `url:"tag_id"`
-	// ID of the user or community that owns the video.
-	OwnerID int `url:"owner_id,omitempty"`
-	// Video ID.
-	VideoID int `url:"video_id"`
-}
-
-// RemoveTag Removes a tag from a video.
-func (v Video) RemoveTag(params VideoRemoveTagParams) (bool, error) {
-	r, err := v.API.Request("video.removeTag", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
-}
-
-// VideoGetNewTagsParams are params for Video.GetNewTags
-type VideoGetNewTagsParams struct {
-	// Offset needed to return a specific subset of videos.
-	Offset int `url:"offset,omitempty"`
-	// Number of videos to return.
-	Count int `url:"count,omitempty"`
-}
-
-// VideoGetNewTagsResponse is response for Video.GetNewTags
-//easyjson:json
-type VideoGetNewTagsResponse struct {
-	// Total number
-	Count int        `json:"count,omitempty"`
-	Items []vk.Video `json:"items,omitempty"`
-}
-
-// GetNewTags Returns a list of videos with tags that have not been viewed.
-func (v Video) GetNewTags(params VideoGetNewTagsParams) (*VideoGetNewTagsResponse, error) {
-	r, err := v.API.Request("video.getNewTags", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp VideoGetNewTagsResponse
-	err = json.Unmarshal(r, &resp)
-	if err != nil {
-		return nil, err
-	}
-	return &resp, nil
-}
-
 // VideoReportParams are params for Video.Report
 type VideoReportParams struct {
 	// ID of the user or community that owns the video.
@@ -978,150 +802,6 @@ type VideoReportCommentParams struct {
 // ReportComment Reports (submits a complaint about) a comment on a video.
 func (v Video) ReportComment(params VideoReportCommentParams) (bool, error) {
 	r, err := v.API.Request("video.reportComment", params)
-	if err != nil {
-		return false, err
-	}
-
-	return decodeBoolIntResponse(r)
-}
-
-// VideoGetCatalogParams are params for Video.GetCatalog
-type VideoGetCatalogParams struct {
-	// number of catalog blocks to return.
-	Count int `url:"count,omitempty"`
-	// number of videos in each block.
-	ItemsCount int `url:"items_count,omitempty"`
-	// parameter for requesting the next results page. Value for transmitting here is returned in the 'next' field in a reply.
-	From string `url:"from,omitempty"`
-	// list of requested catalog sections
-	Filters CSVStringSlice `url:"filters,omitempty"`
-	// 1 – return additional infor about users and communities in profiles and groups fields.
-	Extended bool `url:"extended,omitempty"`
-}
-
-// VideoGetCatalogResponse is response for Video.GetCatalog
-// Either VideoGetCatalogResponseNormal or VideoGetCatalogResponseExtended, depending on Extended flag
-type VideoGetCatalogResponse interface {
-	isVideoGetCatalog()
-}
-
-// VideoGetCatalogResponseNormal is non-extended version of VideoGetCatalogResponse
-//easyjson:json
-type VideoGetCatalogResponseNormal struct {
-	Items []genTODOType/* objects.json#/definitions/video_cat_block */ `json:"items,omitempty"`
-	// New value for _from_ parameter
-	Next string `json:"next,omitempty"`
-}
-
-func (VideoGetCatalogResponseNormal) isVideoGetCatalog() {}
-
-// VideoGetCatalogResponseExtended is extended version of VideoGetCatalogResponse
-//easyjson:json
-type VideoGetCatalogResponseExtended struct {
-	Items    []genTODOType/* objects.json#/definitions/video_cat_block */ `json:"items,omitempty"`
-	Profiles []vk.User  `json:"profiles,omitempty"`
-	Groups   []vk.Group `json:"groups,omitempty"`
-	// New value for _from_ parameter
-	Next string `json:"next,omitempty"`
-}
-
-func (VideoGetCatalogResponseExtended) isVideoGetCatalog() {}
-
-// GetCatalog Returns video catalog
-func (v Video) GetCatalog(params VideoGetCatalogParams) (VideoGetCatalogResponse, error) {
-	r, err := v.API.Request("video.getCatalog", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp VideoGetCatalogResponse
-	if params.Extended {
-		var tmp VideoGetCatalogResponseExtended
-		err = json.Unmarshal(r, &tmp)
-		resp = &tmp
-	} else {
-		var tmp VideoGetCatalogResponseNormal
-		err = json.Unmarshal(r, &tmp)
-		resp = &tmp
-	}
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-// VideoGetCatalogSectionParams are params for Video.GetCatalogSection
-type VideoGetCatalogSectionParams struct {
-	// 'id' value returned with a block by the '' method.
-	SectionID string `url:"section_id"`
-	// 'next' value returned with a block by the '' method.
-	From string `url:"from"`
-	// number of blocks to return.
-	Count int `url:"count,omitempty"`
-	// 1 – return additional infor about users and communities in profiles and groups fields.
-	Extended bool `url:"extended,omitempty"`
-}
-
-// VideoGetCatalogSectionResponse is response for Video.GetCatalogSection
-// Either VideoGetCatalogSectionResponseNormal or VideoGetCatalogSectionResponseExtended, depending on Extended flag
-type VideoGetCatalogSectionResponse interface {
-	isVideoGetCatalogSection()
-}
-
-// VideoGetCatalogSectionResponseNormal is non-extended version of VideoGetCatalogSectionResponse
-//easyjson:json
-type VideoGetCatalogSectionResponseNormal struct {
-	Items []genTODOType/* objects.json#/definitions/video_cat_element */ `json:"items,omitempty"`
-	// New value for _from_ parameter
-	Next string `json:"next,omitempty"`
-}
-
-func (VideoGetCatalogSectionResponseNormal) isVideoGetCatalogSection() {}
-
-// VideoGetCatalogSectionResponseExtended is extended version of VideoGetCatalogSectionResponse
-//easyjson:json
-type VideoGetCatalogSectionResponseExtended struct {
-	Items    []genTODOType/* objects.json#/definitions/video_cat_element */ `json:"items,omitempty"`
-	Profiles []vk.User  `json:"profiles,omitempty"`
-	Groups   []vk.Group `json:"groups,omitempty"`
-	// New value for _from_ parameter
-	Next string `json:"next,omitempty"`
-}
-
-func (VideoGetCatalogSectionResponseExtended) isVideoGetCatalogSection() {}
-
-// GetCatalogSection Returns a separate catalog section
-func (v Video) GetCatalogSection(params VideoGetCatalogSectionParams) (VideoGetCatalogSectionResponse, error) {
-	r, err := v.API.Request("video.getCatalogSection", params)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp VideoGetCatalogSectionResponse
-	if params.Extended {
-		var tmp VideoGetCatalogSectionResponseExtended
-		err = json.Unmarshal(r, &tmp)
-		resp = &tmp
-	} else {
-		var tmp VideoGetCatalogSectionResponseNormal
-		err = json.Unmarshal(r, &tmp)
-		resp = &tmp
-	}
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-// VideoHideCatalogSectionParams are params for Video.HideCatalogSection
-type VideoHideCatalogSectionParams struct {
-	// 'id' value returned with a block to hide by the '' method.
-	SectionID int `url:"section_id"`
-}
-
-// HideCatalogSection Hides a video catalog section from a user.
-func (v Video) HideCatalogSection(params VideoHideCatalogSectionParams) (bool, error) {
-	r, err := v.API.Request("video.hideCatalogSection", params)
 	if err != nil {
 		return false, err
 	}

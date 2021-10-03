@@ -16,6 +16,7 @@ type StorageGetParams struct {
 	Key    string         `url:"key,omitempty"`
 	Keys   CSVStringSlice `url:"keys,omitempty"`
 	UserID int            `url:"user_id,omitempty"`
+	Global bool           `url:"global,omitempty"`
 }
 
 // StorageGetResponse is response for Storage.Get
@@ -44,6 +45,7 @@ type StorageSetParams struct {
 	Key    string `url:"key"`
 	Value  string `url:"value,omitempty"`
 	UserID int    `url:"user_id,omitempty"`
+	Global bool   `url:"global,omitempty"`
 }
 
 // Set Saves a value of variable with the name set by 'key' parameter.
@@ -59,7 +61,9 @@ func (v Storage) Set(params StorageSetParams) (bool, error) {
 // StorageGetKeysParams are params for Storage.GetKeys
 type StorageGetKeysParams struct {
 	// user id, whose variables names are returned if they were requested with a server method.
-	UserID int `url:"user_id,omitempty"`
+	UserID int  `url:"user_id,omitempty"`
+	Global bool `url:"global,omitempty"`
+	Offset int  `url:"offset,omitempty"`
 	// amount of variable names the info needs to be collected from.
 	Count int `url:"count,omitempty"`
 }

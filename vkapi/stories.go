@@ -106,10 +106,10 @@ func (v Stories) Get(params StoriesGetParams) (StoriesGetResponse, error) {
 
 // StoriesGetBannedParams are params for Stories.GetBanned
 type StoriesGetBannedParams struct {
-	// Additional fields to return
-	Fields CSVStringSlice `url:"fields,omitempty"`
 	// '1' — to return additional fields for users and communities. Default value is 0.
 	Extended bool `url:"extended,omitempty"`
+	// Additional fields to return
+	Fields CSVStringSlice `url:"fields,omitempty"`
 }
 
 // StoriesGetBannedResponse is response for Stories.GetBanned
@@ -168,7 +168,7 @@ func (v Stories) GetBanned(params StoriesGetBannedParams) (StoriesGetBannedRespo
 // StoriesGetByIDParams are params for Stories.GetByID
 type StoriesGetByIDParams struct {
 	// Stories IDs separated by commas. Use format {owner_id}+'_'+{story_id}, for example, 12345_54331.
-	Stories CSVStringSlice `url:"stories,omitempty"`
+	Stories CSVStringSlice `url:"stories"`
 	// '1' — to return additional fields for users and communities. Default value is 0.
 	Extended bool `url:"extended,omitempty"`
 	// Additional fields to return
@@ -508,6 +508,7 @@ func (v Stories) GetViewers(params StoriesGetViewersParams) (StoriesGetViewersRe
 type StoriesHideAllRepliesParams struct {
 	// ID of the user whose replies should be hidden.
 	OwnerID int `url:"owner_id"`
+	GroupID int `url:"group_id,omitempty"`
 }
 
 // HideAllReplies Hides all replies in the last 24 hours from the user to current user's stories.
