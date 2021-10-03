@@ -255,6 +255,9 @@ type User struct {
 
 	Blacklisted     BoolInt `json:"blacklisted"`
 	BlacklistedByMe BoolInt `json:"blacklisted_by_me"`
+
+	IsClosed        bool `json:"is_closed"`
+	CanAccessClosed bool `json:"can_access_closed"`
 }
 
 const (
@@ -498,7 +501,9 @@ type Conversation struct {
 			Photo200 string `json:"photo_200"`
 		} `json:"photo"`
 
-		ActiveIDs []int `json:"active_i_ds"`
+		ActiveIDs []int `json:"active_ids"`
+
+		IsGroupChannel bool `json:"is_group_channel"`
 	} `json:"chat_settings"`
 }
 
@@ -672,8 +677,10 @@ type Document struct {
 
 //easyjson:json
 type DocumentPreview struct {
-	Photo *DocumentPreviewPhoto `json:"photo"`
-	Video *DocumentPreviewVideo `json:"video"`
+	Photo        *DocumentPreviewPhoto        `json:"photo"`
+	Video        *DocumentPreviewVideo        `json:"video"`
+	AudioMessage *DocumentPreviewAudioMessage `json:"audio_message"`
+	Graffiti     *DocumentPreviewGraffiti     `json:"graffiti"`
 }
 
 //easyjson:json
@@ -687,6 +694,21 @@ type DocumentPreviewVideo struct {
 	Width    int    `json:"width"`
 	Height   int    `json:"height"`
 	Filesize int    `json:"filesize"`
+}
+
+//easyjson:json
+type DocumentPreviewAudioMessage struct {
+	Duration int    `json:"duration"`
+	Waveform []int  `json:"waveform"`
+	LinkOGG  string `json:"link_ogg"`
+	LinkMP3  string `json:"link_mp3"`
+}
+
+//easyjson:json
+type DocumentPreviewGraffiti struct {
+	Src    string `json:"src"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
 }
 
 const (
@@ -748,12 +770,25 @@ type PollAnswer struct {
 type Poll struct {
 	ID        int          `json:"id"`
 	OwnerID   int          `json:"owner_id"`
+	AuthorID  int          `json:"author_id"`
 	Created   int          `json:"created"`
 	Question  string       `json:"question"`
 	Votes     int          `json:"votes"`
-	AnswerID  int          `json:"answer_id"`
+	AnswerIDs []int        `json:"answer_ids"`
 	Asnwers   []PollAnswer `json:"asnwers"`
 	Anonymous BoolInt      `json:"anonymous"`
+	Multiple  BoolInt      `json:"multiple"`
+	EndDate   int          `json:"end_date"`
+
+	Closed    BoolInt `json:"closed"`
+	IsBoard   BoolInt `json:"is_board"`
+	CanEdit   BoolInt `json:"can_edit"`
+	CanVote   BoolInt `json:"can_edit"`
+	CanReport BoolInt `json:"can_edit"`
+	CanShare  BoolInt `json:"can_edit"`
+	Photo     *Photo  `json:"photo"`
+	// TODO: friends
+	// TODO: background
 }
 
 //easyjson:json
@@ -890,7 +925,9 @@ type Post struct {
 	Comments     *struct {
 		Count         int     `json:"count"`
 		CanPost       BoolInt `json:"can_post"`
-		GroupsCanPost bool    `json:"groups_can_post"`
+		GroupsCanPost BoolInt `json:"groups_can_post"`
+		CanClose      BoolInt `json:"can_close"`
+		CanOpen       BoolInt `json:"can_open"`
 	} `json:"comments"`
 	Likes *struct {
 		Count      int     `json:"count"`

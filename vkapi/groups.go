@@ -1147,7 +1147,7 @@ type GroupsGetLongPollServerResponse struct {
 	// Long Poll server address
 	Server string `json:"server,omitempty"`
 	// Number of the last event
-	TS int `json:"ts,omitempty"`
+	TS string `json:"ts,omitempty"`
 }
 
 // GetLongPollServer Returns the data needed to query a Long Poll server for events
