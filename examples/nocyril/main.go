@@ -27,7 +27,7 @@ type extConfig struct {
 }
 
 func getNameForUID(userID int) (string, error) {
-	users, err := vkapi.Users{vkClient}.Get(vkapi.UsersGetParams{
+	users, err := vkapi.Users{API: vkClient}.Get(vkapi.UsersGetParams{
 		UserIDs: []string{strconv.Itoa(userID)},
 	})
 
@@ -43,7 +43,7 @@ func getNameForUID(userID int) (string, error) {
 }
 
 func getNameForGID(groupID int) (string, error) {
-	groups, err := vkapi.Groups{vkClient}.GetByID(vkapi.GroupsGetByIDParams{
+	groups, err := vkapi.Groups{API: vkClient}.GetByID(vkapi.GroupsGetByIDParams{
 		GroupID: strconv.Itoa(groupID),
 	})
 
@@ -73,6 +73,7 @@ type commentDeleter func(client vk.API, ownerID int, commentID int) error
 
 func handleComment(ownerID int, comment vk.Comment, deleter commentDeleter) {
 	commentText := comment.Text
+	log.Printf("Handling Comment: %d_%d (%q)", ownerID, comment.ID, commentText)
 
 	if replyTo := comment.ReplyToUser; replyTo != 0 {
 		name, err := getNameForID(replyTo)
@@ -97,35 +98,35 @@ func handleDeleteComment(ok bool, err error) error {
 	if err != nil {
 		return err
 	}
-	if ok != true {
+	if !ok {
 		return errors.New("deleteComment returned false")
 	}
 	return nil
 }
 
 func wallCommentDeleter(client vk.API, ownerID int, commentID int) error {
-	return handleDeleteComment(vkapi.Wall{vkClient}.DeleteComment(vkapi.WallDeleteCommentParams{
+	return handleDeleteComment(vkapi.Wall{API: vkClient}.DeleteComment(vkapi.WallDeleteCommentParams{
 		OwnerID:   ownerID,
 		CommentID: commentID,
 	}))
 }
 
 func photoCommentDeleter(client vk.API, ownerID int, commentID int) error {
-	return handleDeleteComment(vkapi.Photos{vkClient}.DeleteComment(vkapi.PhotosDeleteCommentParams{
+	return handleDeleteComment(vkapi.Photos{API: vkClient}.DeleteComment(vkapi.PhotosDeleteCommentParams{
 		OwnerID:   ownerID,
 		CommentID: commentID,
 	}))
 }
 
 func videoCommentDeleter(client vk.API, ownerID int, commentID int) error {
-	return handleDeleteComment(vkapi.Video{vkClient}.DeleteComment(vkapi.VideoDeleteCommentParams{
+	return handleDeleteComment(vkapi.Video{API: vkClient}.DeleteComment(vkapi.VideoDeleteCommentParams{
 		OwnerID:   ownerID,
 		CommentID: commentID,
 	}))
 }
 
 func marketCommentDeleter(client vk.API, ownerID int, commentID int) error {
-	return handleDeleteComment(vkapi.Market{vkClient}.DeleteComment(vkapi.MarketDeleteCommentParams{
+	return handleDeleteComment(vkapi.Market{API: vkClient}.DeleteComment(vkapi.MarketDeleteCommentParams{
 		OwnerID:   ownerID,
 		CommentID: commentID,
 	}))

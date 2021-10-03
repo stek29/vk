@@ -20,7 +20,7 @@ Library consists of three packages:
 	implementation and defines most of types used by VK API
 - vkapi: Automatically generated wrappers for API
 - vkbot: Various helpers for making VK Bots -- using Callback API or
-	Bots Long Poll API to automate communites
+	Bots Long Poll API to automate communities
 
 # Getting started
 
