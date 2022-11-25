@@ -21,92 +21,88 @@ func (a *Attachment) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	if len(raw) != 2 {
-		return fmt.Errorf("Unexpected number of fields in Attachment: Expected 1, got %v", len(raw))
+	aTypeRaw, ok := raw["type"]
+	if !ok {
+		return fmt.Errorf("Attachment doesn't have type field")
 	}
 
 	var aType string
-	err = json.Unmarshal(raw["type"], &aType)
+	err = json.Unmarshal(aTypeRaw, &aType)
 	if err != nil {
 		return err
 	}
 
-	for k, v := range raw {
-		if k == "type" {
-			continue
-		}
-		if k != aType {
-			return fmt.Errorf("Attachment type and field name don't match: aType is %v, field is %v", aType, k)
-		}
-		switch k {
-		case "photo":
-			val := Photo{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "video":
-			val := Video{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "audio":
-			val := Audio{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "doc":
-			val := Document{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "link":
-			val := Link{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "note":
-			val := Note{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "poll":
-			val := Poll{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "page":
-			val := Page{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "album":
-			val := Album{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "market":
-			val := MarketItem{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "market_album":
-			val := MarketAlbum{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "sticker":
-			val := Sticker{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "wall":
-			val := Wall{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "wall_reply":
-			val := WallReply{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		case "gift":
-			val := Gift{}
-			err = json.Unmarshal(v, &val)
-			a.Val = val
-		default:
-			return fmt.Errorf("Unknown Attachment type: %v", k)
-		}
-
-		return err
+	v, ok := raw[aType]
+	if !ok {
+		return fmt.Errorf("Attachment type is %v, but it has no field with such keys", aType)
 	}
 
-	panic("unreachable code reached")
+	switch aType {
+	case "photo":
+		val := Photo{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "video":
+		val := Video{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "audio":
+		val := Audio{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "doc":
+		val := Document{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "link":
+		val := Link{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "note":
+		val := Note{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "poll":
+		val := Poll{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "page":
+		val := Page{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "album":
+		val := Album{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "market":
+		val := MarketItem{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "market_album":
+		val := MarketAlbum{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "sticker":
+		val := Sticker{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "wall":
+		val := Wall{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "wall_reply":
+		val := WallReply{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	case "gift":
+		val := Gift{}
+		err = json.Unmarshal(v, &val)
+		a.Val = val
+	default:
+		err = fmt.Errorf("Unknown Attachment type: %v", aType)
+	}
+
+	return err
 }
 
 //easyjson:json
