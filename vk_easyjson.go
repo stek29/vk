@@ -5930,11 +5930,11 @@ func easyjsonC7452bc1DecodeGithubComStek29Vk26(in *jlexer.Lexer, out *Poll) {
 			(out.IsBoard).UnmarshalEasyJSON(in)
 		case "can_edit":
 			(out.CanEdit).UnmarshalEasyJSON(in)
-		case "can_edit":
+		case "can_vote":
 			(out.CanVote).UnmarshalEasyJSON(in)
-		case "can_edit":
+		case "can_report":
 			(out.CanReport).UnmarshalEasyJSON(in)
-		case "can_edit":
+		case "can_share":
 			(out.CanShare).UnmarshalEasyJSON(in)
 		case "photo":
 			if in.IsNull() {
@@ -6053,17 +6053,17 @@ func easyjsonC7452bc1EncodeGithubComStek29Vk26(out *jwriter.Writer, in Poll) {
 		out.Bool(bool(in.CanEdit))
 	}
 	{
-		const prefix string = ",\"can_edit\":"
+		const prefix string = ",\"can_vote\":"
 		out.RawString(prefix)
 		out.Bool(bool(in.CanVote))
 	}
 	{
-		const prefix string = ",\"can_edit\":"
+		const prefix string = ",\"can_report\":"
 		out.RawString(prefix)
 		out.Bool(bool(in.CanReport))
 	}
 	{
-		const prefix string = ",\"can_edit\":"
+		const prefix string = ",\"can_share\":"
 		out.RawString(prefix)
 		out.Bool(bool(in.CanShare))
 	}

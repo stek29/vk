@@ -779,9 +779,9 @@ type Poll struct {
 	Closed    BoolInt `json:"closed"`
 	IsBoard   BoolInt `json:"is_board"`
 	CanEdit   BoolInt `json:"can_edit"`
-	CanVote   BoolInt `json:"can_edit"`
-	CanReport BoolInt `json:"can_edit"`
-	CanShare  BoolInt `json:"can_edit"`
+	CanVote   BoolInt `json:"can_vote"`
+	CanReport BoolInt `json:"can_report"`
+	CanShare  BoolInt `json:"can_share"`
 	Photo     *Photo  `json:"photo"`
 	// TODO: friends
 	// TODO: background
