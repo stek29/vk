@@ -8,7 +8,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"strconv"
 	"time"
 
 	"github.com/stek29/vk"
@@ -33,7 +32,7 @@ func (p *LongPoller) getServer(b *Bot) error {
 	}
 
 	p.key = srv.Key
-	p.ts = strconv.Itoa(srv.TS)
+	p.ts = srv.TS
 
 	if p.server, err = url.Parse(srv.Server); err != nil {
 		return err
